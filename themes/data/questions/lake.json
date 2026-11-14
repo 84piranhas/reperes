@@ -1,0 +1,192 @@
+[
+  {
+    "id": "lake-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Quel est le principe d'origine du data lake ?",
+    "choix": [
+      "Tout stocker à l'état brut et à bas coût, et ne structurer qu'au moment de lire",
+      "N'accepter que des données déjà nettoyées et modélisées",
+      "Remplacer les systèmes opérationnels de la banque",
+      "Garder les données uniquement en mémoire vive"
+    ],
+    "bonnes": [0],
+    "explication": "Le lake renverse la logique de l'entrepôt : rien n'est refusé à l'entrée, et la structure est appliquée à la lecture. N'accepter que du nettoyé et du modélisé est justement le principe de l'entrepôt."
+  },
+  {
+    "id": "lake-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'appelle-t-on un data swamp ?",
+    "choix": [
+      "Un lake sans catalogue, sans propriétaires ni contrôle de qualité, dont on ne sait plus ce qu'il contient",
+      "Un lake dont le stockage est saturé",
+      "Un lake réservé aux données non structurées",
+      "Un lake hébergé chez plusieurs fournisseurs de cloud"
+    ],
+    "bonnes": [0],
+    "explication": "Le marécage n'est pas un problème de volume mais de gouvernance : des données introuvables, mal comprises, de fiabilité inconnue. Stocker n'a jamais suffi à rendre une donnée utilisable."
+  },
+  {
+    "id": "lake-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'apporte un format de table ouvert comme Iceberg, Delta Lake ou Hudi ?",
+    "choix": [
+      "Un journal par-dessus les fichiers, qui donne transactions, versions et évolution du schéma",
+      "Un nouveau format de fichier, plus compact que Parquet",
+      "Un moteur de requêtes plus rapide que Spark",
+      "Un chiffrement obligatoire de toutes les données"
+    ],
+    "bonnes": [0],
+    "explication": "Les données restent dans des fichiers Parquet. Le format de table ajoute les métadonnées qui disent quels fichiers composent chaque version de la table, ce qui rend possibles les transactions et le retour dans le temps."
+  },
+  {
+    "id": "lake-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Comment résumer l'idée du lakehouse ?",
+    "choix": [
+      "Les garanties et le SQL de l'entrepôt, sur le stockage ouvert et bon marché du lake",
+      "Un entrepôt et un lake distincts, synchronisés chaque nuit",
+      "Un lake limité aux données structurées",
+      "Un entrepôt dont les données sont stockées en CSV"
+    ],
+    "bonnes": [0],
+    "explication": "Le lakehouse ne juxtapose pas deux plateformes : il ajoute au lake ce qui lui manquait, transactions et fiabilité, grâce aux formats de table ouverts."
+  },
+  {
+    "id": "lake-05",
+    "type": "single",
+    "niveau": 1,
+    "q": "Dans une architecture en médaillon, que contient la couche bronze ?",
+    "choix": [
+      "Les données brutes, exactement comme elles ont été reçues",
+      "Les agrégats prêts pour les tableaux de bord",
+      "Les données nettoyées et rapprochées des référentiels",
+      "Les données en attente de suppression"
+    ],
+    "bonnes": [0],
+    "explication": "Bronze garde le brut, sans modification. C'est ce qui permet de tout recalculer si une règle de traitement se révèle fausse. Le nettoyé est en argent, l'agrégé en or."
+  },
+  {
+    "id": "lake-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'est-ce qui caractérise la couche or ?",
+    "choix": [
+      "Des données modélisées pour un usage précis, prêtes à être consommées",
+      "Des données confidentielles, à l'accès restreint",
+      "Une copie de sauvegarde de la couche argent",
+      "Les données les plus anciennes, conservées pour archive"
+    ],
+    "bonnes": [0],
+    "explication": "La couche or porte les produits finis : agrégats, schémas en étoile, tables larges. Elle se définit par sa proximité avec un usage, pas par sa confidentialité ou son ancienneté."
+  },
+  {
+    "id": "lake-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que permet le retour dans le temps (time travel) d'un format de table ?",
+    "choix": [
+      "Interroger une table telle qu'elle était à une date ou à une version passée",
+      "Planifier une requête pour qu'elle s'exécute plus tard",
+      "Prévoir les valeurs futures d'une série",
+      "Restaurer un serveur tombé en panne"
+    ],
+    "bonnes": [0],
+    "explication": "Le journal garde la liste des fichiers de chaque version. On peut donc relire un état passé, par exemple pour reproduire un rapport. La contrepartie est du stockage : les anciennes versions doivent être purgées un jour."
+  },
+  {
+    "id": "lake-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi dit-on que le catalogue est la pièce maîtresse d'un lakehouse ?",
+    "choix": [
+      "Tous les moteurs passent par lui pour trouver les tables et vérifier les droits",
+      "C'est lui qui exécute les requêtes SQL",
+      "C'est lui qui stocke physiquement les fichiers",
+      "C'est le composant le plus coûteux en licences"
+    ],
+    "bonnes": [0],
+    "explication": "Le catalogue sait quelles tables existent, où elles sont et qui peut les lire. Droits, lignage et découverte y sont accrochés : il se remplace bien plus difficilement qu'un moteur."
+  },
+  {
+    "id": "lake-09",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une table alimentée en continu devient très lente à lire. On y trouve des dizaines de milliers de fichiers minuscules. Quel est le remède ?",
+    "choix": [
+      "La compaction, qui fusionne régulièrement les petits fichiers",
+      "L'ajout de machines de calcul à la grappe",
+      "La conversion des fichiers en CSV",
+      "La suppression de la couche bronze"
+    ],
+    "bonnes": [0],
+    "explication": "Ouvrir un fichier a un coût fixe. Des milliers de petits fichiers font exploser ce coût. La compaction les regroupe en fichiers de bonne taille, et fait partie de l'entretien normal d'une table."
+  },
+  {
+    "id": "lake-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "On propose de faire du lake le système de référence de la tenue de position en temps réel. Que répondre ?",
+    "choix": [
+      "Non : un lake est analytique, il n'est pas conçu pour des transactions unitaires à faible latence",
+      "Oui, à condition d'utiliser un format de table ouvert",
+      "Oui, à condition de partitionner les tables par date",
+      "Non : un lake ne peut pas contenir de données de position"
+    ],
+    "bonnes": [0],
+    "explication": "Le lake peut tout à fait contenir l'historique des positions, mais comme copie. Les systèmes opérationnels restent maîtres : eux seuls sont faits pour des mises à jour unitaires rapides et cohérentes."
+  },
+  {
+    "id": "lake-11",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Avec un format de table ouvert, plusieurs moteurs différents peuvent lire les mêmes tables sans les copier.",
+    "bonnes": [0],
+    "explication": "C'est l'un des intérêts majeurs de ces formats : la donnée est stockée une fois, et chaque équipe choisit le moteur adapté à son usage."
+  },
+  {
+    "id": "lake-12",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'a surtout permis le passage au stockage objet par rapport au système de fichiers d'Hadoop ?",
+    "choix": [
+      "Séparer le stockage du calcul, avec un stockage bon marché et presque sans limite",
+      "Supprimer le besoin de catalogue",
+      "Garantir des transactions ACID sur les fichiers",
+      "Rendre les requêtes aussi rapides qu'en mémoire"
+    ],
+    "bonnes": [0],
+    "explication": "Avec Hadoop, stocker plus obligeait à acheter aussi du calcul. Le stockage objet dissocie les deux. Les transactions, elles, viennent des formats de table, pas du stockage."
+  },
+  {
+    "id": "lake-13",
+    "type": "single",
+    "niveau": 3,
+    "q": "Pourquoi partitionner une table du lake par date ?",
+    "choix": [
+      "Une requête filtrée sur une date n'ouvre que les fichiers de cette date",
+      "Les données sont mieux protégées contre les accès non autorisés",
+      "Cela évite d'avoir à déclarer un schéma",
+      "Chaque date est alors stockée sur une machine différente"
+    ],
+    "bonnes": [0],
+    "explication": "C'est l'élagage : le moteur écarte d'emblée les fichiers hors de la plage demandée. Comme la plupart des requêtes analytiques filtrent sur une période, le gain est considérable."
+  },
+  {
+    "id": "lake-14",
+    "type": "single",
+    "niveau": 3,
+    "q": "Pourquoi garder les données brutes en couche bronze alors qu'une version nettoyée existe ?",
+    "choix": [
+      "Pour pouvoir repartir du brut et tout recalculer si une règle de traitement était fausse",
+      "Parce que les utilisateurs finaux préfèrent travailler sur le brut",
+      "Parce que le nettoyage fait perdre la moitié des données",
+      "Parce que la couche argent ne peut pas être sauvegardée"
+    ],
+    "bonnes": [0],
+    "explication": "Sans le brut, une erreur de traitement est définitive. Avec lui, on corrige la règle et on rejoue. C'est aussi ce qui permet de servir un besoin nouveau, non prévu au moment du nettoyage."
+  }
+]

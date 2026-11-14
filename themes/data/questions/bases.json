@@ -1,0 +1,163 @@
+[
+  {
+    "id": "bases-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que garantit l'atomicité, le A de ACID ?",
+    "choix": [
+      "Une transaction s'applique entièrement ou pas du tout",
+      "Une transaction confirmée survit à une panne",
+      "Deux transactions simultanées ne se voient pas",
+      "Chaque donnée n'est stockée qu'à un seul endroit"
+    ],
+    "bonnes": [0],
+    "explication": "Atomicité veut dire tout ou rien. Survivre à une panne, c'est la durabilité. Ne pas voir les états intermédiaires des autres, c'est l'isolation. Stocker une information une seule fois relève de la normalisation, pas d'ACID."
+  },
+  {
+    "id": "bases-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "À quel type de requête le stockage en colonnes est-il le mieux adapté ?",
+    "choix": [
+      "Agréger quelques colonnes sur un très grand nombre de lignes",
+      "Modifier un enregistrement précis plusieurs fois par seconde",
+      "Insérer des lignes une par une à très haute fréquence",
+      "Lire toutes les colonnes d'une seule ligne"
+    ],
+    "bonnes": [0],
+    "explication": "En colonnes, le moteur ne lit que les colonnes utiles à la requête. Les opérations ligne à ligne, elles, obligent à toucher autant d'endroits qu'il y a de colonnes : c'est le terrain du stockage en lignes."
+  },
+  {
+    "id": "bases-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi une table stockée en colonnes se compresse-t-elle mieux ?",
+    "choix": [
+      "Les valeurs d'une même colonne sont de même type et se répètent souvent",
+      "Les colonnes sont toujours plus courtes que les lignes",
+      "Le moteur supprime les colonnes qui ne servent pas",
+      "Les valeurs numériques y sont arrondies"
+    ],
+    "bonnes": [0],
+    "explication": "Une colonne « devise » ne contient que quelques dizaines de valeurs distinctes, répétées des millions de fois : la compression y est très efficace. Rien n'est supprimé ni arrondi."
+  },
+  {
+    "id": "bases-04",
+    "type": "vf",
+    "niveau": 1,
+    "q": "Un index accélère les lectures, mais ralentit les écritures et occupe de l'espace.",
+    "bonnes": [0],
+    "explication": "Chaque insertion ou modification doit aussi mettre à jour les index concernés. C'est pourquoi on ne crée pas un index sur chaque colonne."
+  },
+  {
+    "id": "bases-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "On veut explorer des chaînes de détention : qui contrôle qui, sur un nombre de niveaux de filiales inconnu à l'avance. Quelle famille de base s'y prête le mieux ?",
+    "choix": ["Une base graphe", "Une base clé-valeur", "Une base de séries temporelles", "Un moteur de recherche plein texte"],
+    "bonnes": [0],
+    "explication": "Parcourir des relations sur une profondeur variable est le cas d'usage des bases graphe. En relationnel, la même question exige des jointures en cascade, lentes et pénibles à écrire."
+  },
+  {
+    "id": "bases-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'ont cherché en priorité les bases NoSQL apparues à la fin des années 2000 ?",
+    "choix": [
+      "Passer à l'échelle sur de nombreuses machines et assouplir le schéma, en relâchant certaines garanties",
+      "Remplacer SQL par un langage plus simple à apprendre",
+      "Renforcer les garanties transactionnelles du relationnel",
+      "Réduire le coût des licences des éditeurs historiques"
+    ],
+    "bonnes": [0],
+    "explication": "Leur moteur est le besoin d'échelle et de souplesse des géants du web. La contrepartie la plus fréquente : pas de jointures, et pas de transaction portant sur plusieurs enregistrements."
+  },
+  {
+    "id": "bases-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que cherchent à réunir les bases dites NewSQL, comme Spanner ou CockroachDB ?",
+    "choix": [
+      "SQL et les transactions ACID, sur une architecture distribuée",
+      "Le stockage en lignes et le stockage en colonnes dans un même fichier",
+      "La recherche plein texte et les graphes",
+      "Le cache en mémoire et l'archivage sur bande"
+    ],
+    "bonnes": [0],
+    "explication": "Elles veulent l'échelle horizontale du NoSQL sans renoncer aux garanties du relationnel. Le prix est une coordination entre machines, donc une latence d'écriture plus élevée."
+  },
+  {
+    "id": "bases-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "On place un cache en mémoire devant une base. Qu'accepte-t-on en échange de la vitesse ?",
+    "choix": [
+      "De servir parfois une valeur légèrement périmée",
+      "De perdre les garanties ACID de la base elle-même",
+      "De ne plus pouvoir écrire dans la base",
+      "De doubler le volume stocké sur disque"
+    ],
+    "bonnes": [0],
+    "explication": "Le cache garde une copie des lectures fréquentes. Tant qu'elle n'est pas rafraîchie, elle peut diverger de la base. Tout l'art est de décider quand l'invalider."
+  },
+  {
+    "id": "bases-09",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une table compte deux milliards de lignes et quatre-vingts colonnes. Une requête somme une colonne, filtrée sur une date. Pourquoi un moteur en colonnes répond-il beaucoup plus vite qu'un moteur en lignes ?",
+    "choix": [
+      "Il ne lit que les deux colonnes concernées au lieu des quatre-vingts",
+      "Il garde toute la table en mémoire vive",
+      "Il a créé un index sur chacune des colonnes",
+      "Il répartit toujours la requête sur plusieurs machines"
+    ],
+    "bonnes": [0],
+    "explication": "Le gain vient d'abord du volume lu : deux colonnes compressées au lieu de la table entière. Les statistiques par bloc permettent en plus de sauter les blocs hors de la plage de dates."
+  },
+  {
+    "id": "bases-10",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Lesquels de ces produits sont des bases relationnelles conçues d'abord pour l'opérationnel ?",
+    "choix": ["PostgreSQL", "Oracle Database", "ClickHouse", "Sybase (SAP ASE)"],
+    "bonnes": [0, 1, 3],
+    "explication": "PostgreSQL, Oracle et Sybase sont des bases relationnelles transactionnelles, stockées en lignes. ClickHouse est un moteur analytique en colonnes."
+  },
+  {
+    "id": "bases-11",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une équipe veut une technologie de base différente pour chacun de ses six services. Quel est le principal coût caché ?",
+    "choix": [
+      "Six technologies à exploiter : compétences, supervision, sauvegardes, sécurité, montées de version",
+      "L'impossibilité technique de faire communiquer les services",
+      "Une dégradation certaine des performances de chaque service",
+      "L'interdiction de passer un jour au cloud"
+    ],
+    "bonnes": [0],
+    "explication": "Chaque base ajoutée doit être maîtrisée en production, jour et nuit. Ce coût d'exploitation dépasse souvent le gain apporté par l'outil « idéal » pour chaque cas."
+  },
+  {
+    "id": "bases-12",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle question vient en premier quand on choisit une base de données ?",
+    "choix": [
+      "Quelles lectures et quelles écritures, à quel volume et à quelle fréquence ?",
+      "Quel éditeur est le mieux classé cette année ?",
+      "Quelle base utilisent les concurrents ?",
+      "Quel langage de programmation préfère l'équipe ?"
+    ],
+    "bonnes": [0],
+    "explication": "Le profil d'accès désigne la famille de base. Les garanties attendues et les compétences disponibles viennent ensuite pour départager."
+  },
+  {
+    "id": "bases-13",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une transaction débite un compte puis en crédite un autre. Quelle propriété empêche un autre utilisateur de lire l'état où seul le débit est fait ?",
+    "choix": ["L'isolation", "La durabilité", "L'atomicité", "L'indexation"],
+    "bonnes": [0],
+    "explication": "L'isolation cache les états intermédiaires aux autres transactions. L'atomicité, elle, garantit qu'en cas d'échec le débit seul ne restera pas : les deux propriétés se complètent."
+  }
+]

@@ -1,0 +1,122 @@
+<p>Avant d'entrer dans les technologies, il faut une carte. Presque toutes les architectures de données, de la plus modeste à la plus ambitieuse, s'expliquent par le même trajet : une donnée naît quelque part, elle est transportée, stockée, transformée, puis servie à quelqu'un qui en fait quelque chose. Les sigles changent tous les cinq ans. Ce trajet ne change pas.</p>
+
+<h2>Le trajet d'une donnée</h2>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 215" role="img" aria-label="Cinq étapes en chaîne : sources, ingestion, stockage, traitement, service. En dessous, les fonctions transverses.">
+    <rect class="b" x="10" y="16" width="128" height="88" rx="10"/>
+    <rect class="b" x="160" y="16" width="128" height="88" rx="10"/>
+    <rect class="ba" x="310" y="16" width="128" height="88" rx="10"/>
+    <rect class="b" x="460" y="16" width="128" height="88" rx="10"/>
+    <rect class="b" x="610" y="16" width="128" height="88" rx="10"/>
+    <path class="f" d="M140 60h12M290 60h12M440 60h12M590 60h12"/>
+    <path class="fp" d="M159 60l-8-4.5v9zM309 60l-8-4.5v9zM459 60l-8-4.5v9zM609 60l-8-4.5v9z"/>
+    <text class="t m" x="74" y="46">Sources</text>
+    <text class="ts m" x="74" y="68">applications, marchés,</text>
+    <text class="ts m" x="74" y="85">fournisseurs, fichiers</text>
+    <text class="t m" x="224" y="46">Ingestion</text>
+    <text class="ts m" x="224" y="68">fichiers, API,</text>
+    <text class="ts m" x="224" y="85">événements, CDC</text>
+    <text class="t m" x="374" y="46">Stockage</text>
+    <text class="ts m" x="374" y="68">bases, entrepôt,</text>
+    <text class="ts m" x="374" y="85">lake</text>
+    <text class="t m" x="524" y="46">Traitement</text>
+    <text class="ts m" x="524" y="68">nettoyer, rapprocher,</text>
+    <text class="ts m" x="524" y="85">agréger, calculer</text>
+    <text class="t m" x="674" y="46">Service</text>
+    <text class="ts m" x="674" y="68">SQL, API, tableaux</text>
+    <text class="ts m" x="674" y="85">de bord, flux</text>
+    <rect class="bv" x="10" y="132" width="728" height="66" rx="10"/>
+    <text class="tacc" x="26" y="156">Fonctions transverses</text>
+    <text class="t" x="26" y="180">Gouvernance · Catalogue · Sécurité · Orchestration · Observabilité</text>
+  </svg>
+  </div>
+  <figcaption>Cinq étapes, et les fonctions transverses qui les tiennent ensemble.</figcaption>
+</figure>
+
+<ul>
+  <li><strong>Sources.</strong> Les systèmes où la donnée est produite : outils de saisie et de gestion des opérations, plateformes d'exécution, fournisseurs externes, fichiers d'utilisateurs.</li>
+  <li><strong>Ingestion.</strong> Le transport vers la plateforme. Par fichiers déposés, par appels d'API, par flux d'événements continus, ou en lisant le journal des modifications d'une base (le <abbr title="Change Data Capture">CDC</abbr>).</li>
+  <li><strong>Stockage.</strong> L'endroit où la donnée repose, organisée pour un type d'usage : base de données, entrepôt, lake.</li>
+  <li><strong>Traitement.</strong> Tout ce qui transforme : nettoyer, rapprocher, enrichir, agréger, calculer.</li>
+  <li><strong>Service.</strong> La mise à disposition : requêtes SQL, API, tableaux de bord, extractions, flux vers d'autres systèmes.</li>
+</ul>
+
+<p>Cinq fonctions traversent toute la chaîne. La <strong>gouvernance</strong> dit qui possède une donnée et qui répond de sa qualité. Le <strong>catalogue</strong> dit où la trouver et ce qu'elle signifie. La <strong>sécurité</strong> dit qui a le droit de la voir. L'<strong>orchestration</strong> dit dans quel ordre et à quelle heure les traitements tournent. L'<strong>observabilité</strong> dit si tout cela fonctionne, et à l'heure.</p>
+
+<aside class="note question">
+  <p class="etiquette">Le réflexe</p>
+  <p>Devant n'importe quel schéma d'architecture, replacez chaque boîte sur ce trajet. Une boîte qu'on ne sait pas situer est soit une fonction transverse, soit un composant dont personne n'a expliqué le rôle.</p>
+</aside>
+
+<h2>Deux mondes : opérationnel et analytique</h2>
+
+<p>La distinction la plus structurante du domaine oppose deux façons d'utiliser une donnée. Les systèmes <dfn>opérationnels</dfn>, dits <abbr title="Online Transaction Processing">OLTP</abbr>, font tourner l'activité : ils enregistrent une opération, modifient un ordre, mettent à jour une position. Les systèmes <dfn>analytiques</dfn>, dits <abbr title="Online Analytical Processing">OLAP</abbr>, servent à comprendre et à mesurer : ils parcourent de grands volumes pour en tirer des agrégats.</p>
+
+<table>
+  <thead><tr><th></th><th>Opérationnel (OLTP)</th><th>Analytique (OLAP)</th></tr></thead>
+  <tbody>
+    <tr><th>Rôle</th><td>Faire tourner l'activité</td><td>Comprendre, mesurer, décider</td></tr>
+    <tr><th>Opération type</th><td>Lire ou modifier un enregistrement précis</td><td>Parcourir des millions de lignes pour agréger</td></tr>
+    <tr><th>Exemple</th><td>Enregistrer une opération, amender un ordre</td><td>Exposition par contrepartie sur un an d'historique</td></tr>
+    <tr><th>Exigence</th><td>Intégrité, disponibilité, réponse en millisecondes</td><td>Débit de lecture, profondeur d'historique, souplesse</td></tr>
+    <tr><th>Utilisateurs</th><td>Des applications, nombreuses et simultanées</td><td>Risques, finance, analystes, quants, modèles</td></tr>
+  </tbody>
+</table>
+
+<p>Ces deux charges se gênent. Une analyse qui balaie dix ans d'historique sur une base opérationnelle accapare les ressources dont les transactions ont besoin. La règle qui en découle fonde tout le métier : <strong>on n'analyse pas là où l'on opère, on copie la donnée ailleurs</strong>. Toute la tuyauterie data, des entrepôts d'hier aux lakes d'aujourd'hui, vient de cette séparation.</p>
+
+<h2>Les familles de données d'une salle de marché</h2>
+
+<ul>
+  <li><strong>Données de référence.</strong> Instruments, tiers, portefeuilles, calendriers, conventions. Peu volumineuses, elles changent lentement, mais tout le monde s'en sert. Une erreur s'y propage partout.</li>
+  <li><strong>Données de marché.</strong> Prix, cotations, courbes, volatilités. Volumineuses, horodatées, parfois très rapides.</li>
+  <li><strong>Données de transaction et de position.</strong> Ordres, exécutions, opérations, positions, flux de règlement. Elles engagent la banque : leur intégrité prime sur tout.</li>
+  <li><strong>Données dérivées.</strong> Risques, résultat, indicateurs, signaux. Elles sont calculées à partir des trois premières et valent ce que valent leurs entrées.</li>
+</ul>
+
+<p>Chaque famille a son rythme, ses volumes et ses exigences. Vouloir les loger toutes dans le même outil est l'erreur de conception la plus courante.</p>
+
+<h2>Les ordres de grandeur</h2>
+
+<p>Deux chiffres orientent presque tous les choix techniques : le volume, et le délai dans lequel la réponse est attendue.</p>
+
+<table>
+  <thead><tr><th>Régime</th><th>Délai attendu</th><th>Exemple</th></tr></thead>
+  <tbody>
+    <tr><th>Très faible latence</th><td>Microsecondes</td><td>Un algorithme de cotation qui réagit à un prix</td></tr>
+    <tr><th>Interactif</th><td>Millisecondes à quelques secondes</td><td>Un prix à la demande, un écran de positions</td></tr>
+    <tr><th>Intrajournalier</th><td>Minutes</td><td>Un recalcul de risques en cours de journée</td></tr>
+    <tr><th>Batch</th><td>Heures</td><td>La chaîne de fin de journée, un rapport réglementaire</td></tr>
+  </tbody>
+</table>
+
+<p>Côté volumes, l'écart est tout aussi grand. Un référentiel d'instruments compte quelques millions de lignes : une base classique sur une seule machine y suffit. L'historique tick par tick d'un grand marché se compte en milliards de lignes par jour : il faut des outils spécialisés. Entre les deux, la bonne technologie n'est pas la même, et c'est normal.</p>
+
+<h2>Les compromis qui reviennent partout</h2>
+
+<ol>
+  <li><strong>Cohérence ou disponibilité.</strong> Tout le monde voit-il exactement la même valeur au même instant, ou le système répond-il toujours, quitte à servir une valeur un peu ancienne ?</li>
+  <li><strong>Latence ou débit.</strong> Répondre vite à une demande, ou traiter beaucoup de données par unité de temps.</li>
+  <li><strong>Souplesse ou contrôle.</strong> Accepter tout de suite n'importe quelle donnée, ou imposer une structure à l'entrée.</li>
+  <li><strong>Stocker ou recalculer.</strong> Conserver un résultat coûte du stockage. Le refaire à la demande coûte du calcul et du temps.</li>
+  <li><strong>Centraliser ou fédérer.</strong> Une équipe et une plateforme pour tous, ou des domaines responsables de leurs propres données.</li>
+  <li><strong>Construire ou acheter.</strong> Maîtrise et différenciation d'un côté, délai et coût de maintenance de l'autre.</li>
+</ol>
+
+<aside class="note piege">
+  <p class="etiquette">Idée reçue</p>
+  <p>« Cette architecture n'a que des avantages. » Aucune ne gagne sur tous les tableaux. Une proposition sérieuse dit ce qu'elle sacrifie. Si elle ne le dit pas, c'est la première question à poser.</p>
+</aside>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Toute architecture se lit sur un même trajet : sources, ingestion, stockage, traitement, service, plus cinq fonctions transverses.</li>
+    <li>L'opérationnel (OLTP) et l'analytique (OLAP) ont des profils opposés. On les sépare, et cette séparation crée le besoin de pipelines.</li>
+    <li>Référence, marché, transactions, données dérivées : quatre familles, quatre rythmes, rarement un seul outil.</li>
+    <li>Le volume et le délai attendu dictent la technologie, pas la mode.</li>
+    <li>Chaque choix est un compromis. Savoir lequel a été fait, c'est comprendre l'architecture.</li>
+  </ul>
+</aside>

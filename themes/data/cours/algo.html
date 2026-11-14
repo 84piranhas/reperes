@@ -1,0 +1,131 @@
+<p>Un algorithme propriétaire est un logiciel qui porte un savoir-faire que la banque considère comme un avantage : un meilleur prix, une meilleure exécution, un signal que les autres n'ont pas. C'est aussi le consommateur le plus exigeant de tout ce que décrivent les chapitres précédents : données, calcul, vitesse et contrôle.</p>
+
+<h2>Quatre familles</h2>
+
+<table>
+  <thead><tr><th>Famille</th><th>Ce qu'elle fait</th><th>Contrainte dominante</th></tr></thead>
+  <tbody>
+    <tr><th>Prix et risques</th><td>Valoriser un produit et calculer ses sensibilités, à partir de bibliothèques quantitatives</td><td>Justesse, volume de calcul</td></tr>
+    <tr><th>Exécution</th><td>Découper un ordre et le placer pour limiter son impact sur le marché</td><td>Qualité d'exécution, contrôles</td></tr>
+    <tr><th>Cotation automatique</th><td>Publier en continu des prix à l'achat et à la vente, et se couvrir</td><td>Latence, risque en temps réel</td></tr>
+    <tr><th>Stratégies systématiques</th><td>Décider d'acheter ou de vendre à partir de signaux tirés des données</td><td>Qualité des historiques, rigueur statistique</td></tr>
+  </tbody>
+</table>
+
+<p>Les modèles d'apprentissage automatique ne forment pas une cinquième famille : ils s'insèrent dans les quatre.</p>
+
+<h2>Pourquoi propriétaire</h2>
+
+<p>Parce que c'est là que se loge la différence avec les concurrents. La contrepartie est lourde : tout est à entretenir, le code, les données, l'infrastructure, et le savoir se concentre souvent dans très peu de têtes. La bonne question n'est donc pas « construire ou acheter ? » en général, mais <strong>où est précisément notre avantage ?</strong> On construit ce qui différencie, on achète le reste.</p>
+
+<h2>Le cycle de vie</h2>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 152" role="img" aria-label="Cinq étapes : recherche, backtest, simulation, production, surveillance. Une flèche de retour relie la surveillance à la recherche.">
+    <rect class="b" x="10" y="14" width="128" height="82" rx="10"/>
+    <rect class="b" x="160" y="14" width="128" height="82" rx="10"/>
+    <rect class="b" x="310" y="14" width="128" height="82" rx="10"/>
+    <rect class="ba" x="460" y="14" width="128" height="82" rx="10"/>
+    <rect class="b" x="610" y="14" width="128" height="82" rx="10"/>
+    <path class="f" d="M140 55h12M290 55h12M440 55h12M590 55h12"/>
+    <path class="fp" d="M159 55l-8-4.5v9zM309 55l-8-4.5v9zM459 55l-8-4.5v9zM609 55l-8-4.5v9z"/>
+    <text class="t m" x="74" y="42">Recherche</text>
+    <text class="ts m" x="74" y="63">idées, données,</text>
+    <text class="ts m" x="74" y="80">prototypes</text>
+    <text class="t m" x="224" y="42">Backtest</text>
+    <text class="ts m" x="224" y="63">rejouer l'histoire</text>
+    <text class="ts m" x="224" y="80">sans tricher</text>
+    <text class="t m" x="374" y="42">Simulation</text>
+    <text class="ts m" x="374" y="63">marché réel,</text>
+    <text class="ts m" x="374" y="80">ordres fictifs</text>
+    <text class="t m" x="524" y="42">Production</text>
+    <text class="ts m" x="524" y="63">code durci,</text>
+    <text class="ts m" x="524" y="80">limites, contrôles</text>
+    <text class="t m" x="674" y="42">Surveillance</text>
+    <text class="ts m" x="674" y="63">performance,</text>
+    <text class="ts m" x="674" y="80">dérive, incidents</text>
+    <path class="f" d="M674 98v22H74v-14"/>
+    <path class="fp" d="M74 99l-4.5 8h9z"/>
+    <text class="ts m" x="374" y="140">ce que la production révèle nourrit la recherche</text>
+  </svg>
+  </div>
+  <figcaption>De l'idée à la production, puis retour.</figcaption>
+</figure>
+
+<p>La <strong>recherche</strong> se fait le plus souvent en Python, dans des carnets interactifs, sur des données historiques. Le <dfn>backtest</dfn> rejoue l'histoire : qu'aurait fait la stratégie, et qu'aurait-elle gagné ? La <strong>simulation</strong> la fait tourner sur le marché réel sans envoyer d'ordres. La <strong>production</strong> exige un code durci, souvent en C++ ou en Java, entouré de limites. La <strong>surveillance</strong> suit la performance et repère la dérive.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>Entre recherche et production, le modèle est souvent réécrit dans un autre langage. Il existe alors en deux exemplaires, qui finissent par diverger : ce qui tourne en production n'est plus exactement ce qui a été validé. Les parades : des bibliothèques communes aux deux mondes, et des tests qui comparent systématiquement les deux versions sur les mêmes données.</p>
+</aside>
+
+<h2>Les données qu'exige un algorithme</h2>
+
+<p>Trois qualités sont attendues d'un historique : la <strong>profondeur</strong>, plusieurs années, parfois au tick ; la <strong>propreté</strong>, avec des séries ajustées des opérations sur titres ; et le caractère <dfn>point-in-time</dfn>, c'est-à-dire la donnée telle qu'elle était connue à chaque date passée, sans les corrections venues après.</p>
+
+<p>Trois biais guettent tout backtest.</p>
+
+<ul>
+  <li><strong>Le biais d'anticipation</strong> (<em>look-ahead</em>). La stratégie utilise une information qui n'était pas encore disponible à la date simulée. Exemple type : des résultats d'entreprise datés de la fin du trimestre plutôt que du jour de leur publication.</li>
+  <li><strong>Le biais du survivant.</strong> On teste sur les sociétés qui existent encore aujourd'hui. Celles qui ont fait faillite ou ont été retirées de la cote ont disparu de l'échantillon, et la performance est surestimée.</li>
+  <li><strong>Le surapprentissage.</strong> À force d'essayer des variantes, on en trouve une qui épouse parfaitement le passé, c'est-à-dire son bruit. Elle déçoit dès le premier jour réel. La parade : garder des données que la recherche n'a jamais vues, et se méfier des résultats trop beaux.</li>
+</ul>
+
+<p>Les deux premiers biais sont des problèmes de données avant d'être des problèmes de méthode. Un référentiel bitemporel et un historique complet, disparus compris, ne sont pas un luxe : ce sont les conditions d'un backtest honnête.</p>
+
+<h2>Reproduire un résultat</h2>
+
+<p>Le même code, sur les mêmes données, avec les mêmes paramètres, doit donner le même résultat. Cela suppose de versionner trois choses : <strong>le code</strong>, <strong>les données</strong>, sous la forme d'un jeu figé et identifié, et <strong>la configuration</strong>, paramètres et calibrage compris. Sans cela, on ne peut ni expliquer une décision passée à un contrôleur, ni comparer honnêtement deux versions d'un modèle.</p>
+
+<h2>L'infrastructure de calcul</h2>
+
+<p>Les calculs de prix et de risque se prêtent bien au parallélisme : des milliers de scénarios indépendants, chacun confié à un processeur. On les répartit sur une <dfn>grille de calcul</dfn> de plusieurs milliers de cœurs. Les processeurs graphiques accélèrent certains calculs numériques et l'entraînement des modèles.</p>
+
+<p>La question est surtout économique. Une grille dimensionnée pour le pic de la nuit est sous-employée le jour. D'où l'intérêt de l'élasticité : louer la capacité de pointe dans le cloud plutôt que la posséder toute l'année.</p>
+
+<h2>La très faible latence</h2>
+
+<p>Pour la cotation automatique, la mesure reine est le délai entre la réception d'une donnée de marché et l'envoi de l'ordre qui y répond, appelé <dfn>tick-to-trade</dfn>. Il se compte en microsecondes. Les moyens pour y parvenir forment un monde à part : serveurs installés dans le centre de données de la place (la <dfn>colocation</dfn>), flux directs, cartes réseau qui contournent le système d'exploitation, circuits programmables, horloges synchronisées avec une grande précision.</p>
+
+<p>Ce monde a ses propres technologies, ses propres profils et ses propres coûts. Il n'a presque rien en commun avec une plateforme analytique, et le cloud généraliste n'y répond pas. Tous les algorithmes n'en ont pas besoin : un algorithme d'exécution qui étale un ordre sur la journée se moque de la microseconde. La latence coûte cher, et l'on n'achète que celle que la stratégie sait rentabiliser.</p>
+
+<h2>Les contrôles</h2>
+
+<p>En Europe, MiFID II et sa norme technique sur le trading algorithmique imposent un socle précis.</p>
+
+<ul>
+  <li><strong>Des tests</strong> avant tout déploiement, dans un environnement séparé de la production.</li>
+  <li><strong>Des contrôles avant l'envoi de chaque ordre</strong> : fourchettes de prix, taille et valeur maximales, nombre maximal de messages.</li>
+  <li><strong>Une surveillance en temps réel</strong> de l'activité des algorithmes.</li>
+  <li><strong>Un arrêt d'urgence</strong> (<dfn>kill switch</dfn>), capable d'annuler immédiatement tous les ordres en attente.</li>
+  <li><strong>Une auto-évaluation annuelle</strong> du dispositif.</li>
+</ul>
+
+<p>S'y ajoute la <dfn>gestion du risque de modèle</dfn>, attendue par tous les superviseurs : un inventaire des modèles, une validation par une équipe indépendante de celle qui les a conçus, un suivi de leur performance dans le temps, et une documentation suffisante pour qu'un tiers puisse les comprendre.</p>
+
+<aside class="note terrain">
+  <p class="etiquette">Un cas d'école</p>
+  <p>Le 1<sup>er</sup> août 2012, le courtier américain Knight Capital déploie une nouvelle version de son logiciel de routage sur huit serveurs. L'un d'eux n'est pas mis à jour. Un paramètre réutilisé y réveille un ancien code, abandonné depuis des années, qui se met à envoyer des ordres en rafale. En quarante-cinq minutes, la perte dépasse 400 millions de dollars, et la société ne s'en relève pas. Les leçons sont restées : un déploiement est un risque en soi, le code mort n'est jamais vraiment mort, et un arrêt d'urgence ne sert que si quelqu'un a l'autorité et le réflexe de l'actionner.</p>
+</aside>
+
+<h2>Cinq questions à poser</h2>
+
+<ol>
+  <li>Où est précisément l'avantage, et qu'est-ce qui pourrait être acheté ?</li>
+  <li>Peut-on rejouer à l'identique la décision d'hier ?</li>
+  <li>De quelles données le système dépend-il, et sous quelle licence ?</li>
+  <li>Qui peut l'arrêter, et en combien de temps ?</li>
+  <li>Combien de personnes comprennent réellement le code ?</li>
+</ol>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Quatre familles : prix et risques, exécution, cotation automatique, stratégies systématiques. Chacune a sa contrainte dominante.</li>
+    <li>Biais d'anticipation, biais du survivant, surapprentissage : un backtest trop beau est d'abord un problème de données.</li>
+    <li>Reproduire exige de versionner le code, les données et la configuration.</li>
+    <li>La très faible latence est un monde à part, coûteux, que tous les algorithmes ne justifient pas.</li>
+    <li>Tests, contrôles avant envoi, surveillance, arrêt d'urgence, validation indépendante : le socle n'est pas négociable.</li>
+  </ul>
+</aside>

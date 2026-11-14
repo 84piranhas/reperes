@@ -1,0 +1,149 @@
+<p>Trois générations de plateformes analytiques se sont succédé en trente ans : l'entrepôt, le lake, puis le lakehouse. Aucune n'a entièrement remplacé la précédente, et les trois coexistent dans la plupart des banques. Comprendre ce que chacune a voulu corriger chez l'autre suffit à s'y retrouver.</p>
+
+<h2>L'entrepôt de données</h2>
+
+<p>L'<dfn>entrepôt</dfn>, ou <em>data warehouse</em>, date des années 1990. Les données y entrent structurées, nettoyées et modélisées, puis sont interrogées en SQL. C'est le schéma à l'écriture dans toute sa rigueur.</p>
+
+<p>Ses forces : fiabilité, performance, gouvernance. Ses limites : la rigidité, puisqu'accueillir une nouvelle source prend des semaines de modélisation ; le coût, avec des machines propriétaires où stockage et calcul s'achètent ensemble ; et l'impossibilité d'y loger autre chose que des tables.</p>
+
+<h2>Le data lake</h2>
+
+<p>Vers 2010, l'écosystème Hadoop propose l'inverse : <strong>tout stocker, à l'état brut, à bas coût</strong>, sur des machines ordinaires, et ne structurer qu'au moment de lire. Aucune donnée n'est refusée, quel que soit son format. Les équipes de data science y trouvent enfin leur matière première.</p>
+
+<p>La réalité a été plus rude, pour deux raisons.</p>
+
+<ul>
+  <li><strong>Le marécage.</strong> Sans catalogue, sans propriétaire ni contrôle de qualité, un lake devient un <dfn>data swamp</dfn> : personne ne sait ce qui s'y trouve, ce que cela signifie, ni si c'est fiable.</li>
+  <li><strong>L'absence de transactions.</strong> Un lake n'est qu'un ensemble de fichiers. Une écriture qui échoue à mi-chemin laisse une table à moitié écrite. Un lecteur peut voir un état incohérent. Corriger ou supprimer une ligne oblige à réécrire des fichiers entiers.</li>
+</ul>
+
+<p>Entre-temps, le <dfn>stockage objet</dfn> a remplacé le système de fichiers d'Hadoop. Né dans le cloud, disponible aussi sur site, il est très bon marché, presque sans limite de taille et très durable. Surtout, il a permis de séparer le stockage du calcul.</p>
+
+<h2>Le lakehouse</h2>
+
+<p>L'idée, apparue autour de 2020, est d'apporter les garanties de l'entrepôt aux fichiers du lake. La pièce qui le permet s'appelle un <dfn>format de table ouvert</dfn>. Trois se partagent le terrain : Apache Iceberg, Delta Lake et Apache Hudi.</p>
+
+<p>Le principe est le même pour les trois. Une table n'est plus un simple dossier de fichiers, mais des fichiers Parquet <em>plus</em> un journal qui dit, pour chaque version de la table, quels fichiers la composent. Ce journal change tout.</p>
+
+<ul>
+  <li><strong>Des transactions.</strong> Une écriture devient visible d'un coup, entièrement, ou pas du tout.</li>
+  <li><strong>Des mises à jour ligne à ligne.</strong> Corriger, fusionner, supprimer redevient possible.</li>
+  <li><strong>Le retour dans le temps</strong> (<em>time travel</em>). On peut interroger la table telle qu'elle était hier ou à une version donnée.</li>
+  <li><strong>Un schéma qui évolue.</strong> Ajouter ou renommer une colonne ne demande pas de tout réécrire.</li>
+  <li><strong>L'ouverture.</strong> Plusieurs moteurs lisent les mêmes tables, sans copie.</li>
+</ul>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 232" role="img" aria-label="Empilement de cinq couches, de bas en haut : stockage objet, fichiers Parquet, format de table, catalogue, moteurs.">
+    <rect class="b" x="20" y="12" width="710" height="36" rx="8"/>
+    <rect class="b" x="20" y="56" width="710" height="36" rx="8"/>
+    <rect class="ba" x="20" y="100" width="710" height="36" rx="8"/>
+    <rect class="b" x="20" y="144" width="710" height="36" rx="8"/>
+    <rect class="b" x="20" y="188" width="710" height="36" rx="8"/>
+    <text class="t" x="38" y="35">Moteurs</text>
+    <text class="ts" x="250" y="35">Spark, Trino, Snowflake, Databricks, DuckDB : requêtes, traitements, modèles</text>
+    <text class="t" x="38" y="79">Catalogue</text>
+    <text class="ts" x="250" y="79">quelles tables existent, où elles sont, qui a le droit de les lire</text>
+    <text class="t" x="38" y="123">Format de table</text>
+    <text class="tacc" x="250" y="123">Iceberg, Delta Lake, Hudi : transactions, versions, évolution du schéma</text>
+    <text class="t" x="38" y="167">Fichiers</text>
+    <text class="ts" x="250" y="167">Parquet : colonnes, compression, types</text>
+    <text class="t" x="38" y="211">Stockage objet</text>
+    <text class="ts" x="250" y="211">bon marché, durable, extensible, dans le cloud ou sur site</text>
+  </svg>
+  </div>
+  <figcaption>Un lakehouse est un empilement de briques ouvertes. Le format de table est celle qui a tout débloqué.</figcaption>
+</figure>
+
+<h2>Bronze, argent, or</h2>
+
+<p>La plupart des lakes organisent leurs données en trois couches de raffinement successif. On parle d'architecture en <dfn>médaillon</dfn>.</p>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 122" role="img" aria-label="Les sources alimentent la couche bronze, puis argent, puis or, qui sert les usages.">
+    <rect class="b" x="10" y="16" width="128" height="88" rx="10"/>
+    <rect class="ba" x="160" y="16" width="128" height="88" rx="10"/>
+    <rect class="ba" x="310" y="16" width="128" height="88" rx="10"/>
+    <rect class="ba" x="460" y="16" width="128" height="88" rx="10"/>
+    <rect class="b" x="610" y="16" width="128" height="88" rx="10"/>
+    <path class="f" d="M140 60h12M290 60h12M440 60h12M590 60h12"/>
+    <path class="fp" d="M159 60l-8-4.5v9zM309 60l-8-4.5v9zM459 60l-8-4.5v9zM609 60l-8-4.5v9z"/>
+    <text class="t m" x="74" y="46">Sources</text>
+    <text class="ts m" x="74" y="68">systèmes, flux,</text>
+    <text class="ts m" x="74" y="85">fichiers</text>
+    <text class="t m" x="224" y="46">Bronze</text>
+    <text class="ts m" x="224" y="68">brut, tel que reçu,</text>
+    <text class="ts m" x="224" y="85">jamais modifié</text>
+    <text class="t m" x="374" y="46">Argent</text>
+    <text class="ts m" x="374" y="68">nettoyé, typé,</text>
+    <text class="ts m" x="374" y="85">rapproché</text>
+    <text class="t m" x="524" y="46">Or</text>
+    <text class="ts m" x="524" y="68">modélisé, agrégé,</text>
+    <text class="ts m" x="524" y="85">prêt à l'usage</text>
+    <text class="t m" x="674" y="46">Usages</text>
+    <text class="ts m" x="674" y="68">risques, finance,</text>
+    <text class="ts m" x="674" y="85">recherche, rapports</text>
+  </svg>
+  </div>
+  <figcaption>Chaque couche est plus propre et plus proche d'un usage que la précédente.</figcaption>
+</figure>
+
+<p>La couche bronze a un rôle précis : garder la donnée exactement comme elle a été reçue. Le jour où une règle de nettoyage se révèle fausse, ou qu'un nouveau besoin apparaît, on repart du brut et on recalcule. Sans elle, une erreur de traitement est définitive.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>Trois couches, c'est trois copies et deux traitements, donc du coût et du délai. Tout jeu de données n'a pas besoin des trois. Et une couche or qui recopie l'argent sans rien y ajouter est un signe que la structure est appliquée par habitude.</p>
+</aside>
+
+<h2>Le catalogue, pièce maîtresse</h2>
+
+<p>Le <dfn>catalogue</dfn> sait quelles tables existent, où se trouvent leurs fichiers, quel est leur schéma, quelles sont leurs versions, et qui a le droit d'y accéder. Tous les moteurs passent par lui. Celui qui tient le catalogue tient donc la plateforme : les droits, le lignage, la découverte des données.</p>
+
+<p>C'est pourquoi les éditeurs s'y affrontent aujourd'hui plus que sur les moteurs. Un moteur se remplace. Un catalogue auquel tous les traitements et toutes les habilitations sont accrochés se remplace beaucoup plus difficilement.</p>
+
+<h2>Trois mots de mécanique</h2>
+
+<ul>
+  <li><strong>Partitionner une table.</strong> Les fichiers sont rangés selon une colonne, le plus souvent la date. Une requête qui filtre sur une journée n'ouvre que les fichiers de cette journée : c'est l'<dfn>élagage</dfn>.</li>
+  <li><strong>Les petits fichiers.</strong> Une alimentation en continu produit des milliers de fichiers minuscules, et les lectures s'effondrent. Le remède est la <dfn>compaction</dfn>, qui les fusionne régulièrement.</li>
+  <li><strong>L'entretien.</strong> Le retour dans le temps garde les anciennes versions, donc du stockage. Il faut décider combien de temps on les conserve, et purger.</li>
+</ul>
+
+<h2>Les trois générations côte à côte</h2>
+
+<table>
+  <thead><tr><th></th><th>Entrepôt</th><th>Lake</th><th>Lakehouse</th></tr></thead>
+  <tbody>
+    <tr><th>Données</th><td>Structurées</td><td>Toutes, brutes</td><td>Toutes, brutes puis raffinées</td></tr>
+    <tr><th>Schéma</th><td>À l'écriture</td><td>À la lecture</td><td>Selon la couche</td></tr>
+    <tr><th>Transactions</th><td>Oui</td><td>Non</td><td>Oui</td></tr>
+    <tr><th>Usages</th><td>Rapports, SQL</td><td>Exploration, data science</td><td>Les deux</td></tr>
+    <tr><th>Risque principal</th><td>Rigidité, coût</td><td>Marécage</td><td>Assemblage complexe, gouvernance à construire</td></tr>
+  </tbody>
+</table>
+
+<h2>Ce qu'un lake n'est pas</h2>
+
+<p>Un lake est une plateforme analytique. Il n'est pas conçu pour servir des transactions unitaires en quelques millisecondes. Les systèmes opérationnels restent maîtres de leurs données, et le lake en reçoit des copies. Lui confier la tenue de position ou le référentiel de production est une erreur de catégorie.</p>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>Dans une banque de marché, le lake reçoit typiquement l'historique des opérations et des positions, les résultats de risque de chaque nuit, qui se comptent en centaines de millions de lignes, l'historique des données de marché, des photographies quotidiennes des référentiels et les journaux applicatifs. Ses clients sont les risques, la finance, le reporting réglementaire, les quants et les équipes de data science. Beaucoup de banques l'exploitent sur site ou en mode hybride : les mêmes briques existent hors du cloud.</p>
+</aside>
+
+<h2>Les services d'une plateforme lake</h2>
+
+<p>Vu par ses utilisateurs, un lake n'est pas une technologie mais une série de services : brancher une nouvelle source, trouver un jeu de données et comprendre ce qu'il contient, obtenir un accès, interroger en SQL ou par API, disposer d'un espace d'exploration, suivre la fraîcheur et la qualité, connaître ce que l'on consomme. Chacun de ces services a des utilisateurs, donc des attentes, et se pilote comme un produit.</p>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Entrepôt : structuré et fiable, mais rigide. Lake : souple et bon marché, mais sans garanties. Lakehouse : les garanties de l'un sur le stockage de l'autre.</li>
+    <li>Les formats de table ouverts (Iceberg, Delta Lake, Hudi) ajoutent un journal aux fichiers : transactions, versions, retour dans le temps.</li>
+    <li>Bronze garde le brut pour pouvoir tout recalculer. Argent nettoie. Or sert un usage.</li>
+    <li>Le catalogue est le point de contrôle de la plateforme, et son choix engage plus que celui du moteur.</li>
+    <li>Un lake sans propriétaires ni catalogue devient un marécage. Et ce n'est jamais un système opérationnel.</li>
+  </ul>
+</aside>

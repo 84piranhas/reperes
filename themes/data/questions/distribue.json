@@ -1,0 +1,206 @@
+[
+  {
+    "id": "distribue-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que désigne le passage à l'échelle horizontal (scale-out) ?",
+    "choix": [
+      "Ajouter des machines pour augmenter la capacité",
+      "Remplacer la machine par une plus puissante",
+      "Ajouter des colonnes à une table",
+      "Répartir les utilisateurs par fuseau horaire"
+    ],
+    "bonnes": [0],
+    "explication": "Horizontal : on multiplie les machines. Vertical (scale-up) : on en prend une plus grosse. Le premier n'a pas de plafond théorique, mais exige un logiciel capable de répartir données et travail."
+  },
+  {
+    "id": "distribue-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "En quoi consiste le partitionnement (sharding) ?",
+    "choix": [
+      "Découper les données selon une clé, chaque machine en portant une partie",
+      "Garder plusieurs copies identiques de toutes les données",
+      "Chiffrer les données avant de les envoyer sur le réseau",
+      "Séparer les données de production des données de test"
+    ],
+    "bonnes": [0],
+    "explication": "Le partitionnement répartit la charge entre machines. Garder plusieurs copies, c'est la réplication : les deux mécanismes se combinent mais ne répondent pas au même besoin."
+  },
+  {
+    "id": "distribue-03",
+    "type": "single",
+    "niveau": 1,
+    "q": "À quoi sert d'abord la réplication ?",
+    "choix": [
+      "À survivre à la perte d'une machine, puis à répartir les lectures",
+      "À réduire le volume total stocké",
+      "À accélérer les écritures",
+      "À supprimer le besoin de sauvegardes"
+    ],
+    "bonnes": [0],
+    "explication": "Plusieurs copies protègent de la panne et permettent de lire sur plusieurs machines. Elles augmentent le stockage, ralentissent plutôt les écritures, et ne remplacent pas une sauvegarde : une suppression par erreur est répliquée elle aussi."
+  },
+  {
+    "id": "distribue-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Selon le théorème CAP, entre quoi faut-il choisir quand une coupure réseau sépare les machines en deux groupes ?",
+    "choix": [
+      "Entre la cohérence et la disponibilité",
+      "Entre le coût et la performance",
+      "Entre la capacité et la sécurité",
+      "Entre le stockage en lignes et le stockage en colonnes"
+    ],
+    "bonnes": [0],
+    "explication": "Pendant la coupure, soit une partie du système refuse de répondre pour rester cohérente, soit tout répond au risque de diverger. Aucun système distribué n'échappe à ce choix."
+  },
+  {
+    "id": "distribue-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que signifie la cohérence à terme (eventual consistency) ?",
+    "choix": [
+      "Les copies finissent par s'aligner, mais une lecture peut entre-temps renvoyer une valeur ancienne",
+      "Les données deviennent cohérentes une fois par jour, après le batch de nuit",
+      "La cohérence est garantie jusqu'à l'échéance du contrat de support",
+      "Chaque lecture renvoie toujours la dernière valeur écrite"
+    ],
+    "bonnes": [0],
+    "explication": "Le système privilégie la disponibilité : les copies convergent avec un léger retard. Acceptable pour consulter un catalogue, pas pour contrôler une limite."
+  },
+  {
+    "id": "distribue-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est le risque propre à la réplication asynchrone ?",
+    "choix": [
+      "Perdre les dernières écritures si la machine principale tombe avant de les avoir propagées",
+      "Bloquer toutes les écritures tant qu'une copie est injoignable",
+      "Doubler le temps de réponse de chaque lecture",
+      "Rendre impossible toute lecture sur les copies"
+    ],
+    "bonnes": [0],
+    "explication": "L'écriture est confirmée avant que les copies ne l'aient reçue. C'est ce qui la rend rapide, et ce qui crée une fenêtre de perte. Bloquer tant qu'une copie manque est au contraire le risque du mode synchrone."
+  },
+  {
+    "id": "distribue-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que mesurent respectivement le RPO et le RTO ?",
+    "choix": [
+      "La perte de données tolérée, et le délai de redémarrage du service",
+      "Le temps de réponse d'une requête, et le nombre de requêtes par seconde",
+      "Le coût du stockage, et le coût du calcul",
+      "Le nombre de copies, et le nombre de partitions"
+    ],
+    "bonnes": [0],
+    "explication": "RPO : jusqu'à quel point dans le passé accepte-t-on de revenir, donc combien de données peut-on perdre. RTO : en combien de temps doit-on être reparti. Un RPO nul impose une réplication synchrone."
+  },
+  {
+    "id": "distribue-08",
+    "type": "single",
+    "niveau": 3,
+    "q": "Des opérations de change sont partitionnées par paire de devises. Quel problème faut-il anticiper ?",
+    "choix": [
+      "Un point chaud : la machine qui porte les paires les plus traitées sature pendant que les autres attendent",
+      "L'impossibilité de stocker plus de deux devises par machine",
+      "La perte des opérations dont la devise est rare",
+      "Un ralentissement uniforme de toutes les machines"
+    ],
+    "bonnes": [0],
+    "explication": "L'activité est très concentrée sur quelques paires. Une clé de partition mal répartie crée un déséquilibre, le skew, qui annule le bénéfice de la distribution."
+  },
+  {
+    "id": "distribue-09",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Distribuer un système sur plusieurs machines le rend toujours plus rapide.",
+    "bonnes": [1],
+    "explication": "La coordination entre machines a un coût fixe. Sur des volumes modestes, un système distribué est souvent plus lent qu'une seule bonne machine. La distribution apporte de la capacité et de la résilience, pas de la vitesse en soi."
+  },
+  {
+    "id": "distribue-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un référentiel compte cinq millions d'instruments et reçoit deux cents mises à jour par seconde. On propose une base distribuée sur douze machines. Quelle question poser d'abord ?",
+    "choix": [
+      "Une machine principale avec une copie de secours ne suffirait-elle pas ?",
+      "Pourquoi douze machines et pas vingt-quatre ?",
+      "Quel algorithme de consensus la base utilise-t-elle ?",
+      "Les douze machines sont-elles du même constructeur ?"
+    ],
+    "bonnes": [0],
+    "explication": "Ce volume et ce débit tiennent largement sur une seule machine. Une copie de secours apporte la résilience. Douze machines ajoutent surtout de la complexité d'exploitation, sans besoin démontré."
+  },
+  {
+    "id": "distribue-11",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'apporte la séparation du stockage et du calcul ?",
+    "choix": [
+      "Chacun se dimensionne et se paie à part : le calcul peut être éteint quand il ne sert pas",
+      "Les données sont chiffrées automatiquement",
+      "Les requêtes n'ont plus besoin de passer par le réseau",
+      "Les sauvegardes deviennent inutiles"
+    ],
+    "bonnes": [0],
+    "explication": "Les données reposent dans un stockage bon marché, les grappes de calcul démarrent à la demande. Stocker plus n'oblige plus à acheter du calcul, et plusieurs équipes calculent sur les mêmes données."
+  },
+  {
+    "id": "distribue-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "À quoi sert un algorithme de consensus comme Raft ou Paxos ?",
+    "choix": [
+      "À faire prendre la même décision à des machines qui peuvent tomber ou être isolées",
+      "À compresser les données échangées entre les machines",
+      "À répartir équitablement les requêtes entre les utilisateurs",
+      "À mesurer la latence du réseau"
+    ],
+    "bonnes": [0],
+    "explication": "Qui est la machine principale, dans quel ordre appliquer les écritures : une décision est prise quand une majorité l'accepte. C'est ce qui évite que deux moitiés isolées se croient chacune aux commandes."
+  },
+  {
+    "id": "distribue-13",
+    "type": "single",
+    "niveau": 2,
+    "q": "Dans un traitement distribué, que désigne le shuffle ?",
+    "choix": [
+      "La redistribution des données entre machines, par le réseau, pour une jointure ou un regroupement",
+      "Le tirage au sort de la machine qui exécute une tâche",
+      "La relance automatique d'une tâche en échec",
+      "Le tri final des résultats avant affichage"
+    ],
+    "bonnes": [0],
+    "explication": "Quand des lignes à rapprocher sont sur des machines différentes, il faut les déplacer. Tout passe par le réseau : c'est l'étape la plus coûteuse, et la cause la plus fréquente des traitements lents."
+  },
+  {
+    "id": "distribue-14",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Lesquelles de ces raisons justifient solidement de distribuer un système ?",
+    "choix": [
+      "Le volume dépasse ce qu'une machine peut porter, croissance comprise",
+      "Le service doit survivre à la perte d'une machine ou d'un site",
+      "C'est devenu la pratique habituelle du marché",
+      "Le débit d'écriture dépasse ce qu'une machine absorbe"
+    ],
+    "bonnes": [0, 1, 3],
+    "explication": "Volume, débit et continuité sont de vraies raisons. L'habitude du marché n'en est pas une : la distribution se paie en complexité, et doit répondre à un besoin mesuré."
+  },
+  {
+    "id": "distribue-15",
+    "type": "single",
+    "niveau": 3,
+    "q": "Pourquoi les groupes de machines qui votent par consensus en comptent-ils un nombre impair ?",
+    "choix": [
+      "Pour qu'une majorité existe toujours : trois machines survivent à une perte, cinq à deux",
+      "Parce que les licences sont vendues par lots impairs",
+      "Pour qu'une machine reste toujours inoccupée, en réserve",
+      "Parce qu'un nombre pair de machines doublerait la latence"
+    ],
+    "bonnes": [0],
+    "explication": "Une décision exige une majorité. Avec quatre machines, on ne survit toujours qu'à une perte, comme avec trois : la quatrième n'apporte rien. Et en cas de coupure en deux moitiés égales, aucune n'aurait la majorité."
+  }
+]

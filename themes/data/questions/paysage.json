@@ -1,0 +1,163 @@
+[
+  {
+    "id": "paysage-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Quelle est la différence essentielle entre un système OLTP et un système OLAP ?",
+    "choix": [
+      "L'OLTP traite beaucoup de petites opérations ciblées, l'OLAP parcourt de grands volumes pour les agréger",
+      "L'OLTP garde ses données en mémoire, l'OLAP les écrit sur disque",
+      "L'OLTP est toujours relationnel, l'OLAP est toujours NoSQL",
+      "L'OLTP tourne sur site, l'OLAP tourne dans le cloud"
+    ],
+    "bonnes": [0],
+    "explication": "La différence tient au profil d'accès : des lectures et écritures unitaires, nombreuses et rapides, pour l'opérationnel ; des balayages massifs suivis d'agrégations pour l'analytique. Le support, la technologie et l'hébergement n'entrent pas dans la définition."
+  },
+  {
+    "id": "paysage-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Pourquoi évite-t-on de lancer des analyses lourdes directement sur une base opérationnelle ?",
+    "choix": [
+      "Elles accaparent les ressources dont les transactions ont besoin, sur une base organisée pour l'accès unitaire",
+      "Le langage SQL ne permet pas de calculer des agrégats sur une base opérationnelle",
+      "Une base opérationnelle ne conserve jamais plus d'une journée de données",
+      "La réglementation interdit toute lecture analytique d'un système de production"
+    ],
+    "bonnes": [0],
+    "explication": "Les deux charges se gênent : un balayage de plusieurs années d'historique consomme processeur, mémoire et disque au détriment des transactions. C'est pourquoi on copie la donnée vers une plateforme analytique."
+  },
+  {
+    "id": "paysage-03",
+    "type": "single",
+    "niveau": 1,
+    "q": "Laquelle de ces données relève des données de référence ?",
+    "choix": [
+      "Le calendrier des jours fériés d'une place de cotation",
+      "Le dernier prix traité sur une action",
+      "L'exécution partielle d'un ordre",
+      "La sensibilité d'un portefeuille aux taux"
+    ],
+    "bonnes": [0],
+    "explication": "Un calendrier change rarement et sert à tous les systèmes : c'est une donnée de référence. Le dernier prix est une donnée de marché, l'exécution une donnée de transaction, la sensibilité une donnée dérivée."
+  },
+  {
+    "id": "paysage-04",
+    "type": "vf",
+    "niveau": 1,
+    "q": "Le CDC (Change Data Capture) consiste à lire le journal des modifications d'une base pour propager les changements, sans interroger les tables elles-mêmes.",
+    "bonnes": [0],
+    "explication": "C'est bien le principe : la base écrit déjà chaque modification dans son journal, il suffit de le lire. La source n'est ni chargée de requêtes supplémentaires ni modifiée."
+  },
+  {
+    "id": "paysage-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Un calcul de sensibilités est lancé chaque soir sur l'ensemble des positions, pour un résultat attendu le lendemain matin. De quel régime relève-t-il ?",
+    "choix": ["Batch", "Très faible latence", "Interactif", "Intrajournalier"],
+    "bonnes": [0],
+    "explication": "Un traitement planifié, portant sur un lot complet, avec un délai de plusieurs heures : c'est du batch. La chaîne de fin de journée en est l'exemple type."
+  },
+  {
+    "id": "paysage-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Dans quelle famille range-t-on les mesures de risque et le résultat ?",
+    "choix": [
+      "Les données dérivées, calculées à partir des autres familles",
+      "Les données de référence, puisqu'elles font foi",
+      "Les données de marché, puisqu'elles dépendent des prix",
+      "Les données de transaction, puisqu'elles portent sur des opérations"
+    ],
+    "bonnes": [0],
+    "explication": "Un risque ou un résultat se calcule à partir de positions, de données de marché et de données de référence. Sa qualité ne peut pas dépasser celle de ses entrées, d'où l'importance de tracer d'où il vient."
+  },
+  {
+    "id": "paysage-07",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Parmi ces fonctions, lesquelles sont transverses à toute la chaîne plutôt qu'une étape du trajet ?",
+    "choix": ["La gouvernance", "L'orchestration", "L'ingestion", "La sécurité"],
+    "bonnes": [0, 1, 3],
+    "explication": "Gouvernance, orchestration et sécurité s'appliquent à chaque étape, tout comme le catalogue et l'observabilité. L'ingestion, elle, est une étape : celle du transport vers la plateforme."
+  },
+  {
+    "id": "paysage-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Faut-il conserver un résultat calculé ou le recalculer à chaque demande ? Quels coûts ce choix met-il en balance ?",
+    "choix": [
+      "Le coût du stockage contre le coût et le délai du calcul",
+      "Le coût des licences contre le coût des développeurs",
+      "La cohérence contre la disponibilité",
+      "La sécurité contre la facilité d'accès"
+    ],
+    "bonnes": [0],
+    "explication": "Conserver consomme du stockage et impose de gérer la fraîcheur du résultat. Recalculer consomme du calcul et fait attendre. L'arbitrage dépend de la fréquence des demandes et du coût d'un calcul."
+  },
+  {
+    "id": "paysage-09",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'est-ce qui distingue le plus nettement les données de marché des données de référence ?",
+    "choix": [
+      "Leur rythme et leur volume : les unes sont rapides et massives, les autres lentes et compactes",
+      "Leur origine : les unes sont externes, les autres toujours internes",
+      "Leur format : les unes sont numériques, les autres textuelles",
+      "Leur confidentialité : les unes sont publiques, les autres secrètes"
+    ],
+    "bonnes": [0],
+    "explication": "Les données de marché arrivent en continu, horodatées, en grand volume. Les données de référence changent peu mais irriguent tous les systèmes. Les deux peuvent venir de fournisseurs externes."
+  },
+  {
+    "id": "paysage-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une équipe propose de servir avec une seule et même base l'enregistrement des opérations en temps réel et les analyses sur dix ans d'historique. Quelle est la première objection ?",
+    "choix": [
+      "Les deux charges ont des profils opposés et vont se pénaliser l'une l'autre",
+      "Une base ne peut pas contenir dix ans de données",
+      "Les analyses historiques n'ont pas besoin des opérations",
+      "Deux équipes ne peuvent pas partager une même base"
+    ],
+    "bonnes": [0],
+    "explication": "Accès unitaires rapides d'un côté, balayages massifs de l'autre : la séparation des deux mondes est la règle. Une base unique reste défendable si les volumes sont modestes, mais c'est alors à la proposition de le démontrer."
+  },
+  {
+    "id": "paysage-11",
+    "type": "single",
+    "niveau": 1,
+    "q": "Sur le trajet d'une donnée, à quoi correspond l'étape de service ?",
+    "choix": [
+      "La mise à disposition des consommateurs : requêtes, API, tableaux de bord, flux",
+      "Le transport de la donnée depuis les systèmes sources",
+      "Le nettoyage et le rapprochement des données reçues",
+      "La maintenance des serveurs qui hébergent la plateforme"
+    ],
+    "bonnes": [0],
+    "explication": "Le service est la dernière étape : celle où la donnée devient utilisable par quelqu'un ou par un autre système. Le transport est l'ingestion, le nettoyage relève du traitement."
+  },
+  {
+    "id": "paysage-12",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel ordre de grandeur de délai vise un algorithme de cotation automatique qui réagit à un mouvement de prix ?",
+    "choix": ["La microseconde", "La seconde", "La minute", "L'heure"],
+    "bonnes": [0],
+    "explication": "La cotation automatique se joue à la microseconde. Ce régime impose une infrastructure dédiée, très différente de celle d'une plateforme analytique, où l'on raisonne en minutes ou en heures."
+  },
+  {
+    "id": "paysage-13",
+    "type": "single",
+    "niveau": 3,
+    "q": "On vous présente une architecture en affirmant qu'elle n'a que des avantages. Quelle réaction est la plus fondée ?",
+    "choix": [
+      "Demander quel compromis a été fait et ce qui a été sacrifié",
+      "Valider : l'équipe connaît son sujet mieux que quiconque",
+      "Refuser : une architecture sans défaut cache forcément une erreur",
+      "Demander une comparaison de prix entre trois éditeurs"
+    ],
+    "bonnes": [0],
+    "explication": "Toute architecture arbitre entre cohérence et disponibilité, latence et débit, souplesse et contrôle, coût de stockage et coût de calcul. Identifier l'arbitrage, c'est comprendre la proposition et ses limites."
+  }
+]

@@ -1,0 +1,153 @@
+<p>Un projet se termine. Une plateforme vit dix ans, et c'est dans cette durée que se jouent sa valeur et son coût. Ce dernier chapitre rassemble ce qui permet de la tenir dans le temps : niveaux de service, coûts, choix d'approvisionnement, migrations, indicateurs. Il se termine par une grille de dix questions qui s'applique à n'importe quelle proposition d'architecture.</p>
+
+<h2>Projet ou produit</h2>
+
+<table>
+  <thead><tr><th></th><th>Logique de projet</th><th>Logique de produit</th></tr></thead>
+  <tbody>
+    <tr><th>Horizon</th><td>Un début et une fin</td><td>Toute la durée de vie</td></tr>
+    <tr><th>Réussite</th><td>Livré à temps, dans le budget</td><td>Utilisé, fiable, utile</td></tr>
+    <tr><th>Équipe</th><td>Dissoute à la livraison</td><td>Stable, responsable du fonctionnement</td></tr>
+    <tr><th>En face</th><td>Un demandeur</td><td>Des utilisateurs dont on connaît les besoins</td></tr>
+  </tbody>
+</table>
+
+<p>Une plateforme de données a des clients internes : les risques, la finance, les quants, le reporting. La traiter comme un produit, c'est connaître ces utilisateurs, mesurer ce qu'ils utilisent vraiment, tenir une feuille de route par priorités, et savoir dire non.</p>
+
+<p>Une idée résume bien la démarche : la <dfn>route pavée</dfn>. La plateforme propose un chemin standard, où l'alimentation, la sécurité et la supervision sont déjà réglées. Si ce chemin est plus simple que de bricoler dans son coin, les équipes le prennent d'elles-mêmes. La bonne pratique devient la voie de la facilité.</p>
+
+<h2>Les niveaux de service</h2>
+
+<table>
+  <thead><tr><th>Sigle</th><th>Ce que c'est</th><th>Exemple</th></tr></thead>
+  <tbody>
+    <tr><th>SLI</th><td>L'indicateur : ce que l'on mesure</td><td>L'heure à laquelle le jeu de clôture est disponible</td></tr>
+    <tr><th>SLO</th><td>L'objectif : la cible que l'on se fixe</td><td>Avant 19 h 30, 99 % des jours ouvrés</td></tr>
+    <tr><th>SLA</th><td>L'engagement formel, avec ses conséquences</td><td>La même cible, garantie aux risques, avec escalade en cas d'écart</td></tr>
+  </tbody>
+</table>
+
+<p>Pour un produit de données, le service ne se réduit pas à la disponibilité. Une plateforme « en ligne » qui sert les données de la veille est en panne du point de vue de ses utilisateurs. La fraîcheur, la complétude et l'exactitude sont des niveaux de service au même titre.</p>
+
+<p>Un objectif de 99 % laisse 1 % d'écart toléré, soit deux ou trois jours par an. Ce reliquat s'appelle le <dfn>budget d'erreur</dfn>. Tant qu'il n'est pas consommé, on peut prendre des risques pour évoluer. Quand il l'est, la fiabilité passe avant les nouveautés. L'arbitrage, d'habitude implicite, devient une règle.</p>
+
+<h2>Faire tourner et faire évoluer</h2>
+
+<p>Tout budget se partage entre faire tourner l'existant et le faire évoluer. Plus la première part grossit, moins il reste de quoi changer quoi que ce soit. Trois phénomènes la font grossir.</p>
+
+<ul>
+  <li><strong>La dette technique.</strong> Chaque raccourci pris pour livrer plus vite se rembourse avec intérêts à chaque évolution suivante.</li>
+  <li><strong>L'obsolescence.</strong> Une version qui n'est plus maintenue par son éditeur devient un risque de sécurité, et un point d'attention pour le superviseur.</li>
+  <li><strong>L'empilement.</strong> On ajoute la nouvelle plateforme sans éteindre l'ancienne, et l'on paie les deux.</li>
+</ul>
+
+<p>D'où l'importance d'un geste trop souvent reporté : <dfn>décommissionner</dfn>. Éteindre un ancien système libère du budget, réduit le risque et simplifie tout ce qui l'entourait. C'est une création de valeur à part entière.</p>
+
+<h2>Ce que ça coûte</h2>
+
+<p>Le <dfn>coût total de possession</dfn> additionne tout ce qu'un système coûte sur sa durée de vie : licences, infrastructure, exploitation, personnes, migration à l'entrée, formation, et sortie. Le prix d'achat n'en est souvent qu'une petite part.</p>
+
+<p>Le cloud a changé la nature de la dépense. Sur site, on investit d'avance dans une capacité fixe. Dans le cloud, on paie à l'usage : c'est souple, mais la facture suit la consommation, et une seule requête mal écrite qui balaie une table immense coûte de l'argent à chaque exécution.</p>
+
+<p>La discipline qui répond à cela s'appelle le <dfn>FinOps</dfn>. Elle rend la dépense visible, l'attribue aux équipes qui la génèrent, et l'optimise avec elles. Deux degrés existent : montrer à chaque équipe ce qu'elle consomme, ou le lui refacturer. Dans les deux cas, on raisonne en <strong>coût unitaire</strong> : par requête, par jeu de données, par calcul.</p>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>Sur une plateforme de données de marché, trois lignes pèsent bien plus que le stockage : la puissance de calcul des risques, les licences de données de marché, et les personnes. Une économie sur le stockage qui complique le travail des équipes est rarement une économie.</p>
+</aside>
+
+<h2>Construire, acheter, assembler</h2>
+
+<table>
+  <thead><tr><th>Voie</th><th>Ce qu'on y gagne</th><th>Ce qu'on y laisse</th></tr></thead>
+  <tbody>
+    <tr><th>Acheter à un éditeur</th><td>Du temps, un support, une feuille de route</td><td>De la dépendance, un coût récurrent, peu de différenciation</td></tr>
+    <tr><th>Construire</th><td>Un outil ajusté, entièrement maîtrisé</td><td>Tout à maintenir, un savoir concentré sur peu de personnes</td></tr>
+    <tr><th>Logiciel libre</th><td>Pas de licence, des formats ouverts</td><td>Des compétences à avoir pour l'exploiter, un support à organiser</td></tr>
+  </tbody>
+</table>
+
+<p>La règle tient en une ligne : on construit ce qui différencie, on achète ce qui est banal. Avant de signer, on examine la <dfn>réversibilité</dfn>. Les données et leurs métadonnées s'exportent-elles dans un format ouvert ? Combien coûterait la sortie ? La dépendance à un fournisseur n'est pas un mal en soi, à condition d'être choisie et chiffrée, pas découverte.</p>
+
+<h2>Migrer sans casser</h2>
+
+<ul>
+  <li><strong>La bascule en une fois.</strong> Tout change le même jour. C'est court, et très risqué.</li>
+  <li><strong>Le remplacement progressif.</strong> Le nouveau système reprend les fonctions une à une, les usages sont redirigés un par un, jusqu'à ce que l'ancien puisse être éteint. Les anglophones parlent de <em>strangler fig</em>, le figuier étrangleur.</li>
+  <li><strong>La marche en parallèle.</strong> L'ancien et le nouveau tournent ensemble, on compare leurs résultats, on explique chaque écart, puis on bascule. Pour des chiffres de risque ou de résultat, cette étape n'est pas facultative : les fonctions de contrôle exigent que les écarts soient compris.</li>
+</ul>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>La migration qui ne finit jamais. Quatre-vingt-dix pour cent des usages sont passés sur la nouvelle plateforme, et les dix derniers maintiennent l'ancienne en vie pendant des années. On paie alors deux systèmes. La parade est de fixer une date d'extinction dès le départ, et de la tenir.</p>
+</aside>
+
+<h2>Mesurer ce qui compte</h2>
+
+<table>
+  <thead><tr><th>Ce qu'on veut savoir</th><th>Ce qu'on mesure</th></tr></thead>
+  <tbody>
+    <tr><th>La plateforme sert-elle ?</th><td>Utilisateurs actifs, jeux de données réellement consommés</td></tr>
+    <tr><th>Est-elle fiable ?</th><td>Respect des objectifs de service, incidents, délai de rétablissement</td></tr>
+    <tr><th>Ses données sont-elles justes ?</th><td>Scores de qualité sur les données critiques, délai de correction</td></tr>
+    <tr><th>Est-elle rapide à servir un besoin ?</th><td>Délai entre la demande d'une nouvelle donnée et sa mise à disposition</td></tr>
+    <tr><th>Est-elle économe ?</th><td>Coût unitaire et son évolution</td></tr>
+    <tr><th>Simplifie-t-elle ?</th><td>Systèmes éteints, copies supprimées</td></tr>
+  </tbody>
+</table>
+
+<p>À l'inverse, le nombre de téraoctets stockés, de tables ou de traitements mesure une activité, pas une valeur. Un lake qui double de volume sans gagner un utilisateur ne va pas mieux.</p>
+
+<h2>Les dérives à reconnaître</h2>
+
+<ul>
+  <li><strong>Le lake fourre-tout.</strong> On y verse tout « au cas où », et personne ne s'en sert.</li>
+  <li><strong>La copie de trop.</strong> Chaque équipe tient son propre exemplaire du référentiel ou des données de marché, et les exemplaires divergent.</li>
+  <li><strong>L'outil unique.</strong> Une seule technologie pour tous les usages, y compris ceux pour lesquels elle n'est pas faite.</li>
+  <li><strong>L'architecture pour le CV.</strong> Une technologie choisie parce qu'elle est à la mode, sans besoin qui la justifie.</li>
+  <li><strong>Le tableur clandestin.</strong> Un processus critique qui tourne dans un classeur, hors de tout contrôle.</li>
+</ul>
+
+<h2>Dix questions pour lire une architecture</h2>
+
+<ol>
+  <li>Pour quel usage, et pour quels utilisateurs ?</li>
+  <li>Quels volumes, aujourd'hui et dans trois ans ?</li>
+  <li>Quelle fraîcheur l'usage exige-t-il vraiment ?</li>
+  <li>Quel niveau de cohérence faut-il, et que se passe-t-il si deux lectures divergent ?</li>
+  <li>Que se passe-t-il quand un composant tombe, et combien de données peut-on perdre ?</li>
+  <li>Peut-on rejouer : retraiter hier, reproduire un chiffre publié ?</li>
+  <li>Qui est propriétaire de chaque donnée, et comment sa qualité est-elle mesurée ?</li>
+  <li>Qui a accès à quoi, et comment est-ce contrôlé et tracé ?</li>
+  <li>Combien cela coûte-t-il à l'usage, et comment ce coût évolue-t-il avec le volume ?</li>
+  <li>Comment en sort-on ?</li>
+</ol>
+
+<p>Aucune de ces questions ne demande de connaître le détail d'une technologie. Toutes obligent celui qui présente à montrer que le besoin a été compris avant que la solution ne soit choisie. Une onzième mérite d'être ajoutée chaque fois qu'un système nouveau arrive : <strong>qu'éteint-on en échange ?</strong></p>
+
+<h2>Les métiers d'une équipe data</h2>
+
+<table>
+  <thead><tr><th>Métier</th><th>Ce qu'il fait</th></tr></thead>
+  <tbody>
+    <tr><th>Ingénieur de données</th><td>Construit et exploite les pipelines et la plateforme</td></tr>
+    <tr><th>Architecte de données</th><td>Garantit la cohérence d'ensemble : modèles, choix structurants</td></tr>
+    <tr><th>Administrateur de bases</th><td>Veille aux performances, aux sauvegardes et à la disponibilité des bases</td></tr>
+    <tr><th>Ingénieur de fiabilité</th><td>Tient la production : supervision, automatisation, incidents</td></tr>
+    <tr><th>Analyste, ingénieur analytique</th><td>Transforme les données en tables et en rapports prêts à l'usage</td></tr>
+    <tr><th>Data scientist, quant</th><td>Conçoit les modèles et mène la recherche</td></tr>
+    <tr><th>Gestionnaire de données</th><td>Tient les définitions et traite les anomalies de qualité</td></tr>
+    <tr><th>Responsable de produit</th><td>Porte les priorités, la feuille de route et la relation avec les utilisateurs</td></tr>
+  </tbody>
+</table>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Une plateforme est un produit : des utilisateurs, une feuille de route, une équipe qui répond du fonctionnement.</li>
+    <li>SLI, SLO, SLA : ce qu'on mesure, ce qu'on vise, ce à quoi on s'engage. Pour une donnée, la fraîcheur et l'exactitude comptent autant que la disponibilité.</li>
+    <li>Le coût se raisonne sur la durée de vie et à l'unité. Éteindre un ancien système crée de la valeur.</li>
+    <li>On construit ce qui différencie, on achète le reste, et l'on vérifie la réversibilité avant de signer.</li>
+    <li>Dix questions suffisent à lire une architecture. La première porte sur l'usage, la dernière sur la sortie.</li>
+  </ul>
+</aside>

@@ -1,0 +1,187 @@
+[
+  {
+    "id": "modelisation-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que cherche-t-on en normalisant un modèle de données ?",
+    "choix": [
+      "Ranger chaque information à un seul endroit, les tables étant reliées par des clés",
+      "Regrouper toutes les informations dans une seule grande table",
+      "Convertir toutes les colonnes dans le même type",
+      "Compresser les données pour réduire le stockage"
+    ],
+    "bonnes": [0],
+    "explication": "Normaliser supprime la redondance : une modification ne touche qu'une ligne, et deux valeurs contradictoires ne peuvent pas coexister. La grande table unique est la démarche inverse."
+  },
+  {
+    "id": "modelisation-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Quel est le principal inconvénient d'un modèle très normalisé pour l'analyse ?",
+    "choix": [
+      "Il faut de nombreuses jointures pour reconstituer une vue complète",
+      "Il ne permet pas de garantir l'intégrité des données",
+      "Il consomme beaucoup plus de stockage",
+      "Il empêche d'ajouter de nouvelles tables"
+    ],
+    "bonnes": [0],
+    "explication": "L'information est éclatée entre de nombreuses tables. La recoller sur des millions de lignes coûte cher. L'intégrité et l'économie de stockage sont au contraire les points forts de la normalisation."
+  },
+  {
+    "id": "modelisation-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Dans un schéma en étoile, que contient la table de faits ?",
+    "choix": [
+      "Les événements ou mesures, avec leurs montants et des clés vers les dimensions",
+      "La description des axes d'analyse : dates, instruments, portefeuilles",
+      "La liste des utilisateurs autorisés à lire chaque table",
+      "L'historique des modifications du schéma"
+    ],
+    "bonnes": [0],
+    "explication": "La table de faits est au centre : une ligne par événement, des mesures que l'on agrège, et des clés. Les axes d'analyse sont décrits dans les tables de dimensions qui l'entourent."
+  },
+  {
+    "id": "modelisation-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que signifie le principe du schéma à la lecture (schema-on-read) ?",
+    "choix": [
+      "La donnée est stockée brute, et sa structure est interprétée au moment où on la lit",
+      "La structure est vérifiée à l'entrée, et ce qui n'est pas conforme est rejeté",
+      "Le schéma est lisible par tous les utilisateurs de la plateforme",
+      "Chaque lecture crée une nouvelle version du schéma"
+    ],
+    "bonnes": [0],
+    "explication": "Tout entre immédiatement, ce qui fait la souplesse des lakes. Le prix : chaque lecteur refait le travail d'interprétation, et les anomalies se découvrent tard. La vérification à l'entrée est le schéma à l'écriture."
+  },
+  {
+    "id": "modelisation-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel format de fichier retenir pour de l'analytique sur de gros volumes ?",
+    "choix": ["Parquet", "CSV", "JSON", "Un classeur de tableur"],
+    "bonnes": [0],
+    "explication": "Parquet est organisé en colonnes, compressé et typé. Les moteurs analytiques n'y lisent que les colonnes et les blocs utiles. CSV et JSON sont du texte, organisé ligne par ligne : lents à lire et sans types garantis."
+  },
+  {
+    "id": "modelisation-06",
+    "type": "vf",
+    "niveau": 1,
+    "q": "Un fichier CSV embarque le type de chacune de ses colonnes.",
+    "bonnes": [1],
+    "explication": "Un CSV n'est que du texte séparé par des délimiteurs. Les types sont devinés par celui qui lit, d'où les ambiguïtés sur les dates, les séparateurs décimaux ou les libellés contenant une virgule."
+  },
+  {
+    "id": "modelisation-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "On dit d'un stockage objet que son espace de noms est à plat. Qu'est-ce que cela veut dire ?",
+    "choix": [
+      "Chaque objet est repéré par une clé, et les dossiers apparents ne sont que des préfixes",
+      "Tous les objets doivent avoir exactement la même taille",
+      "Les données y sont obligatoirement stockées en CSV",
+      "Un seul utilisateur peut écrire à la fois"
+    ],
+    "bonnes": [0],
+    "explication": "Il n'y a pas de vraie arborescence : « marche/2026/03/prix.parquet » est une clé d'un seul tenant. C'est ce qui rend ce stockage simple à étendre, et ce qui rend le renommage d'un « dossier » coûteux."
+  },
+  {
+    "id": "modelisation-08",
+    "type": "single",
+    "niveau": 3,
+    "q": "Quels sont les deux axes de temps d'une donnée bitemporelle ?",
+    "choix": [
+      "Le moment où le fait est vrai dans le monde, et le moment où le système en a eu connaissance",
+      "La date de création de la table, et la date de sa dernière sauvegarde",
+      "L'heure locale de la place, et l'heure universelle",
+      "La date de début et la date de fin d'un traitement batch"
+    ],
+    "bonnes": [0],
+    "explication": "Temps de validité et temps de connaissance. Les garder tous les deux permet de répondre à la fois à « quelle était la valeur ? » et à « que savait-on à ce moment-là ? »."
+  },
+  {
+    "id": "modelisation-09",
+    "type": "single",
+    "niveau": 3,
+    "q": "On corrige aujourd'hui le cours de clôture du 3 mars. Que faut-il pour pouvoir encore reproduire le résultat publié le 3 mars au soir ?",
+    "choix": [
+      "Conserver l'ancienne valeur avec sa date de connaissance, au lieu de l'écraser",
+      "Recalculer tous les résultats depuis le 3 mars avec le cours corrigé",
+      "Effacer le résultat du 3 mars, devenu faux",
+      "Interdire toute correction d'un cours déjà publié"
+    ],
+    "bonnes": [0],
+    "explication": "Une correction est une nouvelle ligne, pas une modification. L'ancienne valeur reste interrogeable « telle que connue le 3 au soir », ce qui permet de reproduire et d'expliquer le chiffre publié."
+  },
+  {
+    "id": "modelisation-10",
+    "type": "single",
+    "niveau": 2,
+    "q": "Une dimension à évolution lente « de type 2 » traite le changement d'un attribut de quelle manière ?",
+    "choix": [
+      "Elle ajoute une nouvelle ligne avec des dates de validité, et garde l'ancienne",
+      "Elle écrase l'ancienne valeur par la nouvelle",
+      "Elle refuse le changement tant qu'il n'est pas validé",
+      "Elle déplace l'ancienne valeur dans un fichier d'archive"
+    ],
+    "bonnes": [0],
+    "explication": "Le type 2 historise : chaque version de l'attribut a sa période de validité, ce qui permet d'analyser le passé avec les valeurs de l'époque. Écraser la valeur, c'est le type 1."
+  },
+  {
+    "id": "modelisation-11",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Quels sens l'expression « à plat » peut-elle prendre ?",
+    "choix": [
+      "Un fichier texte sans index ni relations",
+      "Une table large et dénormalisée",
+      "Un espace de noms sans hiérarchie de répertoires",
+      "Une base répartie sur plusieurs machines"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Fichier plat, table à plat, espace de noms à plat, auxquels s'ajoute la structure sans imbrication. La répartition sur plusieurs machines est un autre sujet : la distribution."
+  },
+  {
+    "id": "modelisation-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "Pourquoi la grande table unique, très large et dénormalisée, est-elle devenue viable avec les moteurs en colonnes ?",
+    "choix": [
+      "Une colonne non lue ne coûte rien à la requête, et la redondance se compresse bien",
+      "Ces moteurs savent faire les jointures instantanément",
+      "Ces moteurs normalisent la table automatiquement en arrière-plan",
+      "Le nombre de colonnes n'a jamais eu d'effet sur les performances"
+    ],
+    "bonnes": [0],
+    "explication": "En colonnes, seules les colonnes demandées sont lues, et les valeurs répétées prennent peu de place. Les deux défauts historiques des tables très larges disparaissent."
+  },
+  {
+    "id": "modelisation-13",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi le format Avro est-il souvent retenu pour les flux d'événements ?",
+    "choix": [
+      "Il est organisé par enregistrement et porte un schéma conçu pour évoluer",
+      "Il est organisé en colonnes, donc plus rapide à agréger",
+      "Il est lisible directement dans un éditeur de texte",
+      "Il n'impose aucun schéma aux producteurs"
+    ],
+    "bonnes": [0],
+    "explication": "Un flux transporte des enregistrements un par un : un format en lignes convient. Avro y ajoute un schéma explicite, avec des règles de compatibilité entre versions."
+  },
+  {
+    "id": "modelisation-14",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une table a été aplatie avec une ligne par flux de chaque opération. Quelle erreur guette celui qui veut compter les opérations ?",
+    "choix": [
+      "Compter les lignes, donc compter chaque opération autant de fois qu'elle a de flux",
+      "Oublier les opérations dont le nominal est nul",
+      "Compter deux fois les opérations en devise étrangère",
+      "Ne voir que les opérations du jour"
+    ],
+    "bonnes": [0],
+    "explication": "Aplatir multiplie les lignes : l'opération est répétée sur chacune. Il faut compter les identifiants distincts, et se méfier de la même façon des sommes de montants portés par l'opération."
+  }
+]

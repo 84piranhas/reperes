@@ -1,0 +1,131 @@
+<p>Une donnée qui ne circule pas ne sert à personne. Un <dfn>pipeline</dfn> est la chaîne de traitements qui la transporte d'un système à l'autre et la transforme en chemin. Il en existe des centaines dans une banque, et leur fiabilité compte plus que leur élégance : un pipeline se juge à ce qui se passe le jour où il échoue.</p>
+
+<h2>Batch et flux</h2>
+
+<ul>
+  <li><strong>Le batch</strong> traite un lot complet à heure fixe. Il est simple à raisonner, facile à relancer, et produit un résultat cohérent. Son délai se compte en heures.</li>
+  <li><strong>Le flux</strong> (<em>streaming</em>) traite chaque événement à mesure qu'il arrive. La donnée est fraîche, mais tout devient plus délicat : l'ordre d'arrivée, les doublons, les retardataires, et une exploitation sans interruption.</li>
+  <li><strong>Le micro-batch</strong> traite de petits lots toutes les quelques secondes ou minutes. C'est souvent le compromis raisonnable.</li>
+</ul>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>La chaîne de fin de journée reste la colonne vertébrale d'une banque de marché. Les positions sont arrêtées, le jeu officiel de données de marché est capturé, les risques et le résultat sont calculés pendant la nuit, des contrôles tournent, et les rapports sont prêts au matin. Des centaines de traitements s'enchaînent. Un retard en amont se propage à tout ce qui suit, avec des échéances qui ne bougent pas.</p>
+</aside>
+
+<aside class="note piege">
+  <p class="etiquette">Idée reçue</p>
+  <p>« Il faut du temps réel partout. » Un flux coûte plus cher à construire et à exploiter qu'un batch. La question à poser est celle de l'usage : quelle fraîcheur lui faut-il vraiment ? Un rapport lu une fois par jour n'a pas besoin d'un flux.</p>
+</aside>
+
+<h2>ETL et ELT</h2>
+
+<p>Trois lettres, deux ordres. Dans l'<dfn>ETL</dfn>, on extrait, on <em>transforme</em>, puis on charge : la donnée est mise en forme dans un outil dédié avant d'entrer dans l'entrepôt. Dans l'<dfn>ELT</dfn>, on extrait, on <em>charge</em>, puis on transforme : la donnée entre brute, et la plateforme la transforme avec sa propre puissance de calcul, le plus souvent en SQL.</p>
+
+<p>L'ELT s'est imposé avec les lakes pour une raison simple : le brut reste disponible. Si la transformation était fausse, on la corrige et on la rejoue.</p>
+
+<h2>L'orchestration</h2>
+
+<p>Un <dfn>orchestrateur</dfn> lance les traitements dans le bon ordre. On lui décrit un graphe de tâches et leurs dépendances : ne calcule les risques que lorsque les positions <em>et</em> les données de marché sont arrivées. Il gère les horaires, les relances après échec et les alertes.</p>
+
+<p>Les banques utilisent depuis longtemps des ordonnanceurs d'entreprise comme Control-M ou Autosys. Les plateformes data récentes y ajoutent Airflow ou Dagster. Ce qu'on attend d'eux est avant tout de la visibilité : qu'est-ce qui a tourné, qu'est-ce qui a échoué, qu'est-ce qui est en retard, et que faut-il relancer.</p>
+
+<h2>Kafka et le journal d'événements</h2>
+
+<p>Dans une file de messages classique, un message est remis à son destinataire puis effacé. Kafka repose sur une autre idée : un <dfn>journal</dfn> dans lequel on ne fait qu'ajouter. Les messages y restent pendant une durée de rétention choisie, et chaque consommateur retient lui-même sa position de lecture, appelée <dfn>offset</dfn>.</p>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 196" role="img" aria-label="Une partition Kafka : des messages numérotés de 0 à 7. Un producteur ajoute à droite. Deux consommateurs lisent chacun à leur propre position.">
+    <text class="t" x="20" y="26">Une partition : un journal où l'on ne fait qu'ajouter</text>
+    <text class="ts" x="20" y="88">Positions</text>
+    <rect class="b" x="120" y="62" width="54" height="40" rx="6"/><text class="ts m" x="147" y="87">0</text>
+    <rect class="b" x="180" y="62" width="54" height="40" rx="6"/><text class="ts m" x="207" y="87">1</text>
+    <rect class="ba" x="240" y="62" width="54" height="40" rx="6"/><text class="t m" x="267" y="87">2</text>
+    <rect class="b" x="300" y="62" width="54" height="40" rx="6"/><text class="ts m" x="327" y="87">3</text>
+    <rect class="b" x="360" y="62" width="54" height="40" rx="6"/><text class="ts m" x="387" y="87">4</text>
+    <rect class="ba" x="420" y="62" width="54" height="40" rx="6"/><text class="t m" x="447" y="87">5</text>
+    <rect class="b" x="480" y="62" width="54" height="40" rx="6"/><text class="ts m" x="507" y="87">6</text>
+    <rect class="b" x="540" y="62" width="54" height="40" rx="6"/><text class="ts m" x="567" y="87">7</text>
+    <rect class="bv" x="600" y="62" width="54" height="40" rx="6"/><text class="ts m" x="627" y="87">8</text>
+    <text class="t m" x="660" y="26">Producteur</text>
+    <path class="f" d="M627 36v16"/><path class="fp" d="M627 59l-4.5-8h9z"/>
+    <path class="facc" d="M267 132v-20"/><path class="fpacc" d="M267 105l-4.5 8h9z"/>
+    <path class="facc" d="M447 132v-20"/><path class="fpacc" d="M447 105l-4.5 8h9z"/>
+    <text class="tacc m" x="267" y="152">Consommateur « rapports »</text>
+    <text class="ts m" x="267" y="170">a lu jusqu'à la position 2</text>
+    <text class="tacc m" x="447" y="152">Consommateur « risques »</text>
+    <text class="ts m" x="447" y="170">a lu jusqu'à la position 5</text>
+  </svg>
+  </div>
+  <figcaption>Les messages restent dans le journal. Chaque consommateur avance à son rythme.</figcaption>
+</figure>
+
+<p>Trois conséquences font tout l'intérêt du modèle.</p>
+
+<ul>
+  <li>Plusieurs consommateurs lisent le même flux sans se gêner, chacun à son rythme.</li>
+  <li>Un nouveau consommateur peut relire depuis le début de la rétention.</li>
+  <li>Après une erreur, on recule sa position et on <strong>rejoue</strong>.</li>
+</ul>
+
+<p>Le vocabulaire à connaître : un <dfn>topic</dfn> est un flux nommé. Il est découpé en <dfn>partitions</dfn> pour passer à l'échelle, et l'ordre des messages n'est garanti qu'à l'intérieur d'une partition. Surtout, le producteur ne connaît pas ses consommateurs. Ce découplage permet d'en ajouter un sans toucher à la source.</p>
+
+<h2>Traiter en continu</h2>
+
+<p>Des moteurs comme Flink ou Kafka Streams calculent sur les flux : agréger par fenêtre d'une minute, rapprocher deux flux, détecter une séquence. Une distinction y est centrale. Le <dfn>temps de l'événement</dfn> est le moment où le fait s'est produit. Le <dfn>temps de traitement</dfn> est le moment où le système le reçoit. Entre les deux, il y a des retards, parfois des inversions. Un calcul juste raisonne sur le temps de l'événement et prévoit quoi faire des retardataires.</p>
+
+<h2>Les garanties de livraison</h2>
+
+<table>
+  <thead><tr><th>Garantie</th><th>Ce qui peut arriver</th></tr></thead>
+  <tbody>
+    <tr><th>Au plus une fois</th><td>Aucun doublon, mais des messages peuvent être perdus.</td></tr>
+    <tr><th>Au moins une fois</th><td>Aucune perte, mais des doublons sont possibles. C'est le cas pratique le plus courant.</td></tr>
+    <tr><th>Exactement une fois</th><td>Chaque message produit son effet une seule fois. Atteignable dans un périmètre maîtrisé, à un certain coût.</td></tr>
+  </tbody>
+</table>
+
+<p>Puisque les doublons sont la norme, la propriété qui compte est l'<dfn>idempotence</dfn> : un traitement est idempotent si le rejouer donne le même résultat que l'exécuter une fois. « La position vaut 100 » est idempotent. « Ajoute 10 à la position » ne l'est pas. On obtient l'idempotence en donnant à chaque événement un identifiant unique et en ignorant ceux déjà traités.</p>
+
+<h2>Capturer les changements</h2>
+
+<p>Comment sortir en continu les données d'une base opérationnelle sans la charger de requêtes ? Toute base écrit déjà chacune de ses modifications dans un journal interne. Le <dfn>CDC</dfn>, ou capture des changements, lit ce journal et publie chaque modification comme un événement. La source n'est ni ralentie ni modifiée, et le lake reçoit les changements en quelques secondes.</p>
+
+<h2>Lambda et Kappa</h2>
+
+<p>Deux architectures portent un nom. <dfn>Lambda</dfn> fait tourner deux voies en parallèle : un batch, complet et exact, et un flux, rapide mais approximatif, que l'on réunit à la lecture. Son défaut est d'écrire deux fois la même logique. <dfn>Kappa</dfn> ne garde que le flux : pour recalculer, on rejoue le journal. Plus simple, à condition que le journal soit conservé assez longtemps.</p>
+
+<h2>Ce qui rend une chaîne fiable</h2>
+
+<ul>
+  <li><strong>Le rejeu et le rattrapage.</strong> Pouvoir retraiter une période passée à partir du brut, après la correction d'une anomalie ou d'une règle. On parle de <dfn>backfill</dfn>. Sans idempotence, c'est impossible.</li>
+  <li><strong>Les contrats de données.</strong> Le producteur s'engage par écrit sur le schéma, le sens des champs, la qualité et l'heure de livraison. Un changement qui casse le contrat est détecté avant la production, pas après.</li>
+  <li><strong>L'observabilité.</strong> On surveille la donnée elle-même, pas seulement les machines : est-elle arrivée à l'heure, le nombre de lignes est-il plausible, la structure a-t-elle changé, les valeurs sont-elles vraisemblables ?</li>
+</ul>
+
+<p>La plupart des incidents ne viennent pas d'une panne. Ils viennent d'un changement en amont que personne n'a annoncé : une colonne renommée, un fichier en retard, un nouveau code dans une liste de valeurs.</p>
+
+<h2>Fichier, API, événement</h2>
+
+<table>
+  <thead><tr><th>Style</th><th>Principe</th><th>Force</th><th>Limite</th></tr></thead>
+  <tbody>
+    <tr><th>Fichier</th><td>Un lot déposé périodiquement</td><td>Simple, universel</td><td>Tardif, sans contrôle de structure</td></tr>
+    <tr><th>API</th><td>Une demande, une réponse</td><td>À la demande, précis</td><td>Lie le demandeur à la disponibilité de la source</td></tr>
+    <tr><th>Événement</th><td>La source publie, qui veut s'abonne</td><td>Découplé, immédiat</td><td>Plus complexe à exploiter</td></tr>
+  </tbody>
+</table>
+
+<p>Les trois coexistent. Malgré vingt ans d'annonces contraires, les échanges de fichiers restent très nombreux en banque, et ils fonctionnent.</p>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Batch pour la simplicité et la cohérence, flux pour la fraîcheur. Le choix part de l'usage.</li>
+    <li>ELT : charger le brut, puis transformer. Le brut permet de rejouer.</li>
+    <li>Kafka est un journal : les messages restent, chaque consommateur garde sa position, on peut relire.</li>
+    <li>Les doublons sont la norme. L'idempotence est ce qui les rend inoffensifs.</li>
+    <li>Une chaîne fiable se reconnaît à trois choses : elle se rejoue, elle a des contrats, elle surveille ses données.</li>
+  </ul>
+</aside>

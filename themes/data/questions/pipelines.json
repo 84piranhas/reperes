@@ -1,0 +1,192 @@
+[
+  {
+    "id": "pipelines-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce qui distingue l'ELT de l'ETL ?",
+    "choix": [
+      "La donnée est chargée brute dans la plateforme, qui la transforme ensuite",
+      "La donnée est transformée dans un outil dédié avant d'être chargée",
+      "La donnée n'est jamais transformée",
+      "La donnée est transmise sans être stockée"
+    ],
+    "bonnes": [0],
+    "explication": "ELT : extraire, charger, puis transformer. Le brut reste disponible dans la plateforme, ce qui permet de corriger une transformation et de la rejouer. Transformer avant de charger, c'est l'ETL."
+  },
+  {
+    "id": "pipelines-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Quel est le rôle d'un orchestrateur ?",
+    "choix": [
+      "Lancer les traitements dans le bon ordre, selon leurs dépendances, et gérer les relances",
+      "Stocker les données entre deux traitements",
+      "Compresser les fichiers avant leur transfert",
+      "Attribuer les droits d'accès aux utilisateurs"
+    ],
+    "bonnes": [0],
+    "explication": "L'orchestrateur connaît le graphe des tâches : il sait ce qui doit attendre quoi, ce qui a échoué et ce qu'il faut relancer. Il ne stocke ni ne transforme lui-même la donnée."
+  },
+  {
+    "id": "pipelines-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Dans Kafka, que désigne l'offset ?",
+    "choix": [
+      "La position d'un message dans une partition, que chaque consommateur retient pour savoir où il en est",
+      "Le délai entre l'envoi et la réception d'un message",
+      "Le nombre de copies d'un message",
+      "La taille maximale d'un message"
+    ],
+    "bonnes": [0],
+    "explication": "Chaque consommateur garde sa propre position de lecture. C'est ce qui permet à plusieurs consommateurs d'avancer à des rythmes différents, et de reculer pour rejouer."
+  },
+  {
+    "id": "pipelines-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel avantage le journal de Kafka a-t-il sur une file de messages classique ?",
+    "choix": [
+      "Les messages restent après lecture : plusieurs consommateurs indépendants, et la possibilité de rejouer",
+      "Les messages sont effacés dès leur lecture, ce qui économise le stockage",
+      "Les messages sont toujours livrés exactement une fois",
+      "Les messages n'ont pas besoin de schéma"
+    ],
+    "bonnes": [0],
+    "explication": "Dans une file classique, un message lu disparaît. Dans un journal, il reste pendant la durée de rétention : on peut ajouter un consommateur ou relire après une erreur."
+  },
+  {
+    "id": "pipelines-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quand dit-on d'un traitement qu'il est idempotent ?",
+    "choix": [
+      "Quand le rejouer plusieurs fois donne le même résultat que l'exécuter une seule fois",
+      "Quand il s'exécute en moins d'une seconde",
+      "Quand il ne dépend d'aucune donnée externe",
+      "Quand il ne peut être lancé qu'une seule fois par jour"
+    ],
+    "bonnes": [0],
+    "explication": "L'idempotence rend les doublons et les relances inoffensifs. « La position vaut 100 » est idempotent, « ajoute 10 à la position » ne l'est pas."
+  },
+  {
+    "id": "pipelines-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que promet la garantie de livraison « au moins une fois » ?",
+    "choix": [
+      "Aucun message perdu, mais des doublons possibles",
+      "Aucun doublon, mais des pertes possibles",
+      "Ni perte ni doublon",
+      "Une livraison dans l'ordre exact d'émission"
+    ],
+    "bonnes": [0],
+    "explication": "C'est la garantie la plus courante en pratique. Elle impose aux consommateurs d'être idempotents, puisqu'un même message peut arriver deux fois."
+  },
+  {
+    "id": "pipelines-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Dans un traitement en continu, quelle différence y a-t-il entre le temps de l'événement et le temps de traitement ?",
+    "choix": [
+      "Le premier est le moment où le fait s'est produit, le second celui où le système le reçoit",
+      "Le premier est l'heure locale, le second l'heure universelle",
+      "Le premier est la durée du calcul, le second la durée du transfert",
+      "Il n'y en a pas : les deux sont toujours égaux"
+    ],
+    "bonnes": [0],
+    "explication": "Entre les deux, il y a des retards et parfois des inversions. Un calcul par fenêtre de temps n'est juste que s'il raisonne sur le temps de l'événement et prévoit le cas des retardataires."
+  },
+  {
+    "id": "pipelines-08",
+    "type": "vf",
+    "niveau": 1,
+    "q": "Le traitement en flux remplace avantageusement le batch dans tous les cas.",
+    "bonnes": [1],
+    "explication": "Un flux coûte plus cher à construire et à exploiter. Il ne se justifie que si l'usage a réellement besoin de fraîcheur. Pour un rapport quotidien, un batch est plus simple, plus robuste et plus facile à rejouer."
+  },
+  {
+    "id": "pipelines-09",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est l'intérêt principal de la capture des changements (CDC) ?",
+    "choix": [
+      "Propager les modifications d'une base presque aussitôt, sans la charger de requêtes ni modifier l'application",
+      "Sauvegarder la base chaque nuit sur un second site",
+      "Chiffrer les données avant leur sortie de la base",
+      "Supprimer les lignes devenues inutiles"
+    ],
+    "bonnes": [0],
+    "explication": "Le CDC lit le journal interne que la base tient déjà. La source n'est ni ralentie ni modifiée, et les changements partent au fil de l'eau vers le lake ou vers d'autres systèmes."
+  },
+  {
+    "id": "pipelines-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un fournisseur a livré des prix erronés pendant trois jours, puis les a corrigés. Quelle capacité de la plateforme permet de remettre proprement les données d'aplomb ?",
+    "choix": [
+      "Le rattrapage : retraiter la période à partir du brut, avec des traitements idempotents",
+      "Le passage de tous les traitements en temps réel",
+      "L'ajout d'un cache devant les données erronées",
+      "La suppression manuelle des lignes fausses dans chaque table"
+    ],
+    "bonnes": [0],
+    "explication": "Le backfill suppose deux choses : le brut a été conservé, et les traitements peuvent être rejoués sans créer de doublons. La correction manuelle table par table laisse presque toujours des incohérences."
+  },
+  {
+    "id": "pipelines-11",
+    "type": "single",
+    "niveau": 3,
+    "q": "Qu'est-ce qu'un contrat de données ?",
+    "choix": [
+      "L'engagement explicite d'un producteur sur le schéma, le sens, la qualité et l'heure de livraison de ses données",
+      "Le contrat commercial signé avec un fournisseur de données de marché",
+      "L'accord de confidentialité signé par les utilisateurs",
+      "La licence du logiciel d'orchestration"
+    ],
+    "bonnes": [0],
+    "explication": "Le contrat rend visible ce dont les consommateurs dépendent. Un changement qui le casse est détecté avant la mise en production, au lieu d'être découvert par un incident en aval."
+  },
+  {
+    "id": "pipelines-12",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est le principal défaut de l'architecture Lambda ?",
+    "choix": [
+      "La même logique doit être écrite et maintenue deux fois, en batch et en flux",
+      "Elle ne permet pas de traiter de gros volumes",
+      "Elle interdit de conserver les données brutes",
+      "Elle impose un seul consommateur par flux"
+    ],
+    "bonnes": [0],
+    "explication": "Lambda fait tourner deux voies parallèles, l'une exacte et lente, l'autre rapide et approximative. Deux implémentations de la même règle finissent par diverger. Kappa y répond en ne gardant que le flux."
+  },
+  {
+    "id": "pipelines-13",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Que surveille l'observabilité des données ?",
+    "choix": [
+      "La fraîcheur : la donnée est-elle arrivée à l'heure ?",
+      "Le volume : le nombre de lignes est-il plausible ?",
+      "Le schéma : la structure a-t-elle changé ?",
+      "Le langage dans lequel les traitements sont écrits"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Fraîcheur, volume, schéma et vraisemblance des valeurs : on surveille la donnée elle-même, pas seulement l'état des machines. Le langage des traitements n'a rien à voir."
+  },
+  {
+    "id": "pipelines-14",
+    "type": "single",
+    "niveau": 3,
+    "q": "D'où viennent le plus souvent les incidents sur une chaîne de traitement ?",
+    "choix": [
+      "D'un changement en amont que personne n'a annoncé : colonne renommée, fichier en retard, nouveau code",
+      "D'une panne matérielle des serveurs de calcul",
+      "D'une saturation du stockage",
+      "D'une erreur de l'orchestrateur dans l'ordre des tâches"
+    ],
+    "bonnes": [0],
+    "explication": "Les pannes franches sont rares et bien détectées. Les changements silencieux en amont sont fréquents et sournois, d'où l'intérêt des contrats de données et de la surveillance du schéma."
+  }
+]

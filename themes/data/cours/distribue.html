@@ -1,0 +1,130 @@
+<p>Distribuer un système, c'est faire travailler plusieurs machines comme si elles n'en formaient qu'une. La promesse est double : une capacité qui grandit en ajoutant des machines, et un service qui survit à la perte de l'une d'elles. Le prix est la complexité. La question utile n'est donc jamais « est-ce moderne ? », mais « en a-t-on besoin ? ».</p>
+
+<h2>Grossir ou multiplier</h2>
+
+<p>Il y a deux façons de donner plus de capacité à un système.</p>
+
+<ul>
+  <li><strong>Grossir la machine</strong> (<em>scale-up</em>, ou passage à l'échelle vertical). Plus de processeurs, plus de mémoire, des disques plus rapides. Rien ne change dans le logiciel. La limite est la plus grosse machine du marché, et le fait qu'elle reste un point de panne unique.</li>
+  <li><strong>Multiplier les machines</strong> (<em>scale-out</em>, ou passage à l'échelle horizontal). On ajoute des machines ordinaires. La capacité n'a plus de plafond théorique, mais le logiciel doit savoir répartir les données et le travail.</li>
+</ul>
+
+<p>Un point souvent sous-estimé : une seule machine actuelle offre des centaines de cœurs et plusieurs téraoctets de mémoire. Beaucoup de problèmes étiquetés « big data » y tiennent largement.</p>
+
+<h2>Deux mécanismes : partitionner et répliquer</h2>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 196" role="img" aria-label="Trois nœuds. Chacun porte une partition principale et la copie d'une partition d'un autre nœud.">
+    <rect class="b" x="20" y="14" width="220" height="134" rx="10"/>
+    <rect class="b" x="265" y="14" width="220" height="134" rx="10"/>
+    <rect class="b" x="510" y="14" width="220" height="134" rx="10"/>
+    <text class="t m" x="130" y="40">Nœud 1</text>
+    <text class="t m" x="375" y="40">Nœud 2</text>
+    <text class="t m" x="620" y="40">Nœud 3</text>
+    <rect class="ba" x="34" y="54" width="192" height="34" rx="7"/>
+    <rect class="bv" x="34" y="98" width="192" height="34" rx="7"/>
+    <rect class="ba" x="279" y="54" width="192" height="34" rx="7"/>
+    <rect class="bv" x="279" y="98" width="192" height="34" rx="7"/>
+    <rect class="ba" x="524" y="54" width="192" height="34" rx="7"/>
+    <rect class="bv" x="524" y="98" width="192" height="34" rx="7"/>
+    <text class="tacc m" x="130" y="76">Partition A · principale</text>
+    <text class="ts m" x="130" y="120">Partition C · copie</text>
+    <text class="tacc m" x="375" y="76">Partition B · principale</text>
+    <text class="ts m" x="375" y="120">Partition A · copie</text>
+    <text class="tacc m" x="620" y="76">Partition C · principale</text>
+    <text class="ts m" x="620" y="120">Partition B · copie</text>
+    <text class="ts m" x="375" y="178">Les données sont découpées en trois partitions, et chaque partition existe en deux exemplaires.</text>
+  </svg>
+  </div>
+  <figcaption>Partitionner répartit la charge. Répliquer protège de la panne.</figcaption>
+</figure>
+
+<h3>Partitionner</h3>
+
+<p>Le <dfn>partitionnement</dfn>, ou <em>sharding</em>, découpe les données selon une clé : chaque machine en porte une partie. Tout dépend du choix de cette clé. Si l'on partitionne des opérations de change par paire de devises, la machine qui porte l'euro-dollar sera saturée pendant que les autres attendront. Ce déséquilibre s'appelle le <dfn>skew</dfn>, et la partition surchargée un point chaud. Autre limite : une requête qui doit rassembler des données de plusieurs partitions coûte bien plus cher qu'une requête qui n'en touche qu'une.</p>
+
+<h3>Répliquer</h3>
+
+<p>La <dfn>réplication</dfn> garde plusieurs copies de la même donnée sur des machines différentes. Elle sert d'abord à survivre aux pannes, ensuite à répartir les lectures. Elle existe en deux modes.</p>
+
+<ul>
+  <li><strong>Synchrone.</strong> L'écriture n'est confirmée que lorsque les copies l'ont reçue. Rien n'est perdu en cas de panne, mais chaque écriture attend.</li>
+  <li><strong>Asynchrone.</strong> L'écriture est confirmée tout de suite, les copies suivent avec un léger retard. C'est rapide, mais si la machine principale tombe avant d'avoir propagé, les dernières écritures sont perdues.</li>
+</ul>
+
+<p>Deux sigles mesurent ce que l'on accepte. Le <dfn>RPO</dfn> est la quantité de données que l'on tolère de perdre, exprimée en durée : un RPO nul impose une réplication synchrone. Le <dfn>RTO</dfn> est le délai dans lequel le service doit avoir redémarré.</p>
+
+<h2>Le théorème CAP</h2>
+
+<p>Trois propriétés sont en jeu. La <strong>cohérence</strong> : toutes les machines donnent la même réponse au même instant. La <strong>disponibilité</strong> : toute demande reçoit une réponse. La <strong>tolérance au partitionnement</strong> : le système continue de fonctionner quand le réseau coupe le groupe de machines en deux.</p>
+
+<p>Le théorème dit qu'on ne peut pas avoir les trois. Comme les coupures réseau arrivent, le vrai choix se pose pendant une coupure : soit le système refuse de répondre pour ne pas risquer de se contredire, soit il répond, au risque de servir une valeur dépassée.</p>
+
+<table>
+  <thead><tr><th></th><th>Priorité à la cohérence</th><th>Priorité à la disponibilité</th></tr></thead>
+  <tbody>
+    <tr><th>Pendant une coupure</th><td>Une partie du système refuse les demandes</td><td>Tout répond, les copies peuvent diverger</td></tr>
+    <tr><th>Après la coupure</th><td>Rien à réconcilier</td><td>Les copies convergent : cohérence à terme</td></tr>
+    <tr><th>Usage type</th><td>Tenue de position, contrôle de limites</td><td>Consultation d'un catalogue, affichage d'un dernier prix</td></tr>
+  </tbody>
+</table>
+
+<p>La <dfn>cohérence à terme</dfn> (<em>eventual consistency</em>) signifie que les copies finissent par s'aligner, mais qu'une lecture peut entre-temps renvoyer une valeur ancienne. Même hors de toute panne, le compromis subsiste sous une autre forme : attendre que toutes les copies soient d'accord rend chaque opération plus lente.</p>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>Un contrôle de limite avant l'envoi d'un ordre ne peut pas s'appuyer sur une position vieille de deux secondes : il lui faut une cohérence forte. Une copie de consultation du référentiel instruments, sur un autre site, peut très bien avoir quelques secondes de retard. La même banque fait les deux choix, selon l'usage.</p>
+</aside>
+
+<h2>Se mettre d'accord : le consensus</h2>
+
+<p>Qui est la machine principale ? Dans quel ordre appliquer les écritures ? Pour que des machines qui peuvent tomber ou être isolées prennent la même décision, on utilise des algorithmes de <dfn>consensus</dfn>, dont les plus connus sont Paxos et Raft. Leur principe : une décision est prise quand une majorité des machines, le <dfn>quorum</dfn>, l'a acceptée.</p>
+
+<p>C'est la raison pour laquelle ces groupes comptent un nombre impair de machines. À trois, le système survit à une perte. À cinq, à deux. C'est aussi ce qui évite le scénario redouté où deux moitiés isolées se croient chacune aux commandes.</p>
+
+<h2>Calculer à plusieurs</h2>
+
+<p>Le calcul distribué découpe un traitement en tâches, les exécute en parallèle sur les machines, puis rassemble les résultats. Spark en est l'outil le plus répandu. Les bases <abbr title="Massively Parallel Processing">MPP</abbr> appliquent le même principe à SQL : une requête est répartie sur tous les nœuds.</p>
+
+<p>L'étape qui coûte est le <dfn>shuffle</dfn> : quand une jointure ou un regroupement exige de redistribuer les données entre machines, tout passe par le réseau. La plupart des traitements distribués lents le sont à cause de lui.</p>
+
+<h3>Séparer le stockage du calcul</h3>
+
+<p>Dans la première génération, chaque machine portait à la fois des disques et des processeurs. Pour stocker plus, il fallait acheter aussi du calcul. Le cloud a dissocié les deux : les données reposent dans un stockage objet bon marché, et les grappes de calcul sont démarrées à la demande, puis éteintes. On ne paie le calcul que lorsqu'il tourne, et plusieurs équipes peuvent calculer sur les mêmes données sans se gêner.</p>
+
+<h2>Le prix de la distribution</h2>
+
+<ul>
+  <li><strong>Les pannes partielles.</strong> Une machine ne tombe pas toujours franchement. Elle ralentit, un message se perd, une réponse arrive deux fois. Ces cas sont les plus difficiles à diagnostiquer.</li>
+  <li><strong>Le réseau.</strong> Il n'est ni instantané ni fiable, et tout ce qui était un simple appel devient un échange qui peut échouer.</li>
+  <li><strong>L'exploitation.</strong> Montées de version machine par machine, rééquilibrage des partitions, supervision : il faut des compétences rares.</li>
+  <li><strong>La performance.</strong> La coordination a un coût fixe. Sur des volumes modestes, un système distribué est souvent <em>plus lent</em> qu'une bonne machine seule.</li>
+</ul>
+
+<aside class="note piege">
+  <p class="etiquette">Idée reçue</p>
+  <p>« Distribué, donc plus rapide. » La distribution apporte de la capacité et de la résilience, pas de la vitesse en soi. Un traitement de dix gigaoctets va presque toujours plus vite sur un seul serveur que sur vingt.</p>
+</aside>
+
+<h2>Quand distribuer</h2>
+
+<p>Trois raisons sont solides : un volume ou un débit qui dépasse ce qu'une machine absorbe, croissance comprise ; une exigence de continuité qui impose de survivre à la perte d'une machine ou d'un site ; une charge très irrégulière, qui justifie d'allumer du calcul à la demande. Les autres raisons, la mode, l'habitude ou le « au cas où », ne résistent pas à l'addition.</p>
+
+<p>Entre la machine unique et la grappe, une solution intermédiaire couvre une grande part des besoins : une machine principale et une copie prête à prendre le relais. On obtient la résilience sans le partitionnement.</p>
+
+<aside class="note question">
+  <p class="etiquette">Les bonnes questions</p>
+  <p>Quel volume aujourd'hui, et dans trois ans ? Que se passe-t-il exactement si une machine tombe, et combien de données peut-on perdre ? Qui, dans l'équipe, sait exploiter ce système en production ?</p>
+</aside>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Grossir la machine est simple et plafonné. Multiplier les machines est sans plafond et complexe.</li>
+    <li>Partitionner répartit la charge, répliquer protège des pannes. La clé de partition décide de tout.</li>
+    <li>CAP : pendant une coupure réseau, il faut choisir entre cohérence et disponibilité. Le bon choix dépend de l'usage.</li>
+    <li>RPO : combien de données peut-on perdre. RTO : en combien de temps repart-on.</li>
+    <li>La distribution se paie en complexité. Elle se justifie par le volume, la continuité ou l'élasticité.</li>
+  </ul>
+</aside>

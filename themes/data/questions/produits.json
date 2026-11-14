@@ -1,0 +1,215 @@
+[
+  {
+    "id": "produits-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce qui distingue une logique de produit d'une logique de projet ?",
+    "choix": [
+      "Un produit a des utilisateurs, une durée de vie et une équipe qui répond de son fonctionnement dans le temps",
+      "Un produit est toujours acheté à un éditeur, un projet est toujours développé en interne",
+      "Un produit n'a pas de budget, un projet en a un",
+      "Un produit est technique, un projet est fonctionnel"
+    ],
+    "bonnes": [0],
+    "explication": "Un projet réussit quand il est livré. Un produit réussit quand il est utilisé, fiable et utile, année après année. L'équipe ne se dissout pas à la livraison."
+  },
+  {
+    "id": "produits-02",
+    "type": "single",
+    "niveau": 2,
+    "q": "Comment s'articulent SLI, SLO et SLA ?",
+    "choix": [
+      "Le SLI est ce qu'on mesure, le SLO la cible qu'on se fixe, le SLA l'engagement formel avec ses conséquences",
+      "Le SLI est le contrat, le SLO la pénalité, le SLA la mesure",
+      "Les trois sigles désignent la même chose à trois niveaux hiérarchiques",
+      "Le SLI concerne le matériel, le SLO le logiciel, le SLA les personnes"
+    ],
+    "bonnes": [0],
+    "explication": "Indicateur, objectif, engagement. On fixe en général l'objectif interne un peu plus haut que l'engagement pris envers les utilisateurs, pour garder une marge."
+  },
+  {
+    "id": "produits-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Lequel de ces objectifs de service est le mieux formulé pour un produit de données ?",
+    "choix": [
+      "Le jeu de clôture est disponible avant 19 h 30, 99 % des jours ouvrés",
+      "Le jeu de clôture est disponible le plus tôt possible",
+      "L'équipe fait de son mieux pour livrer à l'heure",
+      "Les serveurs sont allumés en permanence"
+    ],
+    "bonnes": [0],
+    "explication": "Un objectif utile est mesurable et parle de ce que l'utilisateur attend : ici, une heure et un taux de respect. Des serveurs allumés ne garantissent pas une donnée fraîche."
+  },
+  {
+    "id": "produits-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est l'objet du FinOps ?",
+    "choix": [
+      "Rendre la dépense du cloud visible, l'attribuer aux équipes qui la génèrent et l'optimiser avec elles",
+      "Automatiser la comptabilité des opérations de marché",
+      "Négocier les contrats avec les fournisseurs de données de marché",
+      "Calculer le résultat quotidien des activités"
+    ],
+    "bonnes": [0],
+    "explication": "Dans le cloud, la facture suit l'usage. Sans visibilité ni attribution, personne n'a de raison d'optimiser. Le FinOps installe cette boucle entre technique, finance et utilisateurs."
+  },
+  {
+    "id": "produits-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "On montre à chaque équipe ce qu'elle consomme sur la plateforme, sans le lui facturer. Comment s'appelle cette pratique ?",
+    "choix": ["Le showback", "Le chargeback", "Le backfill", "Le rollback"],
+    "bonnes": [0],
+    "explication": "Showback : on montre. Chargeback : on refacture. Le premier suffit souvent à changer les comportements, sans la lourdeur d'une facturation interne."
+  },
+  {
+    "id": "produits-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que recouvre le coût total de possession d'un système ?",
+    "choix": [
+      "Tout ce qu'il coûte sur sa durée de vie : licences, infrastructure, exploitation, personnes, migration, sortie",
+      "Le seul prix d'achat des licences",
+      "Le coût des serveurs, hors logiciels",
+      "Le coût de la première année d'exploitation"
+    ],
+    "bonnes": [0],
+    "explication": "Le prix d'achat n'est souvent qu'une petite part. Les personnes qui exploitent le système, la migration à l'entrée et le coût de sortie pèsent davantage sur dix ans."
+  },
+  {
+    "id": "produits-07",
+    "type": "single",
+    "niveau": 3,
+    "q": "En quoi consiste un remplacement progressif, dit strangler fig ?",
+    "choix": [
+      "Le nouveau système reprend les fonctions une à une, jusqu'à ce que l'ancien puisse être éteint",
+      "Tous les utilisateurs basculent le même jour sur le nouveau système",
+      "L'ancien système est conservé indéfiniment en secours",
+      "Le nouveau système est construit à partir du code de l'ancien"
+    ],
+    "bonnes": [0],
+    "explication": "Chaque usage est redirigé séparément, ce qui limite le risque de chaque étape. La condition de réussite est d'aller jusqu'au bout : éteindre réellement l'ancien système."
+  },
+  {
+    "id": "produits-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'appelle-t-on le budget d'erreur ?",
+    "choix": [
+      "L'écart toléré par l'objectif de service. Une fois consommé, la fiabilité passe avant les nouveautés",
+      "La somme réservée pour payer les pénalités contractuelles",
+      "Le nombre d'anomalies de qualité acceptées par table",
+      "La marge ajoutée au budget d'un projet pour les imprévus"
+    ],
+    "bonnes": [0],
+    "explication": "Un objectif de 99 % tolère 1 % d'écart. Tant qu'il en reste, on peut prendre des risques pour évoluer. Quand il est épuisé, on consolide. L'arbitrage devient une règle au lieu d'une discussion."
+  },
+  {
+    "id": "produits-09",
+    "type": "single",
+    "niveau": 3,
+    "q": "Chaque activité de la salle tient sa propre copie du référentiel instruments. Quel est le risque principal ?",
+    "choix": [
+      "Les copies divergent : le même instrument est décrit différemment d'un système à l'autre",
+      "Le stockage devient insuffisant",
+      "Les copies sont illisibles par les autres activités",
+      "Le fournisseur facture chaque copie au prix fort"
+    ],
+    "bonnes": [0],
+    "explication": "Des descriptions divergentes donnent des prix et des risques qui ne concordent plus, et un travail permanent de rapprochement. C'est exactement ce que la source de référence vise à supprimer."
+  },
+  {
+    "id": "produits-10",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel indicateur dit le mieux si une plateforme de données sert à quelque chose ?",
+    "choix": [
+      "Le nombre d'utilisateurs actifs et de jeux de données réellement consommés",
+      "Le volume total stocké, en téraoctets",
+      "Le nombre de tables créées",
+      "Le nombre de traitements exécutés chaque nuit"
+    ],
+    "bonnes": [0],
+    "explication": "Volume, tables et traitements mesurent une activité, pas une valeur. Un lake qui double de taille sans gagner un utilisateur ne va pas mieux."
+  },
+  {
+    "id": "produits-11",
+    "type": "single",
+    "niveau": 3,
+    "q": "Pourquoi examiner la réversibilité avant de signer avec un fournisseur ?",
+    "choix": [
+      "Le coût de sortie conditionne la marge de manœuvre future, et une stratégie de sortie est exigée pour les fonctions critiques",
+      "Parce qu'un contrat réversible est toujours moins cher",
+      "Parce que les fournisseurs changent de prix chaque trimestre",
+      "Parce que la réversibilité améliore les performances"
+    ],
+    "bonnes": [0],
+    "explication": "Formats ouverts, export des données et des métadonnées, coût réel d'un départ : ces points se négocient avant, pas après. DORA en fait de plus une obligation pour les fonctions critiques."
+  },
+  {
+    "id": "produits-12",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Décommissionner un ancien système ne crée pas de valeur : c'est un coût pur.",
+    "bonnes": [1],
+    "explication": "Éteindre un système libère du budget récurrent, réduit le risque d'obsolescence et simplifie tout ce qui l'entourait. Ne pas le faire revient à payer deux plateformes."
+  },
+  {
+    "id": "produits-13",
+    "type": "single",
+    "niveau": 3,
+    "q": "Quelle est la première question à poser devant une proposition d'architecture ?",
+    "choix": [
+      "Pour quel usage et pour quels utilisateurs ?",
+      "Quelle technologie est utilisée ?",
+      "Quel est l'éditeur retenu ?",
+      "Combien de serveurs sont prévus ?"
+    ],
+    "bonnes": [0],
+    "explication": "Une architecture ne se juge que par rapport à un besoin. Tant que l'usage, les volumes et la fraîcheur attendue ne sont pas posés, discuter de technologie n'a pas d'objet."
+  },
+  {
+    "id": "produits-14",
+    "type": "single",
+    "niveau": 2,
+    "q": "À quoi sert une marche en parallèle lors d'une migration ?",
+    "choix": [
+      "À faire tourner l'ancien et le nouveau système ensemble pour comparer leurs résultats et expliquer les écarts",
+      "À doubler la puissance de calcul pendant la migration",
+      "À former deux équipes en même temps",
+      "À conserver deux fournisseurs pour faire jouer la concurrence"
+    ],
+    "bonnes": [0],
+    "explication": "Pour des chiffres de risque ou de résultat, chaque écart doit être compris avant la bascule. Les fonctions de contrôle l'exigent, et c'est la seule preuve que le nouveau système calcule juste."
+  },
+  {
+    "id": "produits-15",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une migration est faite à 90 %, mais les derniers usages maintiennent l'ancien système en service depuis deux ans. Qu'aurait-il fallu faire ?",
+    "choix": [
+      "Fixer dès le départ une date d'extinction de l'ancien système, et la tenir",
+      "Migrer d'abord les usages les plus simples",
+      "Renoncer à la migration dès les premières difficultés",
+      "Garder l'ancien système comme secours permanent"
+    ],
+    "bonnes": [0],
+    "explication": "Sans date d'extinction, les cas difficiles sont toujours repoussés et l'on paie deux systèmes. La date oblige à traiter ces cas, ou à décider explicitement de les abandonner."
+  },
+  {
+    "id": "produits-16",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Lesquelles de ces situations sont des dérives à reconnaître ?",
+    "choix": [
+      "Un lake où l'on verse tout « au cas où », sans utilisateur identifié",
+      "Un processus critique qui tourne dans un tableur, hors de tout contrôle",
+      "Une technologie retenue parce qu'elle est à la mode",
+      "Un chemin standard qui rend la bonne pratique plus simple que le bricolage"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Le lake fourre-tout, le tableur clandestin et l'architecture pour le CV sont des dérives classiques. Le chemin standard, la « route pavée », est au contraire ce qu'une bonne plateforme cherche à offrir."
+  }
+]

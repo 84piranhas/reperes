@@ -1,0 +1,70 @@
+{
+  "id": "data",
+  "domaine": "Systèmes d'information · Finance de marché",
+  "titre": "Architecture et plateformes de données",
+  "titreCourt": "Plateformes de données",
+  "accroche": "Bases de données, systèmes distribués, data lake, flux, référentiels, données de marché, systèmes de calcul et d'algorithmes : comprendre comment tout cela s'assemble dans une banque de marché, et savoir en parler avec précision.",
+  "couleur": { "clair": "#0f6b62", "sombre": "#5fc4b8" },
+  "chapitres": [
+    {
+      "id": "paysage",
+      "titre": "Le paysage en une page",
+      "resume": "Le trajet d'une donnée, les deux mondes opérationnel et analytique, les familles de données d'une salle de marché et les compromis qui reviennent partout.",
+      "minutes": 8
+    },
+    {
+      "id": "bases",
+      "titre": "Bases de données : les fondamentaux",
+      "resume": "Relationnel, transactions ACID, index, stockage en lignes ou en colonnes, familles NoSQL : ce que chaque type de base fait bien, et ce qu'il fait mal.",
+      "minutes": 11
+    },
+    {
+      "id": "modelisation",
+      "titre": "Modéliser : à plat ou structuré ?",
+      "resume": "Les quatre sens de « à plat », normaliser ou dénormaliser, le schéma en étoile, les formats de fichiers, et la question du temps : ce qu'on savait, et quand.",
+      "minutes": 11
+    },
+    {
+      "id": "distribue",
+      "titre": "Distribué ou non ?",
+      "resume": "Grossir la machine ou en ajouter, partitionner, répliquer, le théorème CAP, et le prix réel de la distribution. Quand elle s'impose, et quand elle est un luxe.",
+      "minutes": 11
+    },
+    {
+      "id": "lake",
+      "titre": "Lake, entrepôt, lakehouse",
+      "resume": "Trois générations de plateformes analytiques, le stockage objet, les formats de table ouverts, les couches bronze, argent et or, et le rôle central du catalogue.",
+      "minutes": 11
+    },
+    {
+      "id": "pipelines",
+      "titre": "Faire circuler la donnée : batch, flux et pipelines",
+      "resume": "ETL et ELT, orchestration, Kafka et le traitement en continu, la capture des changements, et ce qui rend une chaîne de traitement fiable : l'idempotence et le rejeu.",
+      "minutes": 11
+    },
+    {
+      "id": "marche",
+      "titre": "Référentiels et données de marché",
+      "resume": "Source de référence, identifiants, opérations sur titres, chaîne des flux de marché, licences, séries temporelles et jeux de clôture officiels.",
+      "minutes": 13
+    },
+    {
+      "id": "algo",
+      "titre": "Systèmes d'algorithmes propriétaires",
+      "resume": "Pricing, exécution, cotation automatique, stratégies systématiques : leur cycle de vie, les données qu'ils exigent, leur infrastructure et les contrôles qui les encadrent.",
+      "minutes": 12
+    },
+    {
+      "id": "gouvernance",
+      "titre": "Gouvernance, qualité, sécurité et réglementation",
+      "resume": "Qui répond de quoi, comment on mesure la qualité, comment on protège, et ce qu'exigent BCBS 239, le RGPD, MiFID II et DORA. Avec un détour par le data mesh.",
+      "minutes": 12
+    },
+    {
+      "id": "produits",
+      "titre": "Du projet au produit : faire vivre une plateforme",
+      "resume": "Niveaux de service, coûts, construire ou acheter, migrations, indicateurs, et une grille de dix questions pour lire n'importe quelle proposition d'architecture.",
+      "minutes": 11
+    }
+  ]
+}

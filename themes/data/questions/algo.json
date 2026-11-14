@@ -1,0 +1,201 @@
+[
+  {
+    "id": "algo-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce que le biais d'anticipation (look-ahead) dans un backtest ?",
+    "choix": [
+      "Utiliser une information qui n'était pas encore disponible à la date simulée",
+      "Ne tester la stratégie que sur les titres qui existent encore",
+      "Lancer la stratégie en production avant la fin des tests",
+      "Prévoir des rendements plus élevés que la moyenne du marché"
+    ],
+    "bonnes": [0],
+    "explication": "Le cas type : des résultats d'entreprise datés de la fin du trimestre, alors qu'ils n'ont été publiés que des semaines plus tard. La stratégie simulée « sait » trop tôt, et sa performance est fictive."
+  },
+  {
+    "id": "algo-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce que le biais du survivant ?",
+    "choix": [
+      "Tester sur les seuls instruments qui existent encore aujourd'hui, en oubliant ceux qui ont disparu",
+      "Garder en production les seules stratégies qui ont gagné l'an dernier",
+      "Conserver trop longtemps une position perdante",
+      "Privilégier les données les plus récentes de l'historique"
+    ],
+    "bonnes": [0],
+    "explication": "Les sociétés en faillite ou retirées de la cote sortent de l'échantillon. Ce qui reste est mécaniquement meilleur que la réalité de l'époque, et la performance est surestimée."
+  },
+  {
+    "id": "algo-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que veut dire qu'une donnée est fournie point-in-time ?",
+    "choix": [
+      "Elle est restituée telle qu'elle était connue à chaque date passée, sans les corrections ultérieures",
+      "Elle est horodatée à la microseconde",
+      "Elle n'est disponible qu'à heure fixe, une fois par jour",
+      "Elle est livrée en temps réel, sans délai"
+    ],
+    "bonnes": [0],
+    "explication": "C'est l'application du bitemporel à la recherche : rejouer l'histoire avec ce que l'on savait alors. Sans cela, le backtest profite de corrections que personne n'avait à l'époque."
+  },
+  {
+    "id": "algo-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "À quoi sert un kill switch ?",
+    "choix": [
+      "À arrêter immédiatement un algorithme et à annuler ses ordres en attente",
+      "À couper l'alimentation du centre de données en cas d'incendie",
+      "À supprimer les données d'un utilisateur qui quitte la banque",
+      "À désactiver les alertes pendant une maintenance"
+    ],
+    "bonnes": [0],
+    "explication": "L'arrêt d'urgence fait partie du socle exigé par la réglementation européenne sur le trading algorithmique. Il ne vaut que si quelqu'un a l'autorité et le réflexe de s'en servir."
+  },
+  {
+    "id": "algo-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Un algorithme découpe un gros ordre sur la journée pour limiter son impact sur le cours. De quelle famille relève-t-il ?",
+    "choix": ["L'exécution", "La cotation automatique", "Les stratégies systématiques", "Le calcul de prix et de risques"],
+    "bonnes": [0],
+    "explication": "Il ne décide pas quoi acheter : il exécute au mieux une décision déjà prise. La cotation automatique publie des prix en continu, la stratégie systématique génère la décision elle-même."
+  },
+  {
+    "id": "algo-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "À quoi sert une grille de calcul ?",
+    "choix": [
+      "À répartir sur des milliers de processeurs des calculs indépendants, comme des scénarios de risque",
+      "À stocker l'historique des données de marché",
+      "À réduire la latence d'envoi des ordres",
+      "À répliquer une base de données sur un second site"
+    ],
+    "bonnes": [0],
+    "explication": "Simulations et scénarios se calculent chacun de leur côté : le parallélisme y est naturel. La grille est dimensionnée pour le pic de la nuit, d'où l'intérêt de louer la capacité de pointe."
+  },
+  {
+    "id": "algo-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que faut-il versionner pour pouvoir reproduire un résultat ?",
+    "choix": [
+      "Le code, les données et la configuration",
+      "Le code seulement : les données ne changent pas",
+      "Les données seulement : le code est déterministe",
+      "Les résultats eux-mêmes, sous forme de captures d'écran"
+    ],
+    "bonnes": [0],
+    "explication": "Le même code sur des données corrigées entre-temps, ou avec un paramètre modifié, ne donne plus le même résultat. Il faut figer les trois, et savoir quelle combinaison a produit quel chiffre."
+  },
+  {
+    "id": "algo-08",
+    "type": "single",
+    "niveau": 3,
+    "q": "Que montre avant tout l'accident de Knight Capital en 2012 ?",
+    "choix": [
+      "Un déploiement est un risque en soi : un serveur oublié a réveillé un ancien code",
+      "Une stratégie surapprise sur le passé finit toujours par perdre",
+      "Les données de marché d'un fournisseur peuvent être fausses",
+      "Un algorithme trop lent se fait devancer par ses concurrents"
+    ],
+    "bonnes": [0],
+    "explication": "L'origine n'est ni le modèle ni les données, mais la mise en production : huit serveurs, un seul non mis à jour, un paramètre réutilisé. Plus de 400 millions de dollars perdus en quarante-cinq minutes."
+  },
+  {
+    "id": "algo-09",
+    "type": "single",
+    "niveau": 2,
+    "q": "Une stratégie affiche un backtest remarquable après deux cents variantes essayées, puis déçoit dès sa mise en service. Quelle est l'explication la plus probable ?",
+    "choix": [
+      "Le surapprentissage : la variante retenue épouse le bruit du passé",
+      "Une panne de la grille de calcul",
+      "Une latence trop élevée en production",
+      "Un changement de fournisseur de données"
+    ],
+    "bonnes": [0],
+    "explication": "En essayant assez de variantes, on en trouve toujours une qui colle au passé par hasard. La parade : garder des données que la recherche n'a jamais vues, et compter le nombre d'essais."
+  },
+  {
+    "id": "algo-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un modèle est mis au point en Python, puis réécrit en C++ pour la production. Quel risque cela crée-t-il ?",
+    "choix": [
+      "Les deux versions divergent : ce qui tourne n'est plus exactement ce qui a été validé",
+      "Le modèle devient plus lent en production qu'en recherche",
+      "Le modèle ne peut plus être testé",
+      "Le code C++ ne peut pas lire les données de marché"
+    ],
+    "bonnes": [0],
+    "explication": "Deux implémentations du même modèle évoluent chacune de leur côté. Les parades sont des bibliothèques communes et des tests qui comparent les deux versions sur les mêmes données."
+  },
+  {
+    "id": "algo-11",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'exige en premier lieu la gestion du risque de modèle ?",
+    "choix": [
+      "Un inventaire des modèles et leur validation par une équipe indépendante de leurs concepteurs",
+      "Le remplacement des modèles internes par des logiciels du marché",
+      "La publication du code source des modèles",
+      "Le recalcul de tous les modèles chaque nuit"
+    ],
+    "bonnes": [0],
+    "explication": "Savoir quels modèles existent, les faire valider par d'autres que leurs auteurs, suivre leur performance et les documenter : c'est le socle attendu par tous les superviseurs."
+  },
+  {
+    "id": "algo-12",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Pour un système à très faible latence, le cloud public généraliste est préférable à la colocation.",
+    "bonnes": [1],
+    "explication": "La microseconde se gagne en plaçant les serveurs dans le centre de données de la place, avec du matériel spécialisé. Le cloud généraliste convient à l'analytique et au calcul élastique, pas à ce régime."
+  },
+  {
+    "id": "algo-13",
+    "type": "single",
+    "niveau": 3,
+    "q": "Que mesure le tick-to-trade ?",
+    "choix": [
+      "Le délai entre la réception d'une donnée de marché et l'envoi de l'ordre qui y répond",
+      "Le nombre d'ordres envoyés par seconde",
+      "Le temps de calcul d'un backtest complet",
+      "Le délai entre l'exécution d'un ordre et son règlement"
+    ],
+    "bonnes": [0],
+    "explication": "C'est la mesure reine de la cotation automatique, exprimée en microsecondes. Elle couvre toute la chaîne interne : décodage du flux, décision, contrôles, émission."
+  },
+  {
+    "id": "algo-14",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Quels contrôles s'appliquent à un ordre avant son envoi au marché ?",
+    "choix": [
+      "Une fourchette de prix acceptable",
+      "Une taille et une valeur maximales",
+      "Un nombre maximal de messages",
+      "Une revue annuelle du budget informatique"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Prix, taille, valeur et débit de messages sont vérifiés automatiquement avant chaque envoi. La revue budgétaire n'a rien d'un contrôle avant négociation."
+  },
+  {
+    "id": "algo-15",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un algorithme d'exécution étale un ordre sur six heures. Faut-il lui offrir une infrastructure à la microseconde ?",
+    "choix": [
+      "Non : la latence coûte cher, et l'on n'achète que celle que la stratégie sait rentabiliser",
+      "Oui : tout algorithme de marché doit être le plus rapide possible",
+      "Oui : la réglementation l'impose à tous les algorithmes",
+      "Non : un algorithme d'exécution n'a pas besoin de données de marché"
+    ],
+    "bonnes": [0],
+    "explication": "Sur six heures, gagner quelques microsecondes ne change rien au résultat. La très faible latence est un monde coûteux, réservé aux usages où elle rapporte, comme la cotation automatique."
+  }
+]

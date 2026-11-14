@@ -1,0 +1,128 @@
+<p>La gouvernance des données a mauvaise réputation : on l'associe aux comités et aux tableurs d'inventaire. Sa définition utile tient pourtant en une phrase. Pour chaque donnée qui compte, il faut savoir <strong>qui en répond, ce qu'elle signifie, d'où elle vient, si elle est juste, et qui a le droit de la voir</strong>. Tout le reste est de l'outillage.</p>
+
+<h2>Qui répond de quoi</h2>
+
+<table>
+  <thead><tr><th>Rôle</th><th>Qui</th><th>Ce dont il répond</th></tr></thead>
+  <tbody>
+    <tr><th>Propriétaire de la donnée</th><td>Un responsable métier</td><td>La définition, le niveau de qualité attendu, les règles d'accès</td></tr>
+    <tr><th>Gestionnaire de données</th><td>Un expert du domaine</td><td>La qualité au quotidien : définitions, anomalies, exceptions</td></tr>
+    <tr><th>Dépositaire technique</th><td>L'équipe qui exploite la plateforme</td><td>Stocker, protéger, restaurer, appliquer les règles décidées</td></tr>
+    <tr><th>Consommateur</th><td>Tout utilisateur</td><td>Utiliser dans le cadre de ses droits, signaler les anomalies</td></tr>
+  </tbody>
+</table>
+
+<p>Les termes anglais sont courants : <em>data owner</em>, <em>data steward</em>, <em>data custodian</em>. Le cadre d'ensemble est souvent porté par un directeur des données, le <abbr title="Chief Data Officer">CDO</abbr>.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Idée reçue</p>
+  <p>« Les données appartiennent à l'informatique. » L'informatique les héberge. Elle ne sait pas si l'échéance d'une obligation est la bonne, ni si une contrepartie est rattachée au bon groupe. Une donnée sans propriétaire métier est une donnée dont personne ne corrigera les erreurs.</p>
+</aside>
+
+<h2>Trouver et comprendre : le catalogue</h2>
+
+<p>Le <dfn>catalogue de données</dfn> est le moteur de recherche de la plateforme. Il dit ce qui existe, où, ce que cela signifie, qui en est propriétaire, quel est son niveau de qualité, et comment obtenir un accès. Il s'appuie sur un <dfn>glossaire métier</dfn> : une définition unique et partagée de chaque terme. Savoir ce que recouvre exactement « nominal » ou « exposition » d'un rapport à l'autre évite bien des rapprochements stériles.</p>
+
+<p>Un catalogue rempli à la main est périmé au bout de six mois. Ceux qui vivent sont alimentés automatiquement par la plateforme pour tout ce qui est technique. Les personnes n'y ajoutent que ce qu'elles seules savent : le sens.</p>
+
+<h2>D'où vient ce chiffre : le lignage</h2>
+
+<p>Le <dfn>lignage</dfn> (<em>lineage</em>) retrace le parcours d'une donnée : ses sources, les transformations qu'elle a subies, les usages qui en dépendent. Il sert dans les deux sens. Vers l'aval, pour l'<strong>analyse d'impact</strong> : si je modifie cette colonne, qu'est-ce que je casse ? Vers l'amont, pour l'<strong>explication</strong> : d'où vient ce chiffre du rapport remis au superviseur ? Le lignage le plus utile descend jusqu'à la colonne, et il est extrait du code des traitements plutôt que dessiné à la main.</p>
+
+<h2>Mesurer la qualité</h2>
+
+<table>
+  <thead><tr><th>Dimension</th><th>La question posée</th></tr></thead>
+  <tbody>
+    <tr><th>Exactitude</th><td>La valeur reflète-t-elle la réalité ?</td></tr>
+    <tr><th>Complétude</th><td>Manque-t-il des valeurs ou des lignes ?</td></tr>
+    <tr><th>Fraîcheur</th><td>La donnée est-elle arrivée à temps ?</td></tr>
+    <tr><th>Cohérence</th><td>Les mêmes faits concordent-ils d'un système à l'autre ?</td></tr>
+    <tr><th>Unicité</th><td>Y a-t-il des doublons ?</td></tr>
+    <tr><th>Validité</th><td>Les formats et les valeurs respectent-ils les règles ?</td></tr>
+  </tbody>
+</table>
+
+<p>Trois principes font la différence entre un programme de qualité qui marche et un qui s'enlise.</p>
+
+<ul>
+  <li><strong>Mesurer automatiquement.</strong> Des règles exécutées à chaque traitement, des scores suivis dans le temps. Ce qui n'est pas mesuré ne s'améliore pas.</li>
+  <li><strong>Corriger à la source.</strong> Une correction faite en aval est un pansement : la source continue de produire l'erreur, et le chiffre corrigé diverge de tous les autres.</li>
+  <li><strong>Choisir ses batailles.</strong> On ne gouverne pas tout. On identifie les <dfn>données critiques</dfn>, les quelques centaines qui alimentent les risques et les rapports réglementaires, et l'on commence par elles.</li>
+</ul>
+
+<h2>BCBS 239</h2>
+
+<p>En 2008, plusieurs grandes banques ont été incapables de dire rapidement à combien s'élevait leur exposition totale sur une contrepartie en difficulté. Le Comité de Bâle en a tiré, en 2013, un texte connu sous son numéro : <strong>BCBS 239</strong>. Il énonce quatorze principes sur l'agrégation des données de risque et sur les rapports de risque.</p>
+
+<table>
+  <thead><tr><th>Groupe</th><th>Ce qui est demandé</th></tr></thead>
+  <tbody>
+    <tr><th>Gouvernance et infrastructure</th><td>Une responsabilité claire au plus haut niveau, et une architecture qui tient en période de crise</td></tr>
+    <tr><th>Capacités d'agrégation</th><td>Exactitude et intégrité, exhaustivité, actualité, adaptabilité</td></tr>
+    <tr><th>Pratiques de reporting</th><td>Des rapports exacts, complets, clairs, à la bonne fréquence, remis aux bonnes personnes</td></tr>
+    <tr><th>Rôle des superviseurs</th><td>Évaluer, faire corriger, coopérer entre autorités</td></tr>
+  </tbody>
+</table>
+
+<p>Le principe le plus exigeant est l'<dfn>adaptabilité</dfn> : pouvoir produire à la demande, en pleine crise, une agrégation que personne n'avait prévue. C'est un test d'architecture autant que de données. Plus de dix ans après, très peu de grandes banques sont jugées pleinement conformes, et le superviseur européen a précisé et durci ses attentes en 2024. Le sujet reste une priorité de contrôle.</p>
+
+<p>Concrètement, cela se traduit par des données critiques identifiées, chacune avec un propriétaire, un lignage documenté de la source jusqu'au rapport, une qualité mesurée, et le moins possible de retraitements manuels dans des tableurs.</p>
+
+<h2>Le RGPD</h2>
+
+<p>Une salle de marché manipule plus de données personnelles qu'on ne croit : clients particuliers, interlocuteurs chez les contreparties, et les collaborateurs eux-mêmes, dont les identifiants figurent sur les ordres et dont les communications sont enregistrées. Le règlement impose une finalité déclarée, la minimisation, une durée de conservation limitée, et des droits pour les personnes, dont l'effacement.</p>
+
+<p>La difficulté est technique. Un lake conserve tout et multiplie les copies. Il faut donc savoir <em>localiser</em> les données personnelles, ce que permet le catalogue, et pouvoir les supprimer ou les masquer, ce que permettent les formats de table. Quand une obligation légale de conservation existe, elle l'emporte sur la demande d'effacement pendant sa durée.</p>
+
+<h2>MiFID II : conserver et horodater</h2>
+
+<p>La directive impose de conserver les enregistrements des ordres, des transactions et des communications qui y mènent pendant <strong>cinq ans</strong>, durée que l'autorité peut porter à sept. Elle exige de pouvoir reconstituer la vie complète d'un ordre, et de synchroniser les horloges sur le temps universel avec une précision qui dépend de l'activité. Pour une plateforme de données, cela signifie de l'archivage fiable, interrogeable, et protégé contre toute modification.</p>
+
+<h2>DORA</h2>
+
+<p>Le règlement européen sur la résilience opérationnelle numérique s'applique depuis le <strong>17 janvier 2025</strong>. Il couvre cinq domaines : la gestion du risque informatique, la gestion et la déclaration des incidents, les tests de résilience, le risque lié aux prestataires, et le partage d'information.</p>
+
+<p>Son volet sur les prestataires touche directement les plateformes de données. Il faut tenir un registre de tous les contrats, analyser la concentration sur quelques fournisseurs de cloud, et disposer pour les fonctions critiques d'une <dfn>stratégie de sortie</dfn> : savoir comment on quitterait le prestataire, et l'avoir vérifié.</p>
+
+<h2>Protéger</h2>
+
+<ul>
+  <li><strong>Classer.</strong> Publique, interne, confidentielle, secrète : la classification d'une donnée commande toutes les autres mesures.</li>
+  <li><strong>Le moindre privilège.</strong> Chacun n'a que les accès strictement nécessaires à sa fonction.</li>
+  <li><strong>Deux modèles d'habilitation.</strong> Par rôle (<abbr title="Role-Based Access Control">RBAC</abbr>) : on a les droits de sa fonction. Par attributs (<abbr title="Attribute-Based Access Control">ABAC</abbr>) : les droits dépendent de caractéristiques de l'utilisateur, de la donnée et du contexte. Le second est plus fin, et plus délicat à administrer.</li>
+  <li><strong>Filtrer et masquer.</strong> Un même tableau peut montrer à chacun ses seules lignes, et masquer certaines colonnes.</li>
+  <li><strong>Chiffrer</strong> les données au repos et en transit, et gérer les clés avec soin.</li>
+  <li><strong>Tracer</strong> les accès : qui a lu quoi, et quand.</li>
+</ul>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>Une banque sépare les équipes qui détiennent des informations privilégiées sur des émetteurs de celles qui traitent sur les marchés : ce sont les murailles de Chine. Un lake commun à toute la banque rend ce cloisonnement plus délicat. Il ne tient que par des droits fins, à la ligne et à la colonne, et par une trace complète des accès. C'est un argument fort pour que les habilitations soient portées par le catalogue, et non réglées outil par outil.</p>
+</aside>
+
+<h2>Le data mesh</h2>
+
+<p>Proposé en 2019, le <dfn>data mesh</dfn> part d'un constat : une équipe data centrale devient un goulet d'étranglement, et elle est loin de ceux qui comprennent les données. Il repose sur quatre principes.</p>
+
+<ol>
+  <li><strong>La responsabilité par domaine.</strong> Les équipes métier qui produisent une donnée en sont responsables de bout en bout.</li>
+  <li><strong>La donnée comme produit.</strong> Chaque domaine expose ses données comme des produits, avec des utilisateurs, une qualité et une documentation.</li>
+  <li><strong>Une plateforme en libre-service.</strong> Une équipe centrale fournit les outils, pour que chaque domaine ne réinvente pas tout.</li>
+  <li><strong>Une gouvernance fédérée.</strong> Des règles communes sur les identifiants, la sécurité et l'interopérabilité, appliquées automatiquement.</li>
+</ol>
+
+<p>C'est un modèle d'organisation, pas une technologie : il n'existe pas de logiciel « data mesh » à acheter. Ses risques sont le miroir de ses promesses. Sans gouvernance fédérée solide, chaque domaine fait à sa façon. Sans compétences dans les domaines, les produits ne voient pas le jour. La plupart des banques retiennent une forme hybride : une plateforme centrale, et des produits portés par les domaines.</p>
+
+<p>Un <dfn>produit de données</dfn>, dans ce vocabulaire, est un jeu de données servi avec tout ce qu'il faut pour s'en servir en confiance : un propriétaire, une documentation, un schéma stable, un niveau de service, des mesures de qualité et un moyen simple d'y accéder.</p>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Gouverner, c'est savoir qui répond d'une donnée, ce qu'elle signifie, d'où elle vient, si elle est juste, et qui peut la voir.</li>
+    <li>Le propriétaire d'une donnée est un responsable métier. L'informatique en est le dépositaire.</li>
+    <li>La qualité se mesure automatiquement et se corrige à la source, en commençant par les données critiques.</li>
+    <li>BCBS 239 pour les données de risque, RGPD pour les données personnelles, MiFID II pour la conservation, DORA pour la résilience et les prestataires.</li>
+    <li>Le data mesh est une organisation : des domaines responsables, des produits, une plateforme commune, des règles fédérées.</li>
+  </ul>
+</aside>

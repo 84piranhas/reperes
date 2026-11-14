@@ -1,0 +1,107 @@
+<p>Modéliser, c'est décider de la forme que prend une donnée : en combien de tables, avec quel degré de redondance, dans quel format, et avec quelle mémoire du passé. Ce choix se fait tôt et se défait difficilement. C'est aussi le terrain d'une expression qu'on entend partout sans qu'elle ait toujours le même sens : « à plat ».</p>
+
+<h2>« À plat » : un mot, quatre sens</h2>
+
+<table>
+  <thead><tr><th>Expression</th><th>Ce qu'elle désigne</th><th>Son contraire</th></tr></thead>
+  <tbody>
+    <tr><th>Fichier plat</th><td>Un fichier texte, une ligne par enregistrement, sans index ni relations. Le CSV en est l'exemple type.</td><td>Une base de données</td></tr>
+    <tr><th>Table à plat</th><td>Une table large où tout est recopié sur chaque ligne, sans renvoi vers d'autres tables.</td><td>Un modèle normalisé, en plusieurs tables liées</td></tr>
+    <tr><th>Structure à plat</th><td>Des colonnes simples, sans imbrication.</td><td>Des données imbriquées : une opération qui contient ses jambes</td></tr>
+    <tr><th>Espace de noms à plat</th><td>Un stockage où chaque objet est repéré par une clé, sans vrais répertoires. C'est le cas du stockage objet.</td><td>Un système de fichiers hiérarchique</td></tr>
+  </tbody>
+</table>
+
+<p>On parle aussi parfois d'<strong>architecture à plat</strong> pour une plateforme sans couches : les consommateurs accèdent directement aux données sources, sans zone intermédiaire de nettoyage ni de mise en forme.</p>
+
+<aside class="note question">
+  <p class="etiquette">Le réflexe</p>
+  <p>Quand quelqu'un propose de « mettre les données à plat », la bonne réponse est une question : à plat dans quel sens ? Un export CSV, une table dénormalisée et la suppression d'une couche d'architecture n'ont ni les mêmes avantages ni les mêmes risques.</p>
+</aside>
+
+<h2>Normaliser</h2>
+
+<p><dfn>Normaliser</dfn>, c'est ranger chaque information à un seul endroit. La notation d'une contrepartie figure dans la table des tiers, et nulle part ailleurs. Les opérations ne portent que l'identifiant du tiers. Le jour où la notation change, on modifie une ligne, et aucune contradiction n'est possible.</p>
+
+<p>C'est le modèle naturel des bases opérationnelles, où l'on écrit beaucoup et où l'intégrité prime. Son revers apparaît à la lecture : pour afficher une opération avec le nom du tiers, son pays, le libellé de l'instrument et celui du portefeuille, il faut recoller cinq tables. Sur des millions de lignes, ces jointures pèsent.</p>
+
+<h2>Dénormaliser</h2>
+
+<p><dfn>Dénormaliser</dfn>, c'est recopier volontairement pour lire plus vite. La table des opérations porte directement le nom du tiers et son pays. Plus de jointure : la lecture est simple et rapide. En contrepartie, la même information vit à des milliers d'endroits. Si elle change, il faut tout réécrire, ou accepter que les anciennes lignes gardent l'ancienne valeur.</p>
+
+<p>Ce dernier point n'est pas toujours un défaut. Pour un rapport de risque, garder la notation <em>telle qu'elle était le jour du calcul</em> est souvent exactement ce que l'on veut.</p>
+
+<h2>Le schéma en étoile</h2>
+
+<p>La modélisation analytique classique tient en deux types de tables. La <dfn>table de faits</dfn> contient les événements ou les mesures : une ligne par opération, par position quotidienne, par résultat de calcul, avec des montants et des quantités. Les <dfn>tables de dimensions</dfn> décrivent les axes d'analyse : la date, l'instrument, le portefeuille, la contrepartie. La table de faits, au centre, pointe vers les dimensions autour d'elle, d'où le nom d'étoile.</p>
+
+<p>Ce modèle se lit facilement : on filtre sur les dimensions, on agrège les faits. Deux variantes à connaître. Quand un attribut de dimension change, on peut l'écraser, ou ajouter une nouvelle ligne avec des dates de validité pour garder l'historique : c'est la <dfn>dimension à évolution lente de type 2</dfn>. Et quand l'enjeu est d'intégrer de nombreuses sources en gardant la trace de tout, certaines banques retiennent le modèle <dfn>Data Vault</dfn>, plus verbeux mais conçu pour l'audit.</p>
+
+<h2>La grande table unique</h2>
+
+<p>Les moteurs en colonnes ont changé l'équation. Une colonne que la requête ne lit pas ne coûte rien, et les valeurs répétées se compressent très bien. Une table de plusieurs centaines de colonnes, entièrement dénormalisée, redevient raisonnable. Pour un utilisateur, c'est le confort : une seule table, aucune jointure.</p>
+
+<p>La contrepartie est ailleurs. Les règles de calcul se retrouvent figées dans la table, chaque nouveau besoin ajoute des colonnes, et le coût de reconstruction grandit avec elle. La grande table est un bon produit fini, rarement un bon modèle de fond.</p>
+
+<h2>Les données imbriquées</h2>
+
+<p>Beaucoup d'objets financiers ne sont pas plats par nature. Un swap a deux jambes, chaque jambe a un échéancier, chaque échéance a ses flux. Les formats modernes savent stocker cette arborescence telle quelle. On parle de données <dfn>semi-structurées</dfn>.</p>
+
+<p><dfn>Aplatir</dfn>, c'est transformer cet arbre en lignes et en colonnes : une ligne par jambe ou par flux, avec les informations de l'opération répétées. L'opération rend les données plus faciles à interroger en SQL, mais elle multiplie les lignes. Compter les opérations sur une table aplatie par flux est une erreur classique.</p>
+
+<h2>Schéma à l'écriture ou à la lecture</h2>
+
+<ul>
+  <li><strong>Schéma à l'écriture</strong> (<em>schema-on-write</em>). La structure est imposée à l'entrée. Ce qui n'est pas conforme est rejeté. On gagne en qualité, on perd en souplesse : accueillir une nouvelle source demande un travail préalable.</li>
+  <li><strong>Schéma à la lecture</strong> (<em>schema-on-read</em>). On stocke la donnée brute et on l'interprète au moment de la lire. Tout entre immédiatement, mais chaque lecteur doit refaire l'interprétation, et les erreurs se découvrent tard.</li>
+</ul>
+
+<p>Les entrepôts ont été bâtis sur le premier principe, les lakes sur le second. Les plateformes actuelles combinent les deux : brut à l'entrée, structuré ensuite.</p>
+
+<h2>Les formats de fichiers</h2>
+
+<table>
+  <thead><tr><th>Format</th><th>Organisation</th><th>Schéma</th><th>Usage</th></tr></thead>
+  <tbody>
+    <tr><th>CSV</th><td>Lignes, texte</td><td>Aucun : les types sont devinés</td><td>Échange universel, lisible, fragile</td></tr>
+    <tr><th>JSON</th><td>Lignes, texte imbriqué</td><td>Implicite</td><td>API, événements, semi-structuré</td></tr>
+    <tr><th>Avro</th><td>Lignes, binaire</td><td>Embarqué, fait pour évoluer</td><td>Flux d'événements</td></tr>
+    <tr><th>Parquet, ORC</th><td>Colonnes, binaire compressé</td><td>Embarqué, typé</td><td>Analytique, lake</td></tr>
+  </tbody>
+</table>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège du CSV</p>
+  <p>Un CSV ne dit rien de ses types. Une date « 03/04/2026 » est-elle le 3 avril ou le 4 mars ? Un montant « 1,250 » vaut-il mille deux cent cinquante ou un et quart ? Une virgule dans un libellé décale-t-elle toutes les colonnes ? Une part étonnante des incidents de production vient de là. Un format typé, comme Parquet ou Avro, les supprime.</p>
+</aside>
+
+<h2>Le temps : ce qu'on savait, et quand</h2>
+
+<p>En finance, une donnée porte deux horloges. Le <dfn>temps de validité</dfn> dit à quel moment le fait est vrai dans le monde. Le <dfn>temps de connaissance</dfn> dit à quel moment le système l'a su. Un modèle qui garde les deux est dit <dfn>bitemporel</dfn>.</p>
+
+<table>
+  <thead><tr><th>Date de valeur</th><th>Cours de clôture</th><th>Connu à partir du</th><th>Remplacé le</th></tr></thead>
+  <tbody>
+    <tr><td>3 mars</td><td>101,20</td><td>3 mars, 18 h 05</td><td>5 mars, 10 h 12</td></tr>
+    <tr><td>3 mars</td><td>101,45</td><td>5 mars, 10 h 12</td><td>—</td></tr>
+  </tbody>
+</table>
+
+<p>Le cours du 3 mars a été corrigé le 5. Deux questions deviennent possibles, et elles n'ont pas la même réponse. « Quel était le cours du 3 mars ? » : 101,45, la meilleure connaissance actuelle. « Avec quel cours a-t-on calculé le résultat publié le 3 au soir ? » : 101,20. Seule la seconde permet de reproduire un chiffre publié, de répondre à un auditeur, ou de tester une stratégie sans lui donner une information qu'elle n'aurait pas eue.</p>
+
+<p>La règle qui en découle est simple : <strong>on n'écrase jamais, on ajoute</strong>. Une correction est une nouvelle ligne, pas une modification.</p>
+
+<h2>Faire évoluer un schéma</h2>
+
+<p>Un schéma change : c'est inévitable. Ajouter une colonne facultative ne casse personne. Renommer, supprimer ou changer le type d'une colonne casse tous ceux qui la lisent. D'où deux pratiques : versionner les schémas, et vérifier la <dfn>compatibilité</dfn> d'un changement avant de le déployer, de préférence automatiquement.</p>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>« À plat » a au moins quatre sens : fichier, table, structure, espace de noms. Toujours faire préciser.</li>
+    <li>Normaliser protège l'intégrité et sert l'écriture. Dénormaliser sert la lecture, au prix de la redondance.</li>
+    <li>Le schéma en étoile sépare les faits, que l'on agrège, des dimensions, sur lesquelles on filtre.</li>
+    <li>Parquet pour l'analytique, Avro pour les flux, CSV avec prudence.</li>
+    <li>Le bitemporel garde le fait et la date à laquelle on l'a su. On n'écrase jamais, on ajoute.</li>
+  </ul>
+</aside>

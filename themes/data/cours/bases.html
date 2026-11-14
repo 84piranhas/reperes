@@ -1,0 +1,113 @@
+<p>Une base de données n'est pas un simple entrepôt de fichiers. C'est un logiciel qui prend trois engagements : retrouver vite, ne rien perdre, et rester juste quand plusieurs utilisateurs écrivent en même temps. Les différentes familles de bases tiennent ces engagements à des degrés divers, et c'est ce qui les distingue.</p>
+
+<h2>Le modèle relationnel</h2>
+
+<p>Depuis les années 1970, le modèle dominant range les données dans des <dfn>tables</dfn> : des lignes, des colonnes typées, et des <dfn>clés</dfn> qui relient les tables entre elles. Une table des opérations ne recopie pas le nom de la contrepartie : elle porte son identifiant, qui renvoie à la table des tiers. Le langage <strong>SQL</strong> permet d'interroger l'ensemble, et de recoller les tables par des <dfn>jointures</dfn>.</p>
+
+<p>Les grands noms à connaître : Oracle, Microsoft SQL Server, PostgreSQL (libre, devenu la référence par défaut), et Sybase (aujourd'hui SAP ASE), très présent historiquement en salle de marché.</p>
+
+<h2>Les transactions : ACID</h2>
+
+<p>Une <dfn>transaction</dfn> regroupe plusieurs modifications qui n'ont de sens qu'ensemble. Enregistrer une opération, c'est créer l'opération, mettre à jour la position et générer les flux attendus. Si la machine tombe au milieu, on ne veut pas d'une position mise à jour sans opération. Quatre propriétés, résumées par le sigle ACID, encadrent cela.</p>
+
+<table>
+  <thead><tr><th>Propriété</th><th>Ce qu'elle garantit</th></tr></thead>
+  <tbody>
+    <tr><th>Atomicité</th><td>Tout ou rien : la transaction s'applique entièrement, ou pas du tout.</td></tr>
+    <tr><th>Cohérence</th><td>Les règles déclarées (unicité, contraintes, clés) restent vraies après la transaction.</td></tr>
+    <tr><th>Isolation</th><td>Deux transactions simultanées ne voient pas les états intermédiaires l'une de l'autre.</td></tr>
+    <tr><th>Durabilité</th><td>Une transaction confirmée survit à une panne.</td></tr>
+  </tbody>
+</table>
+
+<p>Ces garanties ont un coût : des verrous, un journal écrit sur disque avant toute confirmation, de la coordination. C'est ce coût que certaines bases choisissent de ne pas payer pour aller plus vite ou plus loin.</p>
+
+<h2>Les index</h2>
+
+<p>Sans index, retrouver une opération par son numéro oblige à lire toute la table. Un <dfn>index</dfn> est une structure triée, tenue à jour à côté de la table, qui mène directement à la bonne ligne, comme l'index d'un livre. Sa contrepartie : chaque écriture doit aussi mettre l'index à jour, et il occupe de la place. Trop d'index ralentissent les écritures, pas assez ralentissent les lectures. Une grande part du travail d'un administrateur de bases (le DBA) consiste à régler cet équilibre.</p>
+
+<h2>Lignes ou colonnes</h2>
+
+<p>C'est le choix physique le plus lourd de conséquences. Une même table peut être écrite sur disque de deux façons.</p>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 212" role="img" aria-label="À gauche, une table stockée ligne par ligne. À droite, la même table stockée colonne par colonne.">
+    <text class="t" x="20" y="24">Stockage en lignes</text>
+    <text class="ts m" x="62" y="50">N°</text><text class="ts m" x="146" y="50">Activité</text><text class="ts m" x="230" y="50">Devise</text><text class="ts m" x="314" y="50">Nominal</text>
+    <rect class="b" x="20" y="58" width="336" height="30" rx="6"/>
+    <rect class="ba" x="20" y="96" width="336" height="30" rx="6"/>
+    <rect class="b" x="20" y="134" width="336" height="30" rx="6"/>
+    <text class="ts m" x="62" y="78">1001</text><text class="ts m" x="146" y="78">Taux</text><text class="ts m" x="230" y="78">EUR</text><text class="ts m" x="314" y="78">5 M</text>
+    <text class="t m" x="62" y="116">1002</text><text class="t m" x="146" y="116">Actions</text><text class="t m" x="230" y="116">USD</text><text class="t m" x="314" y="116">2 M</text>
+    <text class="ts m" x="62" y="154">1003</text><text class="ts m" x="146" y="154">Change</text><text class="ts m" x="230" y="154">EUR</text><text class="ts m" x="314" y="154">8 M</text>
+    <text class="ts" x="20" y="192">Lire ou modifier l'opération 1002 : un seul bloc.</text>
+
+    <text class="t" x="404" y="24">Stockage en colonnes</text>
+    <text class="ts m" x="442" y="50">N°</text><text class="ts m" x="528" y="50">Activité</text><text class="ts m" x="614" y="50">Devise</text><text class="ts m" x="700" y="50">Nominal</text>
+    <rect class="b" x="404" y="58" width="76" height="106" rx="6"/>
+    <rect class="b" x="490" y="58" width="76" height="106" rx="6"/>
+    <rect class="b" x="576" y="58" width="76" height="106" rx="6"/>
+    <rect class="ba" x="662" y="58" width="76" height="106" rx="6"/>
+    <text class="ts m" x="442" y="80">1001</text><text class="ts m" x="442" y="116">1002</text><text class="ts m" x="442" y="152">1003</text>
+    <text class="ts m" x="528" y="80">Taux</text><text class="ts m" x="528" y="116">Actions</text><text class="ts m" x="528" y="152">Change</text>
+    <text class="ts m" x="614" y="80">EUR</text><text class="ts m" x="614" y="116">USD</text><text class="ts m" x="614" y="152">EUR</text>
+    <text class="t m" x="700" y="80">5 M</text><text class="t m" x="700" y="116">2 M</text><text class="t m" x="700" y="152">8 M</text>
+    <text class="ts" x="404" y="192">Sommer les nominaux : une seule colonne à lire.</text>
+  </svg>
+  </div>
+  <figcaption>La même table, deux organisations physiques, deux usages.</figcaption>
+</figure>
+
+<p>En <strong>lignes</strong>, toutes les valeurs d'un enregistrement sont côte à côte. Lire ou modifier une opération touche un seul endroit : c'est idéal pour l'opérationnel.</p>
+
+<p>En <strong>colonnes</strong>, toutes les valeurs d'une même colonne sont côte à côte. Sur une table de quatre-vingts colonnes, une requête qui somme un nominal sur un milliard de lignes ne lit que cette colonne et ignore les soixante-dix-neuf autres. Les valeurs voisines se ressemblent, donc se compressent très bien. C'est idéal pour l'analytique, et médiocre pour modifier une ligne à la fois.</p>
+
+<p>Côté analytique, les noms à connaître : Teradata et Vertica pour la génération sur site, Snowflake, BigQuery, Redshift et Databricks dans le cloud, ClickHouse pour la vitesse brute, DuckDB pour l'analyse sur une seule machine.</p>
+
+<h2>Les familles NoSQL</h2>
+
+<p>À la fin des années 2000, les géants du web butent sur les limites du relationnel : trop de données pour une machine, des structures trop changeantes. Naissent des bases qui relâchent certaines contraintes pour gagner en échelle ou en souplesse. Le terme <dfn>NoSQL</dfn> les regroupe, mais elles n'ont pas grand-chose en commun.</p>
+
+<table>
+  <thead><tr><th>Famille</th><th>Principe</th><th>Usage typique</th><th>Exemples</th></tr></thead>
+  <tbody>
+    <tr><th>Clé-valeur</th><td>Un identifiant donne une valeur, rien de plus</td><td>Cache, sessions, dernier prix connu</td><td>Redis</td></tr>
+    <tr><th>Document</th><td>Des objets imbriqués, sans schéma fixe</td><td>Objets à structure variable, catalogues</td><td>MongoDB</td></tr>
+    <tr><th>Colonnes larges</th><td>Des lignes très larges, réparties sur beaucoup de machines</td><td>Écritures massives, historiques d'événements</td><td>Cassandra, HBase</td></tr>
+    <tr><th>Graphe</th><td>Des nœuds et des relations</td><td>Liens capitalistiques, réseaux de contreparties</td><td>Neo4j</td></tr>
+    <tr><th>Recherche</th><td>Des index inversés sur du texte</td><td>Recherche plein texte, exploration de journaux</td><td>Elasticsearch</td></tr>
+    <tr><th>Séries temporelles</th><td>Des valeurs horodatées, triées par le temps</td><td>Ticks, mesures, métriques</td><td>kdb+, InfluxDB, TimescaleDB</td></tr>
+  </tbody>
+</table>
+
+<p>Ce que ces bases abandonnent le plus souvent : les jointures, et les transactions portant sur plusieurs enregistrements. Depuis, la frontière s'est estompée. Les bases dites <dfn>NewSQL</dfn>, comme Spanner ou CockroachDB, offrent SQL et transactions ACID sur une architecture distribuée, tandis que PostgreSQL sait stocker des documents.</p>
+
+<h2>La mémoire vive</h2>
+
+<p>Lire en mémoire est des milliers de fois plus rapide que lire sur disque. Trois usages en tirent parti. Le <dfn>cache</dfn>, placé devant une base, sert très vite les lectures fréquentes, au prix d'une donnée parfois légèrement périmée. La <dfn>grille de données</dfn> en mémoire partage un état entre applications. Et les <dfn>cubes en mémoire</dfn> agrègent à la volée des millions de lignes de risque selon n'importe quel axe : portefeuille, devise, contrepartie.</p>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>Une chaîne de risque typique enchaîne les trois mondes. Les opérations vivent dans une base relationnelle en lignes. Les résultats de calcul, des centaines de millions de lignes par nuit, sont écrits dans un moteur en colonnes ou dans le lake. Les utilisateurs les explorent dans un cube en mémoire.</p>
+</aside>
+
+<h2>Comment choisir</h2>
+
+<p>La question n'est jamais « quelle est la meilleure base ? ». C'est : <strong>quelles lectures, quelles écritures, à quel volume et à quelle fréquence ?</strong> Le profil d'accès désigne la famille. Viennent ensuite les garanties attendues, puis les compétences disponibles pour exploiter l'outil.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>Chaque nouvelle technologie de base doit être installée, supervisée, sauvegardée, sécurisée, mise à jour, et quelqu'un doit savoir la dépanner à trois heures du matin. Multiplier les bases « parce que chacune est la meilleure pour son cas » a un coût d'exploitation qui dépasse vite le gain. Une base généraliste bien maîtrisée couvre souvent 80 % des besoins.</p>
+</aside>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>ACID : atomicité, cohérence, isolation, durabilité. Ce sont les garanties d'une transaction, et elles ont un coût.</li>
+    <li>Un index accélère les lectures et ralentit les écritures.</li>
+    <li>Stockage en lignes pour l'opérationnel, en colonnes pour l'analytique.</li>
+    <li>NoSQL désigne des familles très différentes, qui échangent des garanties contre de l'échelle ou de la souplesse.</li>
+    <li>On choisit une base d'après le profil d'accès, et on compte ce que coûte son exploitation.</li>
+  </ul>
+</aside>

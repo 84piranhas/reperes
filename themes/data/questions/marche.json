@@ -1,0 +1,201 @@
+[
+  {
+    "id": "marche-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'appelle-t-on une source de référence (golden source) ?",
+    "choix": [
+      "Le système désigné comme faisant autorité pour une donnée, auprès duquel tous les autres s'alimentent",
+      "Le fournisseur externe le plus cher du marché",
+      "La copie de sauvegarde la plus récente d'une base",
+      "Le premier système à avoir reçu la donnée"
+    ],
+    "bonnes": [0],
+    "explication": "Une seule source fait foi pour chaque donnée. Sans elle, chaque activité tient sa copie, les copies divergent, et il faut les rapprocher en permanence."
+  },
+  {
+    "id": "marche-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que désigne un LEI ?",
+    "choix": ["Une entité juridique", "Un titre financier", "Une place de marché", "Une transaction"],
+    "bonnes": [0],
+    "explication": "Le LEI, identifiant d'entité juridique, compte 20 caractères. Le titre est désigné par l'ISIN, la place par le MIC, la transaction sur dérivés par l'UTI."
+  },
+  {
+    "id": "marche-03",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que désigne un ISIN ?",
+    "choix": [
+      "Un titre financier, indépendamment de l'endroit où il s'échange",
+      "La cotation d'un titre sur une place donnée",
+      "Une entité juridique émettrice",
+      "Un portefeuille interne à la banque"
+    ],
+    "bonnes": [0],
+    "explication": "L'ISIN identifie le titre lui-même. Il ne dit rien de la place ni de la devise de cotation, ce qui le rend insuffisant pour désigner un prix."
+  },
+  {
+    "id": "marche-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi un ISIN seul ne suffit-il pas à désigner un prix ?",
+    "choix": [
+      "Le même titre cote sur plusieurs places et en plusieurs devises, à des prix différents",
+      "Un ISIN change chaque année",
+      "Un ISIN n'existe que pour les obligations",
+      "Un ISIN est propre à chaque fournisseur de données"
+    ],
+    "bonnes": [0],
+    "explication": "Il faut ajouter la place et la devise, ou utiliser un identifiant de niveau cotation. C'est pourquoi la table de correspondance entre identifiants est l'un des services les plus utilisés d'un référentiel."
+  },
+  {
+    "id": "marche-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle différence y a-t-il entre des données de marché de niveau 1 et de niveau 2 ?",
+    "choix": [
+      "Le niveau 1 donne les meilleurs prix et le dernier échange, le niveau 2 ajoute la profondeur du carnet",
+      "Le niveau 1 est en temps réel, le niveau 2 est différé de quinze minutes",
+      "Le niveau 1 concerne les actions, le niveau 2 les obligations",
+      "Le niveau 1 est gratuit, le niveau 2 est payant"
+    ],
+    "bonnes": [0],
+    "explication": "Le niveau 2 montre les quantités offertes et demandées à chaque prix. Le niveau 3 descend jusqu'à l'ordre individuel. Chaque niveau multiplie le volume de données à traiter."
+  },
+  {
+    "id": "marche-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Dans une licence de données de marché, que recouvre l'usage « hors affichage » ?",
+    "choix": [
+      "La consommation de la donnée par une machine : algorithme, moteur de prix, calcul de risque",
+      "La consultation de la donnée sur un écran en dehors des heures de marché",
+      "L'archivage de la donnée sans jamais la relire",
+      "L'envoi de la donnée à des clients externes"
+    ],
+    "bonnes": [0],
+    "explication": "Dès qu'un programme consomme la donnée sans qu'une personne la regarde, on est hors affichage. Cet usage fait l'objet d'une tarification propre, souvent bien plus élevée. L'envoi à des clients relève de la redistribution."
+  },
+  {
+    "id": "marche-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi kdb+ est-il si répandu dans les banques d'investissement ?",
+    "choix": [
+      "C'est une base en colonnes pensée pour le temps, très rapide et compacte sur les historiques de ticks",
+      "C'est la seule base à offrir des transactions ACID",
+      "C'est un logiciel libre et gratuit",
+      "C'est la base imposée par les régulateurs"
+    ],
+    "bonnes": [0],
+    "explication": "kdb+ et son langage q excellent sur les séries temporelles massives. Ses contreparties sont connues : licences chères et compétences rares."
+  },
+  {
+    "id": "marche-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que fait une jointure à date (as-of join) ?",
+    "choix": [
+      "Elle associe à chaque ligne la dernière valeur connue à cet instant, par exemple la dernière cotation avant chaque transaction",
+      "Elle ne garde que les lignes dont les deux dates sont strictement égales",
+      "Elle regroupe les lignes par jour de calendrier",
+      "Elle supprime les lignes antérieures à une date donnée"
+    ],
+    "bonnes": [0],
+    "explication": "Transactions et cotations n'ont jamais exactement le même horodatage. La jointure à date remonte à la dernière valeur disponible. Les bases de séries temporelles la font nativement, le SQL classique la fait mal."
+  },
+  {
+    "id": "marche-09",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une action fait l'objet d'une division du nominal par deux. Que faut-il faire de son historique de cours ?",
+    "choix": [
+      "L'ajuster : sans cela, il affiche une chute de 50 % qui n'a jamais eu lieu",
+      "Le supprimer : il n'est plus comparable",
+      "Rien : les cours passés restent vrais tels quels pour tous les calculs",
+      "Le multiplier par deux à partir de la date de l'opération"
+    ],
+    "bonnes": [0],
+    "explication": "Un historique non ajusté fausse tout calcul de rendement, de volatilité ou de risque historique. On garde en général les deux séries, brute et ajustée."
+  },
+  {
+    "id": "marche-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Le résultat d'hier est contesté. Que doit permettre la plateforme de données de marché ?",
+    "choix": [
+      "Retrouver exactement le jeu de clôture, dans sa version, qui a servi au calcul",
+      "Recalculer le résultat avec les prix de ce matin",
+      "Afficher les prix en temps réel du moment de la contestation",
+      "Effacer le jeu d'hier pour éviter toute confusion"
+    ],
+    "bonnes": [0],
+    "explication": "Un jeu officiel doit être versionné et traçable. Sans cela, impossible de dire si l'écart vient d'un prix, d'une correction tardive ou du calcul lui-même."
+  },
+  {
+    "id": "marche-11",
+    "type": "single",
+    "niveau": 2,
+    "q": "Deux fournisseurs donnent un coupon différent pour la même obligation. Dans la gestion des données de référence, qu'est-ce qui tranche d'abord ?",
+    "choix": [
+      "Une règle de priorité entre sources, définie attribut par attribut",
+      "La moyenne des deux valeurs",
+      "La valeur reçue en dernier",
+      "Le choix de l'opérateur de marché concerné"
+    ],
+    "bonnes": [0],
+    "explication": "Des règles disent quelle source croire pour chaque attribut. Ce qu'elles ne tranchent pas part en file d'exceptions, traitée à la main par les gestionnaires de données."
+  },
+  {
+    "id": "marche-12",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Une donnée de marché achetée à un fournisseur peut être librement redistribuée, en interne comme à des clients.",
+    "bonnes": [1],
+    "explication": "Une donnée de marché se loue pour un usage défini. La redistribution fait l'objet de droits spécifiques, et les fournisseurs auditent leurs clients. Les droits suivent la donnée, y compris dans le lake."
+  },
+  {
+    "id": "marche-13",
+    "type": "single",
+    "niveau": 3,
+    "q": "Sous les règles de fonds propres pour risques de marché, de quoi dépend la reconnaissance d'un facteur de risque comme modélisable ?",
+    "choix": [
+      "De l'existence d'un nombre suffisant d'observations de prix réels",
+      "De la capitalisation de l'émetteur",
+      "Du nombre de fournisseurs qui diffusent ce prix",
+      "De l'ancienneté de l'instrument"
+    ],
+    "bonnes": [0],
+    "explication": "Il faut prouver que des prix réels, transactions ou cotations fermes, sont observés assez souvent. Collecter ces observations et en garder la preuve est devenu un travail de données à part entière."
+  },
+  {
+    "id": "marche-14",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'est-ce qu'un prix figé (stale) ?",
+    "choix": [
+      "Un prix qui n'a pas été rafraîchi alors que le marché a bougé",
+      "Un prix arrêté officiellement à la clôture",
+      "Un prix fixé contractuellement à l'avance",
+      "Un prix arrondi à l'unité"
+    ],
+    "bonnes": [0],
+    "explication": "C'est le défaut le plus sournois, parce qu'un prix figé a l'air normal. On le détecte en surveillant l'absence de variation ou l'âge de la dernière mise à jour."
+  },
+  {
+    "id": "marche-15",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Qu'attend-on du jeu de données de marché officiel de fin de journée ?",
+    "choix": [
+      "Qu'il soit complet : aucun instrument en position sans prix",
+      "Qu'il soit versionné : une correction crée une nouvelle version",
+      "Qu'il soit traçable : on sait quel jeu a produit quel résultat",
+      "Qu'il soit modifiable sur place par chaque utilisateur"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Complet, contrôlé, versionné, traçable. Un jeu que chacun pourrait modifier sur place perdrait justement ce qui fait sa valeur : la possibilité de reproduire un résultat."
+  }
+]

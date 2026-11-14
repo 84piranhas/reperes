@@ -1,0 +1,157 @@
+<p>Deux familles de données irriguent tous les systèmes d'une salle de marché. Les <strong>référentiels</strong> décrivent ce sur quoi on traite et avec qui. Les <strong>données de marché</strong> disent ce que cela vaut. Ce sont des infrastructures au sens propre : personne ne les remarque quand elles fonctionnent, et tout s'arrête quand elles défaillent.</p>
+
+<h2>Les données de référence</h2>
+
+<ul>
+  <li><strong>Les instruments.</strong> Les caractéristiques d'un titre ou d'un contrat : émetteur, devise, échéance, coupon, multiplicateur, place de cotation.</li>
+  <li><strong>Les tiers.</strong> Contreparties, émetteurs, clients, et les liens de groupe entre eux.</li>
+  <li><strong>La structure interne.</strong> Entités, portefeuilles, livres, et leurs hiérarchies.</li>
+  <li><strong>Les calendriers et conventions.</strong> Jours fériés par place, bases de calcul, règles de décalage.</li>
+</ul>
+
+<p>Ces données ont un profil particulier : peu de volume, peu de changements, mais un usage universel. Une échéance fausse dans le référentiel donne un prix faux, donc un risque faux, donc un rapport faux. L'erreur ne reste jamais locale.</p>
+
+<h2>La source de référence</h2>
+
+<p>La réponse d'organisation s'appelle la <dfn>source de référence</dfn>, ou <em>golden source</em> : pour chaque donnée, un seul système fait autorité, et tous les autres s'alimentent auprès de lui. Sans elle, chaque activité tient sa propre copie, les copies divergent, et l'on passe son temps à les rapprocher.</p>
+
+<p>La fabrication de cette version de référence porte un nom, la <dfn>gestion des données de référence</dfn> (<abbr title="Master Data Management">MDM</abbr>), et suit toujours les mêmes étapes.</p>
+
+<ol>
+  <li><strong>Collecter</strong> auprès de plusieurs fournisseurs et sources internes.</li>
+  <li><strong>Rapprocher</strong> : ces deux lignes décrivent-elles le même instrument ?</li>
+  <li><strong>Arbitrer</strong> les désaccords par des règles de priorité, attribut par attribut : pour le coupon, croire d'abord tel fournisseur, puis tel autre.</li>
+  <li><strong>Traiter les exceptions</strong> à la main, quand les règles ne tranchent pas. C'est le travail quotidien des gestionnaires de données.</li>
+  <li><strong>Distribuer</strong> le résultat aux consommateurs, par API, par événements ou par fichiers.</li>
+</ol>
+
+<h2>Les identifiants</h2>
+
+<table>
+  <thead><tr><th>Identifiant</th><th>Ce qu'il désigne</th><th>À savoir</th></tr></thead>
+  <tbody>
+    <tr><th>ISIN</th><td>Un titre</td><td>Norme internationale, 12 caractères. Ne dit pas où le titre cote.</td></tr>
+    <tr><th>CUSIP, SEDOL</th><td>Un titre</td><td>Identifiants d'origine nationale, américain et britannique.</td></tr>
+    <tr><th>RIC</th><td>Une cotation chez LSEG</td><td>Propriétaire, hérité de Reuters.</td></tr>
+    <tr><th>Ticker Bloomberg, FIGI</th><td>Une cotation</td><td>Le FIGI est une norme ouverte.</td></tr>
+    <tr><th>LEI</th><td>Une entité juridique</td><td>Norme internationale, 20 caractères.</td></tr>
+    <tr><th>MIC</th><td>Une place de marché</td><td>Norme internationale, 4 caractères.</td></tr>
+    <tr><th>CFI</th><td>La nature d'un instrument</td><td>Six lettres qui classent le produit.</td></tr>
+    <tr><th>UPI, UTI</th><td>Un produit dérivé, une transaction</td><td>Utilisés pour les déclarations réglementaires.</td></tr>
+  </tbody>
+</table>
+
+<p>Un piège classique : l'ISIN désigne le titre, pas l'endroit où il s'échange. La même action cote sur plusieurs places et dans plusieurs devises, à des prix différents. Pour désigner une cotation, il faut l'ISIN <em>et</em> la place <em>et</em> la devise, ou un identifiant de niveau cotation.</p>
+
+<p>La table de correspondance entre tous ces identifiants est un produit à part entière. C'est souvent le service le plus sollicité d'un référentiel, et celui dont les trous font le plus de dégâts.</p>
+
+<h2>Les opérations sur titres</h2>
+
+<p>Dividendes, divisions du nominal, fusions, scissions, changements de nom : les <dfn>opérations sur titres</dfn> modifient la vie d'un instrument. Elles ont deux effets. Sur les positions, d'abord, qu'il faut ajuster. Sur les historiques, ensuite : après une division par deux, le cours est divisé par deux. Si l'historique n'est pas <dfn>ajusté</dfn>, il affiche une chute de 50 % qui n'a jamais eu lieu, et fausse tout calcul de rendement, de volatilité ou de risque historique.</p>
+
+<h2>Les données de marché</h2>
+
+<ul>
+  <li><strong>Le temps réel.</strong> Cotations et transactions au fil de l'eau. Le <dfn>niveau 1</dfn> donne le meilleur prix acheteur, le meilleur prix vendeur et le dernier échange. Le <dfn>niveau 2</dfn> ajoute la profondeur du carnet d'ordres, prix par prix. Le <dfn>niveau 3</dfn> descend à l'ordre individuel.</li>
+  <li><strong>Les ticks.</strong> Chaque cotation et chaque transaction, horodatée. C'est la matière première des historiques fins.</li>
+  <li><strong>Les agrégats.</strong> Ouverture, plus haut, plus bas, clôture, par minute ou par jour.</li>
+  <li><strong>Les données construites.</strong> Courbes de taux, surfaces de volatilité, fixings. Elles ne sont pas observées mais calculées à partir de cotations, avec un modèle et des choix. Ce sont déjà des produits.</li>
+</ul>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 190" role="img" aria-label="Chaîne des données de marché : places, fournisseurs ou flux directs, normalisation, distribution, puis applications et capture de l'historique. Les habilitations couvrent toute la chaîne.">
+    <rect class="b" x="10" y="26" width="128" height="76" rx="10"/>
+    <rect class="b" x="160" y="26" width="128" height="76" rx="10"/>
+    <rect class="ba" x="310" y="26" width="128" height="76" rx="10"/>
+    <rect class="b" x="460" y="26" width="128" height="76" rx="10"/>
+    <rect class="b" x="610" y="14" width="128" height="46" rx="10"/>
+    <rect class="b" x="610" y="68" width="128" height="46" rx="10"/>
+    <path class="f" d="M140 64h12M290 64h12M440 64h12M590 40h12M590 88h12"/>
+    <path class="fp" d="M159 64l-8-4.5v9zM309 64l-8-4.5v9zM459 64l-8-4.5v9zM609 40l-8-4.5v9zM609 88l-8-4.5v9z"/>
+    <text class="t m" x="74" y="58">Places</text>
+    <text class="ts m" x="74" y="78">et contributeurs</text>
+    <text class="t m" x="224" y="58">Fournisseurs</text>
+    <text class="ts m" x="224" y="78">ou flux directs</text>
+    <text class="t m" x="374" y="58">Normalisation</text>
+    <text class="ts m" x="374" y="78">un format interne</text>
+    <text class="t m" x="524" y="58">Distribution</text>
+    <text class="ts m" x="524" y="78">bus temps réel</text>
+    <text class="t m" x="674" y="34">Applications</text>
+    <text class="ts m" x="674" y="50">prix, risques, algos</text>
+    <text class="t m" x="674" y="88">Capture</text>
+    <text class="ts m" x="674" y="104">historique des ticks</text>
+    <rect class="bv" x="10" y="134" width="728" height="42" rx="10"/>
+    <text class="tacc" x="26" y="160">Habilitations</text>
+    <text class="ts" x="130" y="160">qui reçoit quoi, pour quel usage : chaque accès est contrôlé, compté et déclaré</text>
+  </svg>
+  </div>
+  <figcaption>Du marché à l'application. La normalisation ramène chaque source à un format commun.</figcaption>
+</figure>
+
+<p>Les données arrivent par des fournisseurs généralistes, comme Bloomberg ou LSEG, ou par des <dfn>flux directs</dfn> pris à la source quand la vitesse compte. Chaque source parle son propre protocole. Des composants appelés <em>feed handlers</em> les décodent, puis tout est ramené à un format interne unique avant d'être distribué. Une branche part vers les applications, une autre vers la <dfn>capture</dfn>, qui enregistre tout pour constituer l'historique.</p>
+
+<h2>Les licences : un sujet à part entière</h2>
+
+<p>Une donnée de marché ne s'achète pas, elle se loue, et le prix dépend de ce qu'on en fait.</p>
+
+<table>
+  <thead><tr><th>Usage</th><th>Ce qu'il recouvre</th></tr></thead>
+  <tbody>
+    <tr><th>Affichage</th><td>Une personne regarde la donnée sur un écran. Facturé par utilisateur.</td></tr>
+    <tr><th>Hors affichage</th><td>Une machine consomme la donnée : algorithme, moteur de prix, calcul de risque. Souvent bien plus cher.</td></tr>
+    <tr><th>Redistribution</th><td>La donnée est transmise à une autre entité ou à des clients.</td></tr>
+    <tr><th>Données dérivées</th><td>La donnée sert à fabriquer un indice ou un produit.</td></tr>
+  </tbody>
+</table>
+
+<p>Les places et les fournisseurs auditent leurs clients. D'où un système d'<dfn>habilitations</dfn> qui contrôle qui reçoit quoi, et un suivi précis des usages. L'enjeu est à la fois réglementaire et financier : les données de marché figurent parmi les plus gros postes de dépense d'une salle.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>Déposer une donnée de marché dans le lake ne donne pas le droit à toute la banque de s'en servir. Les droits d'usage suivent la donnée où qu'elle aille. Une plateforme qui ne sait pas dire qui consomme quelle source expose la banque à un redressement.</p>
+</aside>
+
+<h2>Stocker des séries temporelles</h2>
+
+<p>Un grand marché produit des milliards de messages par jour. Les options américaines en produisent à elles seules des dizaines de milliards. Les bases classiques ne suivent pas, et une famille spécialisée s'est imposée.</p>
+
+<p>Le nom à connaître est <strong>kdb+</strong>, avec son langage <strong>q</strong>. C'est une base en colonnes, pensée pour le temps, extrêmement rapide et compacte, installée dans la plupart des banques d'investissement depuis vingt ans. Ses contreparties sont connues : des licences chères et des compétences rares. Son organisation type sépare la journée en cours, gardée en mémoire, de l'historique, écrit sur disque et rangé par date.</p>
+
+<p>D'autres options existent : ClickHouse, QuestDB, TimescaleDB, ou simplement des fichiers Parquet dans le lake pour la recherche, à moindre coût et à moindre vitesse.</p>
+
+<p>L'opération emblématique de ces bases est la <dfn>jointure à date</dfn> (<em>as-of join</em>) : associer à chaque transaction la dernière cotation connue à cet instant précis. Le SQL classique la fait mal. Une base de séries temporelles la fait nativement, sur des milliards de lignes.</p>
+
+<h2>Les jeux de clôture officiels</h2>
+
+<p>Chaque soir, à une heure convenue pour chaque région, la banque fige un jeu de données de marché dit <strong>officiel</strong>. C'est lui qui valorise les positions et alimente les calculs de risque. On attend de ce jeu quatre choses.</p>
+
+<ul>
+  <li><strong>Complet</strong> : aucun instrument en position ne doit manquer de prix.</li>
+  <li><strong>Contrôlé</strong> : les prix sont vérifiés par une fonction indépendante des opérateurs.</li>
+  <li><strong>Versionné</strong> : une correction tardive crée une nouvelle version, elle n'écrase pas l'ancienne.</li>
+  <li><strong>Traçable</strong> : pour tout résultat publié, on sait dire quel jeu, dans quelle version, l'a produit.</li>
+</ul>
+
+<h2>La qualité des données de marché</h2>
+
+<ul>
+  <li><strong>Le prix figé.</strong> Il n'a pas été rafraîchi alors que le marché a bougé. Rien ne le signale : il a l'air normal.</li>
+  <li><strong>Le pic aberrant.</strong> Une valeur isolée, sans rapport avec ses voisines.</li>
+  <li><strong>Le trou.</strong> Des jours ou des heures manquent dans la série.</li>
+  <li><strong>L'unité.</strong> Un cours en pence lu comme un cours en livres est faux d'un facteur cent.</li>
+  <li><strong>Le temps.</strong> Fuseaux horaires, heures d'été, calendriers de place.</li>
+</ul>
+
+<p>Les parades sont connues : détection automatique, comparaison entre sources, règles de remplacement documentées. La réglementation pousse dans le même sens. Sous les règles de fonds propres pour risques de marché, un facteur de risque n'est reconnu que s'il existe assez d'observations de prix réels : la collecte et la preuve de ces observations sont devenues un travail de données.</p>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Une source de référence par donnée. Sa fabrication : collecter, rapprocher, arbitrer, traiter les exceptions, distribuer.</li>
+    <li>L'ISIN désigne un titre, pas une cotation. La correspondance entre identifiants est un produit en soi.</li>
+    <li>Les opérations sur titres imposent d'ajuster les historiques.</li>
+    <li>Une donnée de marché se loue selon l'usage. Les droits suivent la donnée, jusque dans le lake.</li>
+    <li>Le jeu de clôture officiel doit être complet, contrôlé, versionné et traçable.</li>
+  </ul>
+</aside>

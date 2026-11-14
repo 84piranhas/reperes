@@ -1,0 +1,206 @@
+[
+  {
+    "id": "gouvernance-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qui est le propriétaire d'une donnée (data owner) ?",
+    "choix": [
+      "Un responsable métier, qui répond de sa définition, de sa qualité et des règles d'accès",
+      "L'administrateur de la base où elle est stockée",
+      "L'éditeur du logiciel qui la produit",
+      "Le dernier utilisateur à l'avoir modifiée"
+    ],
+    "bonnes": [0],
+    "explication": "Seul le métier sait si une valeur est juste et qui doit y accéder. L'équipe technique est dépositaire : elle stocke, protège et applique les règles, mais ne décide pas du sens."
+  },
+  {
+    "id": "gouvernance-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que retrace le lignage (lineage) d'une donnée ?",
+    "choix": [
+      "Son parcours : ses sources, ses transformations et les usages qui en dépendent",
+      "La liste des personnes qui ont le droit de la lire",
+      "L'historique des prix d'achat auprès du fournisseur",
+      "Le temps de réponse des requêtes qui la lisent"
+    ],
+    "bonnes": [0],
+    "explication": "Le lignage sert dans les deux sens : vers l'aval pour mesurer l'impact d'un changement, vers l'amont pour expliquer d'où vient un chiffre."
+  },
+  {
+    "id": "gouvernance-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Sur quoi porte le texte BCBS 239 ?",
+    "choix": [
+      "L'agrégation des données de risque et les rapports de risque",
+      "La protection des données personnelles",
+      "Le trading algorithmique",
+      "La sécurité des paiements par carte"
+    ],
+    "bonnes": [0],
+    "explication": "Publié en 2013 par le Comité de Bâle, il tire les leçons de 2008 : des banques incapables d'agréger vite leurs expositions. Il énonce quatorze principes, toujours au cœur des contrôles des superviseurs."
+  },
+  {
+    "id": "gouvernance-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Laquelle de ces propositions n'est pas une dimension classique de la qualité des données ?",
+    "choix": [
+      "La popularité : le nombre de consultations",
+      "La complétude : rien ne manque",
+      "La fraîcheur : la donnée est arrivée à temps",
+      "L'unicité : il n'y a pas de doublons"
+    ],
+    "bonnes": [0],
+    "explication": "Exactitude, complétude, fraîcheur, cohérence, unicité, validité : ce sont les six dimensions usuelles. Qu'une donnée soit très consultée ne dit rien de sa justesse."
+  },
+  {
+    "id": "gouvernance-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi le droit à l'effacement du RGPD est-il délicat à appliquer dans un lake ?",
+    "choix": [
+      "Le lake conserve tout et multiplie les copies : il faut savoir localiser la donnée, puis pouvoir la supprimer",
+      "Le RGPD ne s'applique pas aux données stockées dans un lake",
+      "Un lake ne contient jamais de données personnelles",
+      "L'effacement y est automatique au bout de trente jours"
+    ],
+    "bonnes": [0],
+    "explication": "Localiser suppose un catalogue qui classe les données personnelles. Supprimer suppose un format de table qui sait effacer une ligne. Sans les deux, le droit reste théorique."
+  },
+  {
+    "id": "gouvernance-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que vise le règlement européen DORA, applicable depuis janvier 2025 ?",
+    "choix": [
+      "La résilience opérationnelle numérique : risque informatique, incidents, tests, prestataires",
+      "La transparence des prix sur les marchés obligataires",
+      "Le niveau de fonds propres face au risque de marché",
+      "La lutte contre le blanchiment"
+    ],
+    "bonnes": [0],
+    "explication": "DORA encadre la capacité des établissements financiers à résister aux incidents informatiques. Son volet sur les prestataires impose un registre des contrats et des stratégies de sortie pour les fonctions critiques."
+  },
+  {
+    "id": "gouvernance-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est le principe central du data mesh ?",
+    "choix": [
+      "Les domaines métier qui produisent les données en sont responsables et les exposent comme des produits",
+      "Toutes les données sont regroupées dans une base unique gérée par une équipe centrale",
+      "Chaque utilisateur garde ses données sur son poste de travail",
+      "Les données sont réparties sur un maillage de serveurs pour aller plus vite"
+    ],
+    "bonnes": [0],
+    "explication": "Le data mesh décentralise la responsabilité, tout en gardant une plateforme commune et des règles fédérées. Malgré son nom, il ne dit rien de la répartition physique des données."
+  },
+  {
+    "id": "gouvernance-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que demande le principe du moindre privilège ?",
+    "choix": [
+      "Que chacun n'ait que les accès strictement nécessaires à sa fonction",
+      "Que les responsables aient accès à toutes les données",
+      "Que les accès soient accordés pour une journée au maximum",
+      "Que seule l'équipe technique puisse lire les données"
+    ],
+    "bonnes": [0],
+    "explication": "Moins il y a d'accès inutiles, moins une erreur ou un compte compromis peut faire de dégâts. Le rang hiérarchique ne justifie pas un accès par lui-même."
+  },
+  {
+    "id": "gouvernance-09",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une anomalie de qualité est repérée dans un rapport de risque. Où faut-il la corriger ?",
+    "choix": [
+      "À la source, dans le système qui produit la donnée",
+      "Dans le rapport lui-même, juste avant sa diffusion",
+      "Dans une copie corrigée tenue par l'équipe du rapport",
+      "Nulle part : il suffit de la signaler en annexe"
+    ],
+    "bonnes": [0],
+    "explication": "Une correction en aval est un pansement : la source continue de produire l'erreur, et le chiffre corrigé ne concorde plus avec les autres usages de la même donnée."
+  },
+  {
+    "id": "gouvernance-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un lake commun à toute la banque complique le respect des murailles de Chine. Qu'est-ce qui permet de les maintenir ?",
+    "choix": [
+      "Des droits fins, à la ligne et à la colonne, et une trace complète des accès",
+      "L'interdiction de stocker des données de marché dans le lake",
+      "Un mot de passe commun changé chaque semaine",
+      "La copie du lake en deux exemplaires identiques"
+    ],
+    "bonnes": [0],
+    "explication": "Le cloisonnement entre équipes détenant des informations privilégiées et équipes de marché doit se retrouver dans les habilitations. Mieux vaut les porter au niveau du catalogue que les régler outil par outil."
+  },
+  {
+    "id": "gouvernance-11",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Le data mesh est avant tout le choix d'un outil technique.",
+    "bonnes": [1],
+    "explication": "C'est un modèle d'organisation : qui est responsable de quoi. Aucun logiciel ne « fait » du data mesh, même si une plateforme en libre-service en est l'un des quatre principes."
+  },
+  {
+    "id": "gouvernance-12",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'est-ce qui distingue une habilitation par attributs (ABAC) d'une habilitation par rôle (RBAC) ?",
+    "choix": [
+      "Les droits dépendent de caractéristiques de l'utilisateur, de la donnée et du contexte, pas seulement d'un rôle",
+      "Les droits sont attribués par un algorithme d'apprentissage",
+      "Les droits sont les mêmes pour tous les utilisateurs",
+      "Les droits sont accordés une fois pour toutes à l'embauche"
+    ],
+    "bonnes": [0],
+    "explication": "En RBAC, on a les droits de sa fonction. En ABAC, une règle combine des attributs : l'activité de l'utilisateur, la classification de la donnée, le lieu de connexion. C'est plus fin, et plus délicat à administrer."
+  },
+  {
+    "id": "gouvernance-13",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pendant combien de temps MiFID II impose-t-elle de conserver les enregistrements liés aux ordres et aux transactions ?",
+    "choix": [
+      "Cinq ans, durée que l'autorité peut porter à sept",
+      "Un an",
+      "Dix-huit mois",
+      "Trente ans"
+    ],
+    "bonnes": [0],
+    "explication": "Cinq ans au minimum, sept si l'autorité le demande. Ces archives doivent rester interrogeables et protégées contre toute modification."
+  },
+  {
+    "id": "gouvernance-14",
+    "type": "single",
+    "niveau": 3,
+    "q": "Dans BCBS 239, que recouvre le principe d'adaptabilité ?",
+    "choix": [
+      "Pouvoir produire à la demande, y compris en crise, une agrégation de risque qui n'était pas prévue",
+      "Pouvoir changer de fournisseur de cloud en moins d'un mois",
+      "Pouvoir adapter le format des rapports aux préférences de chaque lecteur",
+      "Pouvoir modifier les données de risque après leur publication"
+    ],
+    "bonnes": [0],
+    "explication": "C'est le principe le plus exigeant : il teste l'architecture autant que les données. Une question inédite du superviseur un jour de crise ne doit pas demander trois semaines de retraitements manuels."
+  },
+  {
+    "id": "gouvernance-15",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un programme de qualité veut couvrir d'emblée toutes les données de la banque. Quelle est la meilleure objection ?",
+    "choix": [
+      "Commencer par les données critiques, celles qui alimentent les risques et les rapports réglementaires",
+      "Attendre que toutes les sources soient migrées dans le lake",
+      "Confier la qualité à un prestataire externe",
+      "Remplacer d'abord tous les tableurs par une base de données"
+    ],
+    "bonnes": [0],
+    "explication": "On ne gouverne pas tout. Quelques centaines de données critiques portent l'essentiel des enjeux : c'est là que la mesure et la correction rapportent le plus, et le plus vite."
+  }
+]
