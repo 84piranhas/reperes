@@ -1,0 +1,178 @@
+[
+  {
+    "id": "reseaux-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que fait un neurone artificiel ?",
+    "choix": [
+      "Une somme pondérée de ses entrées, suivie d'une fonction d'activation",
+      "Une recherche dans une base de règles",
+      "Une copie de son entrée vers sa sortie",
+      "Un tirage au sort entre plusieurs réponses"
+    ],
+    "bonnes": [0],
+    "explication": "Chaque entrée est multipliée par un poids, le tout est additionné, puis une fonction d'activation décide de ce qui est transmis. Le neurone artificiel n'a de biologique que le nom."
+  },
+  {
+    "id": "reseaux-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que sont les paramètres d'un réseau de neurones ?",
+    "choix": [
+      "Ses poids, ajustés pendant l'entraînement",
+      "Les exemples sur lesquels il a été entraîné",
+      "Les réglages choisis par l'utilisateur à chaque requête",
+      "Les questions qu'on lui pose"
+    ],
+    "bonnes": [0],
+    "explication": "Les paramètres sont les poids du réseau. Leur nombre mesure la taille d'un modèle : des milliers pour un petit réseau, des milliards pour un modèle de langage."
+  },
+  {
+    "id": "reseaux-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "À quoi sert la fonction de perte (loss) ?",
+    "choix": [
+      "À mesurer l'erreur du réseau, que l'entraînement cherche à réduire",
+      "À compter les neurones éteints",
+      "À estimer le coût financier de l'entraînement",
+      "À supprimer les données inutiles"
+    ],
+    "bonnes": [0],
+    "explication": "La perte est un nombre, d'autant plus grand que la réponse est mauvaise. Tout l'entraînement consiste à ajuster les poids pour la faire baisser."
+  },
+  {
+    "id": "reseaux-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que fait la rétropropagation (backpropagation) ?",
+    "choix": [
+      "Elle calcule la part de chaque poids dans l'erreur, en remontant de la sortie vers l'entrée",
+      "Elle renvoie la réponse à l'utilisateur",
+      "Elle supprime les couches inutiles du réseau",
+      "Elle recopie les poids d'un modèle vers un autre"
+    ],
+    "bonnes": [0],
+    "explication": "Pour savoir dans quel sens corriger chaque poids, il faut connaître sa contribution à l'erreur. La rétropropagation la calcule. La descente de gradient applique ensuite la correction."
+  },
+  {
+    "id": "reseaux-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que se passe-t-il si le taux d'apprentissage (learning rate) est trop grand ?",
+    "choix": [
+      "Les corrections sont trop fortes et l'entraînement diverge",
+      "L'entraînement devient très lent",
+      "Le réseau perd des couches",
+      "Le modèle consomme moins de mémoire"
+    ],
+    "bonnes": [0],
+    "explication": "Le taux d'apprentissage fixe la taille de chaque correction. Trop grand, on dépasse sans cesse la cible. Trop petit, on n'avance pas. C'est l'un des hyperparamètres les plus sensibles."
+  },
+  {
+    "id": "reseaux-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi les processeurs graphiques conviennent-ils si bien au deep learning ?",
+    "choix": [
+      "Ils exécutent en parallèle les multiplications de grands tableaux de nombres",
+      "Ils disposent de plus d'espace de stockage",
+      "Ils consomment beaucoup moins d'électricité",
+      "Ils savent afficher les résultats à l'écran"
+    ],
+    "bonnes": [0],
+    "explication": "Un réseau se ramène à des multiplications de tableaux, indépendantes les unes des autres. Un processeur graphique, conçu pour calculer des millions de pixels à la fois, les fait en parallèle."
+  },
+  {
+    "id": "reseaux-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle architecture est historiquement associée à l'analyse d'images ?",
+    "choix": [
+      "Le réseau à convolution (CNN)",
+      "Le réseau récurrent (RNN)",
+      "L'arbre de décision",
+      "La régression logistique"
+    ],
+    "bonnes": [0],
+    "explication": "Les réseaux à convolution repèrent des motifs locaux, contours puis formes puis objets. Les réseaux récurrents traitaient les séquences, avant d'être largement remplacés par les Transformers."
+  },
+  {
+    "id": "reseaux-08",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce qu'un embedding ?",
+    "choix": [
+      "Un vecteur de nombres qui représente un contenu, de sorte que des sens proches donnent des vecteurs proches",
+      "Un fichier compressé contenant un modèle",
+      "Un message envoyé à un modèle de langage",
+      "Une couche du réseau réservée aux images"
+    ],
+    "bonnes": [0],
+    "explication": "Un embedding traduit un mot, une phrase ou une image en coordonnées. Le sens devient une distance que l'on peut calculer, ce qui rend possible la recherche sémantique."
+  },
+  {
+    "id": "reseaux-09",
+    "type": "single",
+    "niveau": 2,
+    "q": "En quoi consiste l'apprentissage par transfert (transfer learning) ?",
+    "choix": [
+      "Partir d'un modèle pré-entraîné sur des données générales, puis l'ajuster sur sa propre tâche",
+      "Transférer les données d'entraînement d'un serveur à un autre",
+      "Entraîner deux modèles en même temps sur les mêmes données",
+      "Traduire un modèle d'un langage de programmation à un autre"
+    ],
+    "bonnes": [0],
+    "explication": "Entraîner un grand réseau à partir de rien est hors de portée de presque tous. On réutilise donc un modèle déjà entraîné, et on l'ajuste avec peu d'exemples : c'est le fine-tuning."
+  },
+  {
+    "id": "reseaux-10",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est le rôle du dropout ?",
+    "choix": [
+      "Limiter le surapprentissage en éteignant au hasard des neurones pendant l'entraînement",
+      "Accélérer l'inférence en supprimant des couches",
+      "Réduire la taille du fichier du modèle",
+      "Écarter les exemples mal étiquetés"
+    ],
+    "bonnes": [0],
+    "explication": "En éteignant au hasard une partie des neurones à chaque étape, on empêche le réseau de trop dépendre de quelques-uns d'entre eux. C'est une forme de régularisation."
+  },
+  {
+    "id": "reseaux-11",
+    "type": "vf",
+    "niveau": 2,
+    "q": "On peut lire dans les poids d'un réseau de neurones la règle qu'il applique pour répondre.",
+    "bonnes": [1],
+    "explication": "Ce qu'un réseau sait est réparti dans des millions de poids, dont aucun n'a de sens pris isolément. On mesure ce qu'il fait, on ne lit pas pourquoi. C'est le problème de la boîte noire."
+  },
+  {
+    "id": "reseaux-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "Faute de pouvoir relire un réseau de neurones, sur quoi fonder la confiance qu'on lui accorde ?",
+    "choix": [
+      "Sur la mesure : sur quoi il a été testé, et avec quels résultats",
+      "Sur le nombre de ses paramètres",
+      "Sur la réputation de l'équipe qui l'a entraîné",
+      "Sur la durée de son entraînement"
+    ],
+    "bonnes": [0],
+    "explication": "La taille, la durée d'entraînement ou la réputation ne prouvent rien sur un cas d'usage donné. Seule une évaluation sur des données représentatives permet de savoir ce que vaut le modèle."
+  },
+  {
+    "id": "reseaux-13",
+    "type": "single",
+    "niveau": 3,
+    "q": "Qu'appelle-t-on un modèle de fondation (foundation model) ?",
+    "choix": [
+      "Un très grand modèle, entraîné une fois sur des données générales, que l'on réutilise pour de nombreuses tâches",
+      "Le premier modèle qu'une entreprise met en production",
+      "Un modèle entraîné uniquement sur les données internes d'une entreprise",
+      "Un modèle à base de règles écrites à la main"
+    ],
+    "bonnes": [0],
+    "explication": "C'est la logique du transfert poussée à l'extrême : un entraînement très coûteux, fait par quelques acteurs, puis des milliers de réutilisations pour des tâches que personne n'avait prévues."
+  }
+]

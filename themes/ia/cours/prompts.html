@@ -1,0 +1,95 @@
+<p>Un <dfn>prompt</dfn> est tout ce que l'on envoie à un modèle pour obtenir une réponse. Comme le modèle ne sait rien d'autre que ce qu'il a sous les yeux, la qualité de la sortie dépend d'abord de ce qu'on y a mis. Ce chapitre décrit la mécanique d'un appel, ce qui fait un bon prompt, et ce que cela coûte.</p>
+
+<h2>L'anatomie d'un appel</h2>
+
+<p>Une application dialogue avec un grand modèle de langage, ou <strong>LLM</strong> (<em>Large Language Model</em>), par une <strong>API</strong> (<em>Application Programming Interface</em>, l'interface par laquelle un programme en interroge un autre). Chaque appel transporte une liste de messages, chacun avec un rôle.</p>
+
+<table>
+  <thead><tr><th>Rôle</th><th>Qui parle</th><th>Ce qu'on y met</th></tr></thead>
+  <tbody>
+    <tr><th>Système<br><em>system</em></th><td>Le concepteur de l'application</td><td>Le cadre : mission, ton, règles, format attendu</td></tr>
+    <tr><th>Utilisateur<br><em>user</em></th><td>La personne, ou le programme appelant</td><td>La demande, et les documents à traiter</td></tr>
+    <tr><th>Assistant<br><em>assistant</em></th><td>Le modèle</td><td>Ses réponses précédentes, renvoyées pour garder le fil</td></tr>
+  </tbody>
+</table>
+
+<p>Le message système, souvent appelé <dfn>prompt système</dfn> (<em>system prompt</em>), est invisible pour l'utilisateur final. C'est là que se décide le comportement d'un assistant. À ces messages s'ajoutent les réglages de génération et, le cas échéant, la liste des outils que le modèle peut demander.</p>
+
+<h2>Ce qui fait un bon prompt</h2>
+
+<p>La meilleure image est celle d'un collaborateur brillant, arrivé ce matin, qui ne connaît ni l'entreprise ni le dossier. Ce qu'on ne lui dit pas, il le devine, et il devine parfois mal.</p>
+
+<table>
+  <thead><tr><th>Vague</th><th>Précis</th></tr></thead>
+  <tbody>
+    <tr><td>« Résume ce contrat. »</td><td>« Résume ce contrat pour un directeur financier pressé. Cinq points au plus. Commence par les engagements de paiement et les clauses de sortie. Signale toute clause inhabituelle. Si une information manque, écris-le. »</td></tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>Dire le contexte et le but.</strong> Pour qui, pour quoi faire, avec quelles contraintes.</li>
+  <li><strong>Décrire la sortie attendue.</strong> Longueur, structure, format, niveau de détail.</li>
+  <li><strong>Donner des exemples.</strong> Deux ou trois couples entrée et sortie valent mieux qu'un long discours. On parle de <dfn>few-shot</dfn>, par opposition au <dfn>zero-shot</dfn>, sans exemple.</li>
+  <li><strong>Séparer les consignes des données.</strong> Encadrer le document à traiter par des balises, pour que le modèle ne le prenne pas pour une instruction.</li>
+  <li><strong>Autoriser l'aveu d'ignorance.</strong> « Si le document ne le dit pas, réponds que tu ne sais pas » réduit nettement les inventions.</li>
+  <li><strong>Laisser réfléchir.</strong> Demander un raisonnement par étapes avant la réponse aide sur les problèmes complexes. La technique s'appelle la chaîne de pensée, ou <strong>CoT</strong> (<em>Chain of Thought</em>). Les modèles de raisonnement le font d'eux-mêmes.</li>
+</ul>
+
+<p>Et surtout : <strong>itérer</strong>. Un prompt ne s'écrit pas, il se met au point, en regardant où le modèle se trompe et en corrigeant la consigne.</p>
+
+<h2>L'ingénierie de contexte</h2>
+
+<p>Dès qu'une application dépasse la simple question, la formulation compte moins que le <em>contenu</em> de la fenêtre de contexte. Quels documents y mettre ? Quelle part de l'historique garder ? Quels outils proposer ? Cette discipline porte un nom : l'<dfn>ingénierie de contexte</dfn> (<em>context engineering</em>).</p>
+
+<p>Son principe est contre-intuitif : <strong>plus de contexte n'est pas mieux</strong>. Un document hors sujet distrait le modèle. Une information noyée au milieu d'un très long texte est moins bien exploitée qu'au début ou à la fin. Et chaque token ajouté se paie à chaque appel. Le bon contexte est le plus petit qui contient ce qu'il faut.</p>
+
+<h2>Des sorties que du code peut lire</h2>
+
+<p>Un texte libre convient à un humain. Un programme a besoin d'une structure. On demande alors au modèle de répondre en <strong>JSON</strong> (<em>JavaScript Object Notation</em>), un format de données lisible par tous les langages, en respectant un schéma imposé : tels champs, de tels types. Cette fonction s'appelle les <dfn>sorties structurées</dfn> (<em>structured outputs</em>).</p>
+
+<p>C'est ce qui permet d'extraire les champs d'une facture, de classer un courriel ou d'alimenter un autre système. Une règle ne souffre pas d'exception : <strong>le code qui reçoit la sortie la valide</strong>, comme il validerait n'importe quelle donnée venue de l'extérieur.</p>
+
+<h2>Ce que ça coûte</h2>
+
+<p>Un appel se paie au token, avec deux tarifs : les tokens d'<strong>entrée</strong>, tout ce qu'on envoie, et les tokens de <strong>sortie</strong>, ce que le modèle écrit. Ceux de sortie coûtent plusieurs fois plus cher. Comme l'historique est renvoyé à chaque message, une longue conversation paie son début encore et encore.</p>
+
+<table>
+  <thead><tr><th>Levier</th><th>Principe</th></tr></thead>
+  <tbody>
+    <tr><th>Le bon modèle</th><td>Prendre le plus petit qui fait le travail. Les écarts de prix entre modèles vont de un à cent.</td></tr>
+    <tr><th>Le cache de prompt<br><em>prompt caching</em></th><td>Un début de prompt identique d'un appel à l'autre est facturé à tarif réduit.</td></tr>
+    <tr><th>Le traitement par lots<br><em>batch</em></th><td>Accepter une réponse différée de quelques heures contre un tarif plus bas.</td></tr>
+    <tr><th>Le contexte</th><td>N'envoyer que ce qui sert.</td></tr>
+  </tbody>
+</table>
+
+<h2>Ce que ça prend comme temps</h2>
+
+<p>La latence d'un appel a deux composantes. Le délai avant le premier token, <strong>TTFT</strong> (<em>Time To First Token</em>), dépend surtout de la longueur de ce qu'on envoie. Puis vient le débit, en tokens par seconde, qui dépend du modèle. Une réponse de mille tokens ne peut pas être instantanée.</p>
+
+<p>D'où l'usage du <dfn>streaming</dfn> : afficher la réponse à mesure qu'elle s'écrit. La durée totale ne change pas, mais l'utilisateur lit au lieu d'attendre.</p>
+
+<h2>Un prompt se gère comme du code</h2>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>Un prompt système de production fait souvent plusieurs pages et détermine le comportement d'un service. Il se range dans un dépôt, se versionne, se relit à plusieurs, et ne change pas sans repasser une batterie de tests. Les équipes qui le modifient à la main « pour voir » découvrent les régressions par leurs utilisateurs.</p>
+</aside>
+
+<p>Deux événements imposent de retester même si le prompt n'a pas bougé : un changement de modèle, et une mise à jour du modèle par son fournisseur. Un prompt mis au point pour un modèle ne se comporte pas à l'identique sur un autre.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>Un prompt système n'est pas un coffre-fort. Un utilisateur insistant finit souvent par le faire réciter au modèle. Il ne doit donc contenir ni mot de passe, ni clé d'accès, ni règle dont le secret ferait la sécurité.</p>
+</aside>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Un appel transporte des messages : système, utilisateur, assistant. Le prompt système fixe le comportement.</li>
+    <li>Un bon prompt dit le contexte, décrit la sortie, donne des exemples et sépare consignes et données. Il se met au point par itérations.</li>
+    <li>Le contenu du contexte compte plus que la formulation, et plus de contexte n'est pas mieux.</li>
+    <li>Les sorties structurées rendent le modèle intégrable. Le code valide toujours ce qu'il reçoit.</li>
+    <li>On paie au token, la sortie plus cher que l'entrée. Le prompt se versionne et se teste comme du code.</li>
+  </ul>
+</aside>

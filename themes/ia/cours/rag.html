@@ -1,0 +1,113 @@
+<p>Un grand modèle de langage, ou <strong>LLM</strong> (<em>Large Language Model</em>), ne connaît ni vos documents internes ni ce qui s'est passé depuis la fin de son entraînement. La parade la plus répandue tient en trois lettres : <strong>RAG</strong> (<em>Retrieval-Augmented Generation</em>, génération augmentée par la recherche). On cherche les passages utiles, on les place dans le contexte, et l'on demande au modèle de répondre à partir d'eux.</p>
+
+<h2>Le principe</h2>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 226" role="img" aria-label="En haut, la préparation : documents, découpage, embeddings, base vectorielle. En bas, à chaque question : question, recherche dans la base, prompt, modèle, réponse sourcée.">
+    <text class="tacc" x="10" y="18">Avant : une fois, puis à chaque mise à jour des documents</text>
+    <rect class="b" x="10" y="28" width="128" height="62" rx="10"/>
+    <rect class="b" x="160" y="28" width="128" height="62" rx="10"/>
+    <rect class="b" x="310" y="28" width="128" height="62" rx="10"/>
+    <rect class="b" x="460" y="28" width="128" height="62" rx="10"/>
+    <path class="f" d="M140 59h12M290 59h12M440 59h12"/>
+    <path class="fp" d="M159 59l-8-4.5v9zM309 59l-8-4.5v9zM459 59l-8-4.5v9z"/>
+    <text class="t m" x="74" y="55">Documents</text><text class="ts m" x="74" y="73">la base de savoir</text>
+    <text class="t m" x="224" y="55">Découpage</text><text class="ts m" x="224" y="73">en passages</text>
+    <text class="t m" x="374" y="55">Embeddings</text><text class="ts m" x="374" y="73">un par passage</text>
+    <text class="t m" x="524" y="55">Base vectorielle</text><text class="ts m" x="524" y="73">l'index des vecteurs</text>
+    <path class="facc" d="M524 92v24H224v24"/>
+    <path class="fpacc" d="M224 148l-4.5-8h9z"/>
+    <text class="tacc" x="10" y="140">À chaque question</text>
+    <rect class="b" x="10" y="150" width="128" height="62" rx="10"/>
+    <rect class="ba" x="160" y="150" width="128" height="62" rx="10"/>
+    <rect class="b" x="310" y="150" width="128" height="62" rx="10"/>
+    <rect class="b" x="460" y="150" width="128" height="62" rx="10"/>
+    <rect class="b" x="610" y="150" width="128" height="62" rx="10"/>
+    <path class="f" d="M140 181h12M290 181h12M440 181h12M590 181h12"/>
+    <path class="fp" d="M159 181l-8-4.5v9zM309 181l-8-4.5v9zM459 181l-8-4.5v9zM609 181l-8-4.5v9z"/>
+    <text class="t m" x="74" y="177">Question</text><text class="ts m" x="74" y="195">de l'utilisateur</text>
+    <text class="t m" x="224" y="177">Recherche</text><text class="ts m" x="224" y="195">passages proches</text>
+    <text class="t m" x="374" y="177">Prompt</text><text class="ts m" x="374" y="195">question et passages</text>
+    <text class="t m" x="524" y="177">Modèle</text><text class="ts m" x="524" y="195">rédige la réponse</text>
+    <text class="t m" x="674" y="177">Réponse</text><text class="ts m" x="674" y="195">avec ses sources</text>
+  </svg>
+  </div>
+  <figcaption>Le modèle n'apprend rien de vos documents. Il les lit au moment de répondre.</figcaption>
+</figure>
+
+<p>Le point essentiel est dans la légende. Le RAG ne modifie pas le modèle. Il lui donne à lire, à chaque question, les quelques passages qui la concernent. Mettre un document à jour suffit donc à mettre les réponses à jour, sans aucun entraînement.</p>
+
+<h2>Chercher par le sens</h2>
+
+<p>La recherche repose sur les <dfn>embeddings</dfn> : chaque passage est traduit en un vecteur, de sorte que deux textes de sens proche aient des vecteurs proches. La question est traduite de la même façon, et l'on retient les passages dont le vecteur est le plus voisin du sien. « Comment résilier ? » retrouve ainsi un paragraphe intitulé « Fin anticipée du contrat », sans un mot en commun.</p>
+
+<p>Ces vecteurs sont rangés dans une <dfn>base vectorielle</dfn> (<em>vector database</em>). Comparer la question à des millions de vecteurs un par un serait trop lent : on utilise une recherche approchée des plus proches voisins, <strong>ANN</strong> (<em>Approximate Nearest Neighbor</em>), qui échange un peu d'exactitude contre beaucoup de vitesse. L'index le plus répandu pour cela s'appelle <strong>HNSW</strong> (<em>Hierarchical Navigable Small World</em>). Des outils spécialisés existent, et la plupart des bases de données classiques proposent désormais une extension vectorielle.</p>
+
+<h2>Découper</h2>
+
+<p>On n'indexe pas un document entier, mais des passages, les <dfn>chunks</dfn>. Ce <dfn>découpage</dfn> (<em>chunking</em>) est moins anodin qu'il n'y paraît. Des passages trop courts perdent leur contexte : « ce taux s'applique dès la deuxième année » ne dit plus de quel taux il s'agit. Des passages trop longs diluent l'information et coûtent des tokens. On suit autant que possible la structure du document, titres et paragraphes, avec un léger chevauchement entre passages voisins, et l'on garde pour chacun ses métadonnées : source, date, auteur, droits.</p>
+
+<h2>Mieux chercher</h2>
+
+<ul>
+  <li><strong>La recherche hybride.</strong> La recherche par le sens rate les termes exacts : un numéro de contrat, un sigle, un nom propre. On la combine donc avec une recherche par mots-clés classique, dont l'algorithme de référence s'appelle <strong>BM25</strong> (<em>Best Matching 25</em>).</li>
+  <li><strong>Le reclassement</strong> (<em>reranking</em>). On récupère une cinquantaine de passages candidats, puis un second modèle, plus lent et plus fin, les reclasse pour n'en garder que les meilleurs.</li>
+  <li><strong>La reformulation.</strong> La question telle que l'utilisateur l'a tapée est rarement la meilleure requête. On peut demander au modèle de la réécrire avant de chercher.</li>
+</ul>
+
+<h2>Répondre en citant</h2>
+
+<p>La consigne type d'un RAG tient en deux phrases : réponds uniquement à partir des passages fournis, et si la réponse n'y figure pas, dis-le. On demande aussi de citer le passage qui fonde chaque affirmation. On parle de génération <dfn>ancrée</dfn> (<em>grounded</em>). L'utilisateur peut vérifier, et c'est cette possibilité de vérifier qui rend le système acceptable dans un cadre professionnel.</p>
+
+<h2>Ce qui casse le plus souvent</h2>
+
+<table>
+  <thead><tr><th>Symptôme</th><th>Cause habituelle</th></tr></thead>
+  <tbody>
+    <tr><th>Réponse à côté</th><td>La recherche a rapporté les mauvais passages. C'est la panne la plus fréquente, et elle vient avant le modèle.</td></tr>
+    <tr><th>Réponse périmée ou contradictoire</th><td>La base contient plusieurs versions d'un même document.</td></tr>
+    <tr><th>Tableaux et chiffres faux</th><td>L'extraction du texte a abîmé le document : fichier PDF mal lu, tableau aplati, page numérisée passée par une reconnaissance de caractères, <strong>OCR</strong> (<em>Optical Character Recognition</em>), imparfaite.</td></tr>
+    <tr><th>Impossible de répondre à « résume tout »</th><td>Le RAG rapporte quelques passages, pas une vue d'ensemble.</td></tr>
+  </tbody>
+</table>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>Les droits d'accès. Un RAG branché sur tous les documents de l'entreprise répondra à un stagiaire avec le contenu d'un dossier de la direction, s'il le retrouve. La recherche doit filtrer selon les droits de la personne qui pose la question, <em>avant</em> de transmettre quoi que ce soit au modèle. Demander au modèle de « ne pas révéler » ce qu'il a sous les yeux n'est pas un contrôle d'accès.</p>
+</aside>
+
+<h2>RAG, fine-tuning ou contexte long ?</h2>
+
+<table>
+  <thead><tr><th>Approche</th><th>Convient quand</th><th>Limite</th></tr></thead>
+  <tbody>
+    <tr><th>RAG</th><td>Les connaissances sont nombreuses, changent, et doivent être sourcées</td><td>Vaut ce que vaut la recherche</td></tr>
+    <tr><th>Fine-tuning</th><td>On veut un style, un format ou un comportement constant</td><td>N'apporte pas de faits à jour, et se refait à chaque nouveau modèle</td></tr>
+    <tr><th>Contexte long</th><td>Il y a peu de documents : on les met tous dans le prompt</td><td>Coût et latence à chaque appel</td></tr>
+  </tbody>
+</table>
+
+<p>Ces approches se combinent. Et la question à se poser d'abord est la plus simple : tout tient-il dans le contexte ? Si oui, un RAG est une complication inutile.</p>
+
+<h2>Deux variantes à connaître</h2>
+
+<ul>
+  <li><strong>Le RAG agentique.</strong> Le modèle décide lui-même s'il faut chercher, formule ses requêtes, juge les résultats et recommence au besoin. Plus puissant sur les questions complexes, plus lent et plus cher.</li>
+  <li><strong>Le RAG sur graphe</strong> (<em>GraphRAG</em>). Les documents sont d'abord transformés en un graphe d'entités et de relations, ce qui aide pour les questions qui croisent beaucoup de sources.</li>
+</ul>
+
+<h2>Mesurer un RAG</h2>
+
+<p>On mesure les deux étages séparément. Pour la recherche : sur un jeu de questions dont on connaît le bon passage, celui-ci figure-t-il parmi les résultats rapportés ? C'est le <dfn>rappel</dfn>. Pour la génération : la réponse est-elle fidèle aux passages fournis, sans rien ajouter, et répond-elle à la question ? Quand un RAG déçoit, cette séparation dit tout de suite quel étage réparer.</p>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Le RAG ne modifie pas le modèle : il lui donne à lire, à chaque question, les passages pertinents.</li>
+    <li>La recherche se fait par le sens, grâce aux embeddings, et gagne à être combinée aux mots-clés et à un reclassement.</li>
+    <li>La panne la plus fréquente est en amont : mauvais passages, documents périmés, extraction abîmée.</li>
+    <li>Les droits d'accès se filtrent à la recherche, jamais par une consigne donnée au modèle.</li>
+    <li>RAG pour des faits qui changent, fine-tuning pour un comportement, contexte long quand tout tient.</li>
+  </ul>
+</aside>

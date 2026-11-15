@@ -1,0 +1,178 @@
+[
+  {
+    "id": "rag-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Quel est le principe du RAG ?",
+    "choix": [
+      "Chercher les passages utiles, les placer dans le contexte, et faire répondre le modèle à partir d'eux",
+      "Réentraîner le modèle sur les documents de l'entreprise",
+      "Remplacer le modèle de langage par un moteur de recherche",
+      "Enregistrer toutes les réponses passées pour les resservir"
+    ],
+    "bonnes": [0],
+    "explication": "Le RAG ne touche pas aux poids du modèle. Il lui fournit, à chaque question, les passages pertinents à lire. C'est pourquoi mettre un document à jour suffit à mettre les réponses à jour."
+  },
+  {
+    "id": "rag-02",
+    "type": "vf",
+    "niveau": 1,
+    "q": "Avec un RAG, le modèle apprend le contenu des documents et s'en souvient ensuite.",
+    "bonnes": [1],
+    "explication": "Le modèle n'apprend rien : il lit les passages au moment de répondre, puis les oublie. Tout se joue dans la fenêtre de contexte de chaque appel."
+  },
+  {
+    "id": "rag-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi la recherche d'un RAG repose-t-elle sur des embeddings ?",
+    "choix": [
+      "Ils permettent de retrouver un passage par son sens, même sans mot en commun avec la question",
+      "Ils compressent les documents pour économiser du stockage",
+      "Ils chiffrent les documents confidentiels",
+      "Ils traduisent les documents dans la langue de l'utilisateur"
+    ],
+    "bonnes": [0],
+    "explication": "Deux textes de sens proche ont des vecteurs proches. « Comment résilier ? » retrouve donc un paragraphe sur la fin anticipée du contrat, sans partager un seul mot."
+  },
+  {
+    "id": "rag-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que risque-t-on avec des passages (chunks) découpés trop court ?",
+    "choix": [
+      "Ils perdent leur contexte : on ne sait plus de quoi ils parlent",
+      "Ils dépassent la fenêtre de contexte",
+      "Ils ne peuvent plus être traduits en vecteurs",
+      "Ils coûtent plus de tokens qu'un document entier"
+    ],
+    "bonnes": [0],
+    "explication": "Une phrase isolée comme « ce taux s'applique dès la deuxième année » ne dit plus de quel taux il s'agit. À l'inverse, des passages trop longs diluent l'information et alourdissent le prompt."
+  },
+  {
+    "id": "rag-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi combiner la recherche par le sens avec une recherche par mots-clés ?",
+    "choix": [
+      "La recherche par le sens rate les termes exacts : numéro de contrat, sigle, nom propre",
+      "La recherche par mots-clés comprend mieux les synonymes",
+      "La recherche par le sens ne fonctionne qu'en anglais",
+      "La recherche par mots-clés est exigée par la réglementation"
+    ],
+    "bonnes": [0],
+    "explication": "Chaque méthode couvre la faiblesse de l'autre. La recherche hybride retrouve à la fois les formulations voisines et les termes qui doivent correspondre à la lettre."
+  },
+  {
+    "id": "rag-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "À quoi sert le reclassement (reranking) ?",
+    "choix": [
+      "À reclasser finement des passages candidats pour ne garder que les meilleurs",
+      "À trier les utilisateurs par niveau de droits",
+      "À réordonner les mots de la réponse",
+      "À choisir le modèle le moins cher"
+    ],
+    "bonnes": [0],
+    "explication": "La première recherche est rapide et approximative. Un second modèle, plus lent et plus précis, examine les candidats et retient les plus pertinents avant de les passer au modèle de langage."
+  },
+  {
+    "id": "rag-07",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un RAG donne régulièrement des réponses à côté de la question. Où chercher d'abord ?",
+    "choix": [
+      "Dans la recherche : les bons passages ont-ils été rapportés ?",
+      "Dans la température du modèle",
+      "Dans la taille du modèle, sans doute insuffisante",
+      "Dans la vitesse de la base vectorielle"
+    ],
+    "bonnes": [0],
+    "explication": "La panne la plus fréquente se situe avant le modèle. Si les passages fournis ne contiennent pas la réponse, aucun modèle ne peut la donner. Mesurer la recherche à part le montre tout de suite."
+  },
+  {
+    "id": "rag-08",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un RAG est branché sur tous les documents de l'entreprise. Comment éviter qu'il serve à un salarié le contenu d'un dossier auquel il n'a pas droit ?",
+    "choix": [
+      "Filtrer la recherche selon les droits de la personne, avant de transmettre quoi que ce soit au modèle",
+      "Ajouter au prompt la consigne de ne pas révéler d'information confidentielle",
+      "Baisser la température pour rendre le modèle plus prudent",
+      "Limiter la longueur des réponses"
+    ],
+    "bonnes": [0],
+    "explication": "Une consigne donnée au modèle n'est pas un contrôle d'accès : ce qu'il a sous les yeux peut ressortir. Le filtrage se fait à la recherche, sur les droits réels de l'utilisateur."
+  },
+  {
+    "id": "rag-09",
+    "type": "single",
+    "niveau": 2,
+    "q": "On veut des réponses fondées sur une réglementation qui change tous les mois, avec les sources citées. Quelle approche convient ?",
+    "choix": [
+      "Le RAG",
+      "Le fine-tuning",
+      "L'augmentation de la température",
+      "L'entraînement d'un modèle à partir de rien"
+    ],
+    "bonnes": [0],
+    "explication": "Des faits nombreux, changeants et à sourcer : c'est le terrain du RAG. Le fine-tuning sert à imposer un style ou un format, pas à tenir des connaissances à jour."
+  },
+  {
+    "id": "rag-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une application ne s'appuie que sur trois documents de dix pages. Faut-il bâtir un RAG ?",
+    "choix": [
+      "Non : tout tient dans le contexte, on fournit les trois documents à chaque appel",
+      "Oui : un RAG est toujours préférable",
+      "Oui : c'est la seule façon de citer ses sources",
+      "Non : il faut plutôt réentraîner le modèle sur ces documents"
+    ],
+    "bonnes": [0],
+    "explication": "La première question est la plus simple : tout tient-il dans le contexte ? Si oui, un RAG ajoute un étage qui peut tomber en panne, sans rien apporter."
+  },
+  {
+    "id": "rag-11",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que cherche-t-on en demandant au modèle de citer le passage qui fonde chaque affirmation ?",
+    "choix": [
+      "Permettre à l'utilisateur de vérifier la réponse",
+      "Allonger la réponse pour la rendre plus convaincante",
+      "Réduire le nombre de tokens de sortie",
+      "Dispenser d'évaluer le système"
+    ],
+    "bonnes": [0],
+    "explication": "Une réponse ancrée dans ses sources est vérifiable. C'est cette possibilité de vérifier qui rend un RAG acceptable dans un cadre professionnel. L'évaluation reste nécessaire."
+  },
+  {
+    "id": "rag-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "Pourquoi mesurer séparément la recherche et la génération d'un RAG ?",
+    "choix": [
+      "Pour savoir quel étage réparer quand le système déçoit",
+      "Parce que les deux étages sont facturés séparément",
+      "Parce que la génération ne peut pas être mesurée",
+      "Pour pouvoir supprimer l'un des deux étages"
+    ],
+    "bonnes": [0],
+    "explication": "Si le bon passage n'a pas été rapporté, le problème est dans la recherche. S'il l'a été et que la réponse est fausse ou infidèle, il est dans la génération. Les remèdes ne sont pas les mêmes."
+  },
+  {
+    "id": "rag-13",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Quelles causes fréquentes expliquent les mauvaises réponses d'un RAG ?",
+    "choix": [
+      "Plusieurs versions d'un même document coexistent dans la base",
+      "L'extraction du texte a abîmé les tableaux",
+      "La recherche a rapporté des passages hors sujet",
+      "Le modèle a été réentraîné sur les documents"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Documents en double ou périmés, extraction défectueuse et recherche approximative sont les trois grandes causes. Le modèle, lui, n'est jamais réentraîné dans un RAG."
+  }
+]

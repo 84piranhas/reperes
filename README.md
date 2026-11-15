@@ -37,8 +37,11 @@ Aucun code n'est à modifier : l'accueil, le sommaire, le test et le glossaire s
 | `titre`, `titreCourt` | Titre complet, et titre court pour le fil d'Ariane |
 | `accroche` | Une ou deux phrases de présentation |
 | `couleur` | Couleur d'accent, `clair` et `sombre` |
-| `chapitres` | Liste ordonnée : `id`, `titre`, `resume`, `minutes` |
+| `chapitres` | Liste ordonnée : `id`, `titre`, `resume`, `minutes`, et `parcours` (facultatif) |
+| `parcours` | Facultatif : une phrase de légende, affichée au-dessus du sommaire, qui explique les parcours |
 | `capitalesIgnorees` | Facultatif : mots en capitales qui ne sont pas des sigles à définir |
+
+Quand un thème s'adresse à plusieurs publics, chaque chapitre peut porter une étiquette `parcours` (par exemple « Socle », « Construire », « Industrialiser »). Elle s'affiche dans le sommaire et en tête du chapitre. La légende `parcours` du thème dit à qui s'adresse chaque étiquette.
 
 ### Un chapitre de cours
 

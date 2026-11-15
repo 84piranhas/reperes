@@ -1,0 +1,201 @@
+[
+  {
+    "id": "gouvernance-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que réglemente avant tout le règlement européen sur l'IA ?",
+    "choix": [
+      "Des usages, classés selon leur niveau de risque",
+      "Une technologie précise, le deep learning",
+      "Le prix des modèles",
+      "La nationalité des fournisseurs"
+    ],
+    "bonnes": [0],
+    "explication": "Le règlement ne vise pas une technique mais ce qu'on en fait. Le même modèle peut servir à un usage libre ou à un usage à haut risque, soumis à de lourdes obligations."
+  },
+  {
+    "id": "gouvernance-02",
+    "type": "single",
+    "niveau": 2,
+    "q": "Dans quelle catégorie de risque se range un système qui trie des candidatures à l'embauche ?",
+    "choix": ["Risque élevé", "Risque minimal", "Risque limité", "Risque inacceptable"],
+    "bonnes": [0],
+    "explication": "Le recrutement, comme le crédit, l'éducation ou la justice, figure parmi les usages à haut risque : le système pèse sur l'accès d'une personne à un droit ou à une opportunité."
+  },
+  {
+    "id": "gouvernance-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle obligation pèse sur un assistant conversationnel classé à risque limité ?",
+    "choix": [
+      "La transparence : l'utilisateur doit savoir qu'il parle à une machine",
+      "Une certification préalable par une autorité",
+      "L'interdiction de traiter du texte libre",
+      "La publication de ses poids"
+    ],
+    "bonnes": [0],
+    "explication": "Le risque limité appelle de la transparence : signaler qu'on dialogue avec une IA, et marquer les contenus générés. Les obligations lourdes sont réservées au haut risque."
+  },
+  {
+    "id": "gouvernance-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Dans le vocabulaire du règlement, qu'est-ce qu'un déployeur ?",
+    "choix": [
+      "L'organisation qui utilise un système d'IA dans son activité",
+      "L'entreprise qui développe le modèle et le met sur le marché",
+      "L'autorité qui contrôle les systèmes",
+      "La personne visée par une décision automatisée"
+    ],
+    "bonnes": [0],
+    "explication": "Le fournisseur développe et met sur le marché, le déployeur utilise. La plupart des entreprises sont déployeurs, mais deviennent fournisseurs si elles mettent un système à leur nom ou le modifient substantiellement."
+  },
+  {
+    "id": "gouvernance-05",
+    "type": "single",
+    "niveau": 3,
+    "q": "Qu'est devenu le calendrier des obligations applicables aux systèmes à haut risque ?",
+    "choix": [
+      "D'abord prévues pour août 2026, elles ont été repoussées à fin 2027 et 2028",
+      "Elles s'appliquent depuis février 2025",
+      "Elles ont été supprimées",
+      "Elles ne s'appliqueront qu'aux entreprises installées hors d'Europe"
+    ],
+    "bonnes": [0],
+    "explication": "Un texte de simplification adopté à l'été 2026 a décalé ces échéances. La leçon dépasse la date : ce calendrier a déjà bougé, et se vérifie sur le texte en vigueur avant d'engager un projet."
+  },
+  {
+    "id": "gouvernance-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que désigne le sigle GPAI dans le règlement européen ?",
+    "choix": [
+      "Les modèles d'IA à usage général, c'est-à-dire les grands modèles de fondation",
+      "Les systèmes d'IA utilisés par les administrations",
+      "Les processeurs graphiques destinés à l'IA",
+      "Les garanties de protection applicables aux individus"
+    ],
+    "bonnes": [0],
+    "explication": "Les modèles à usage général forment une catégorie à part. Leurs fournisseurs doivent les documenter et respecter le droit d'auteur, avec des exigences renforcées pour les plus puissants."
+  },
+  {
+    "id": "gouvernance-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que prévoit le RGPD face à une décision entièrement automatisée qui affecte une personne de façon significative ?",
+    "choix": [
+      "La personne peut refuser d'y être soumise et demander une intervention humaine",
+      "La décision est toujours valable si le modèle est performant",
+      "La décision doit être prise par deux modèles différents",
+      "La personne doit payer pour obtenir un réexamen"
+    ],
+    "bonnes": [0],
+    "explication": "Le RGPD s'ajoute au règlement sur l'IA dès que des données personnelles sont traitées. Ce droit pèse directement sur les usages de notation, de crédit ou de recrutement."
+  },
+  {
+    "id": "gouvernance-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'apporte la norme ISO/IEC 42001 ?",
+    "choix": [
+      "Un système de management de l'IA, certifiable : politique, rôles, risques, amélioration continue",
+      "Un classement des meilleurs modèles de langage",
+      "Un format de fichier pour échanger des modèles",
+      "Une méthode de calcul du coût des tokens"
+    ],
+    "bonnes": [0],
+    "explication": "C'est une norme d'organisation, dans la lignée des normes de management de la qualité ou de la sécurité. Elle ne dit pas quel modèle choisir, mais comment piloter l'IA dans une entreprise."
+  },
+  {
+    "id": "gouvernance-09",
+    "type": "single",
+    "niveau": 1,
+    "q": "Par quoi commence une gouvernance de l'IA ?",
+    "choix": [
+      "Par un inventaire des systèmes en service, avec un usage, un responsable et un niveau de risque",
+      "Par l'achat du modèle le plus puissant",
+      "Par l'interdiction de tout outil d'IA",
+      "Par la rédaction d'une charte de vingt pages"
+    ],
+    "bonnes": [0],
+    "explication": "On ne gouverne pas ce qu'on n'a pas recensé. L'inventaire vient d'abord, suivi d'une politique d'usage simple et d'une offre interne crédible."
+  },
+  {
+    "id": "gouvernance-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une personne valide deux cents décisions du modèle par heure et le suit dans 99 % des cas. Qu'en dire ?",
+    "choix": [
+      "C'est une supervision de façade : elle n'a ni le temps ni les moyens de contredire le système",
+      "C'est une supervision exemplaire",
+      "Cela prouve que le modèle n'a plus besoin de supervision",
+      "Cela suffit à transférer la responsabilité au modèle"
+    ],
+    "bonnes": [0],
+    "explication": "Une supervision réelle suppose du temps, la compétence pour contredire le système et le droit de le faire. Sans cela, la présence humaine ne protège ni les personnes ni l'entreprise."
+  },
+  {
+    "id": "gouvernance-11",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel profil a un bon premier cas d'usage ?",
+    "choix": [
+      "Une tâche fréquente, dont le résultat se vérifie facilement, et où une erreur coûte peu",
+      "Une décision rare et lourde de conséquences",
+      "Une tâche que personne ne sait évaluer",
+      "Un processus entièrement automatisé, sans relecture"
+    ],
+    "bonnes": [0],
+    "explication": "Résumer, classer, extraire, rédiger un premier jet relu par un expert : la valeur s'accumule vite, et les erreurs se rattrapent. Les usages à fort enjeu viennent après, avec l'expérience."
+  },
+  {
+    "id": "gouvernance-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "Pourquoi éviter de câbler une application sur un modèle précis ?",
+    "choix": [
+      "Les modèles sont retirés après un an ou deux : il faut pouvoir en changer vite, évaluation à l'appui",
+      "Les modèles deviennent gratuits après un an",
+      "Un modèle ne peut servir qu'une seule application",
+      "La réglementation interdit d'utiliser deux fois le même modèle"
+    ],
+    "bonnes": [0],
+    "explication": "Une couche intermédiaire et un jeu d'évaluation rendent le changement de modèle banal. Sans eux, chaque retrait annoncé par un fournisseur devient un projet."
+  },
+  {
+    "id": "gouvernance-13",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Quand une décision a été proposée par un modèle, la responsabilité de l'erreur revient au modèle.",
+    "bonnes": [1],
+    "explication": "La responsabilité reste humaine et organisationnelle. « C'est le modèle qui l'a dit » n'est une défense ni devant un client, ni devant un juge."
+  },
+  {
+    "id": "gouvernance-14",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Lesquelles de ces situations sont des dérives à reconnaître ?",
+    "choix": [
+      "Des dizaines d'expérimentations, aucune en production",
+      "Un projet lancé sans jeu d'évaluation ni indicateur de valeur",
+      "Un fournisseur qui ne dit rien du modèle utilisé ni du sort des données",
+      "Une étude de faisabilité dont les critères de décision sont fixés d'avance"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Le pilote éternel, le projet sans mesure et le fournisseur boîte noire sont des dérives classiques. Fixer d'avance ce qui décidera de la suite est au contraire la bonne pratique."
+  },
+  {
+    "id": "gouvernance-15",
+    "type": "single",
+    "niveau": 3,
+    "q": "Quelle question vient avant toutes les autres au lancement d'un projet d'IA ?",
+    "choix": [
+      "Quel problème résout-on, et faut-il de l'IA pour cela ?",
+      "Quel est le modèle le plus puissant du moment ?",
+      "Combien de processeurs graphiques faut-il acheter ?",
+      "Quel nom donner à l'assistant ?"
+    ],
+    "bonnes": [0],
+    "explication": "« Il nous faut de l'IA » ne doit pas précéder « pour quoi faire ». Une règle simple suffit parfois, et elle est alors plus fiable, moins chère et plus facile à expliquer."
+  }
+]

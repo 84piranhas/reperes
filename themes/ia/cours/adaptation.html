@@ -1,0 +1,99 @@
+<p>Un modèle généraliste ne fait pas toujours ce qu'on attend : le ton n'est pas le bon, le format varie, il coûte trop cher ou ne tient pas sur le matériel disponible. On peut alors le modifier lui-même, et non plus seulement ce qu'on lui envoie. Ce chapitre présente les trois gestes d'ingénieur à connaître, le fine-tuning, la distillation et la quantification, et surtout la question qui les précède : faut-il vraiment toucher au modèle ?</p>
+
+<h2>L'échelle des options</h2>
+
+<table>
+  <thead><tr><th>Échelon</th><th>Ce qu'on change</th><th>Coût et délai</th></tr></thead>
+  <tbody>
+    <tr><th>1. Le prompt</th><td>Les consignes</td><td>Des heures</td></tr>
+    <tr><th>2. Les exemples</th><td>Quelques cas montrés dans le prompt</td><td>Des heures</td></tr>
+    <tr><th>3. Le RAG</th><td>Les documents fournis à chaque question</td><td>Des semaines</td></tr>
+    <tr><th>4. Le fine-tuning</th><td>Les poids du modèle</td><td>Des semaines à des mois, puis de l'entretien</td></tr>
+    <tr><th>5. Un entraînement complet</th><td>Tout</td><td>Hors de portée, sauf exception</td></tr>
+  </tbody>
+</table>
+
+<p>La règle est de monter les échelons dans l'ordre et de s'arrêter dès que le besoin est couvert. Chaque échelon coûte davantage, et surtout engage davantage : un prompt se corrige en une minute, un modèle ajusté se réentraîne. Le <strong>RAG</strong> (<em>Retrieval-Augmented Generation</em>, génération augmentée par la recherche) fait l'objet d'un chapitre à part.</p>
+
+<h2>Le fine-tuning : ce qu'il apporte</h2>
+
+<p>Le <dfn>fine-tuning</dfn>, ou ajustement, reprend l'entraînement d'un modèle existant sur ses propres exemples. Les poids bougent un peu, et le modèle acquiert un comportement. Il sert bien dans quatre cas.</p>
+
+<ul>
+  <li><strong>Un style ou un ton constant</strong>, difficile à décrire mais facile à montrer.</li>
+  <li><strong>Un format strict</strong>, respecté sans qu'on ait à le rappeler.</li>
+  <li><strong>Une tâche étroite et répétitive</strong> : classer, extraire, router, des millions de fois.</li>
+  <li><strong>Un petit modèle spécialisé</strong>, qui remplace un grand modèle sur une tâche précise, pour moins cher et plus vite.</li>
+</ul>
+
+<aside class="note piege">
+  <p class="etiquette">Idée reçue</p>
+  <p>« On va fine-tuner le modèle sur nos documents pour qu'il les connaisse. » C'est l'erreur la plus répandue. Le fine-tuning enseigne une manière de faire, pas une liste de faits. Un modèle ajusté sur un règlement intérieur en imite le style et continue d'en inventer les articles. Pour des connaissances, surtout si elles changent, l'outil est le RAG.</p>
+</aside>
+
+<h2>Ce qu'il exige</h2>
+
+<ul>
+  <li><strong>Des exemples de qualité</strong> : des centaines à des milliers de couples entrée et sortie attendue. Leur préparation est le vrai travail, et la qualité du résultat ne dépasse pas la leur.</li>
+  <li><strong>Un jeu d'évaluation</strong>, distinct des exemples d'entraînement, pour savoir si le modèle ajusté fait mieux que l'original.</li>
+  <li><strong>Du calcul</strong>, loué chez un fournisseur ou sur ses propres processeurs graphiques, les <strong>GPU</strong> (<em>Graphics Processing Units</em>).</li>
+  <li><strong>Un entretien.</strong> Quand le modèle de base est remplacé par une nouvelle version, l'ajustement est à refaire.</li>
+</ul>
+
+<p>Ce dernier point est souvent sous-estimé. Les modèles de base se renouvellent tous les quelques mois. Un fine-tuning est une dette que l'on reconduit à chaque génération.</p>
+
+<h2>Ajuster sans tout réentraîner</h2>
+
+<p>Modifier les milliards de poids d'un modèle est lourd. Une famille de techniques l'évite : l'ajustement économe en paramètres, ou <strong>PEFT</strong> (<em>Parameter-Efficient Fine-Tuning</em>). La plus répandue s'appelle <strong>LoRA</strong> (<em>Low-Rank Adaptation</em>).</p>
+
+<p>Son principe : on gèle le modèle d'origine, et l'on entraîne de petites matrices ajoutées à côté de ses couches. Ces ajouts, appelés <dfn>adaptateurs</dfn>, pèsent souvent moins de 1 % du modèle. L'entraînement devient accessible sur un matériel modeste, et un même modèle de base peut porter plusieurs adaptateurs, un par tâche, que l'on charge à la demande. La variante <strong>QLoRA</strong> (<em>Quantized Low-Rank Adaptation</em>) applique la même idée à un modèle déjà quantifié, pour réduire encore la mémoire nécessaire.</p>
+
+<h2>Les risques du fine-tuning</h2>
+
+<ul>
+  <li><strong>Le surapprentissage.</strong> Avec trop peu d'exemples, le modèle les récite.</li>
+  <li><strong>L'oubli catastrophique</strong> (<em>catastrophic forgetting</em>). En apprenant la nouvelle tâche, le modèle perd des capacités qu'il avait.</li>
+  <li><strong>La régression cachée.</strong> Il progresse sur la tâche visée et recule sur d'autres, que personne n'a mesurées.</li>
+  <li><strong>L'affaiblissement des garde-fous.</strong> Un ajustement peut défaire une partie des règles de sécurité du modèle d'origine.</li>
+</ul>
+
+<h2>La distillation</h2>
+
+<p>La <dfn>distillation</dfn> transfère le savoir-faire d'un grand modèle vers un petit. Le grand, dit <em>professeur</em> (<em>teacher</em>), produit des réponses sur un grand nombre de cas. Le petit, dit <em>élève</em> (<em>student</em>), est entraîné à les reproduire. Sur la tâche visée, l'élève approche la qualité du professeur, pour une fraction du coût et de la latence.</p>
+
+<p>C'est la voie classique pour industrialiser : on met au point avec le meilleur modèle disponible, puis on distille vers un modèle économique une fois la tâche stabilisée. Les réponses du professeur sont un cas de <dfn>données synthétiques</dfn>, des exemples fabriqués par un modèle plutôt que recueillis.</p>
+
+<h2>La quantification</h2>
+
+<p>Les poids d'un modèle sont des nombres décimaux, stockés d'ordinaire sur 16 bits chacun. La <dfn>quantification</dfn> (<em>quantization</em>) les arrondit sur 8 ou 4 bits. Le modèle devient deux à quatre fois plus léger, donc plus rapide et moins gourmand en mémoire, au prix d'une légère perte de qualité. Celle-ci reste souvent imperceptible à 8 bits, sensible à 4 bits, et nette en dessous.</p>
+
+<p>C'est la quantification qui permet de faire tourner un modèle sur un ordinateur portable ou sur un seul processeur graphique. Les modèles quantifiés pour un usage local circulent couramment dans un format de fichier nommé <strong>GGUF</strong> (<em>GPT-Generated Unified Format</em>).</p>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>Les trois gestes se combinent. Un parcours fréquent : prototyper avec un grand modèle par <strong>API</strong> (<em>Application Programming Interface</em>, l'interface par laquelle un programme en interroge un autre), distiller vers un modèle ouvert de taille moyenne, l'ajuster avec LoRA sur les cas difficiles, puis le quantifier pour le servir à bas coût. Chaque étape se valide sur le même jeu d'évaluation, sans quoi l'on ne sait pas ce qu'on a perdu en route.</p>
+</aside>
+
+<h2>Quel levier pour quel besoin</h2>
+
+<table>
+  <thead><tr><th>Le besoin</th><th>Le levier</th></tr></thead>
+  <tbody>
+    <tr><th>Le modèle ignore nos documents</th><td>RAG</td></tr>
+    <tr><th>Le ton ou le format ne tient pas, malgré un bon prompt</th><td>Fine-tuning</td></tr>
+    <tr><th>La tâche est simple, mais le volume rend le grand modèle trop cher</th><td>Distillation vers un petit modèle</td></tr>
+    <tr><th>Le modèle ne tient pas sur notre matériel</th><td>Quantification, ou un modèle plus petit</td></tr>
+    <tr><th>Le modèle se trompe sur une tâche complexe</th><td>Meilleur prompt, meilleur contexte, ou meilleur modèle : rarement le fine-tuning</td></tr>
+  </tbody>
+</table>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Prompt, exemples, RAG, puis seulement fine-tuning : on monte l'échelle dans l'ordre et l'on s'arrête dès que le besoin est couvert.</li>
+    <li>Le fine-tuning enseigne un comportement, pas des faits. Il exige des exemples de qualité et se refait à chaque nouveau modèle de base.</li>
+    <li>LoRA ajuste de petits adaptateurs au lieu de tout le modèle.</li>
+    <li>La distillation fait imiter un grand modèle par un petit, pour moins cher.</li>
+    <li>La quantification arrondit les poids : un modèle plus léger, contre une légère perte de qualité.</li>
+  </ul>
+</aside>

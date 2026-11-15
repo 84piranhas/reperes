@@ -1,0 +1,148 @@
+<p>Gouverner l'intelligence artificielle (IA), c'est pouvoir répondre à quatre questions pour chaque système en service : à quoi sert-il, sur quelles données s'appuie-t-il, qui en répond, et que se passe-t-il quand il se trompe ? La réglementation européenne pose désormais ces questions avec des sanctions à la clé. Ce chapitre présente le cadre, puis les choix qui en découlent : quel cas d'usage, quel modèle, construire ou acheter.</p>
+
+<h2>Le règlement européen sur l'IA</h2>
+
+<p>Le règlement européen sur l'intelligence artificielle, abrégé <strong>RIA</strong> en français, est plus connu sous son nom anglais, <strong>AI Act</strong> (AI pour <em>Artificial Intelligence</em>). Entré en vigueur le 1<sup>er</sup> août 2024, il ne réglemente pas une technologie mais des <strong>usages</strong>, classés selon leur risque.</p>
+
+<table>
+  <thead><tr><th>Niveau de risque</th><th>Exemples</th><th>Régime</th></tr></thead>
+  <tbody>
+    <tr><th>Inacceptable</th><td>Notation sociale, manipulation exploitant la vulnérabilité des personnes, reconnaissance des émotions au travail</td><td>Interdit</td></tr>
+    <tr><th>Élevé</th><td>Recrutement, octroi de crédit, éducation, infrastructures critiques, justice</td><td>Obligations lourdes avant la mise en service</td></tr>
+    <tr><th>Limité</th><td>Assistant conversationnel, contenu généré</td><td>Transparence : dire que l'on parle à une machine, signaler un contenu artificiel</td></tr>
+    <tr><th>Minimal</th><td>Filtre antispam, correcteur, recommandation de films</td><td>Libre</td></tr>
+  </tbody>
+</table>
+
+<p>Pour un système à haut risque, le règlement exige notamment une gestion des risques, des données d'entraînement de qualité, une documentation technique, la journalisation, une supervision humaine, et un niveau de robustesse et de sécurité.</p>
+
+<p>Une catégorie à part vise les modèles d'IA à usage général, <strong>GPAI</strong> (<em>General-Purpose Artificial Intelligence</em>), c'est-à-dire les grands modèles de fondation. Leurs fournisseurs doivent documenter leurs modèles et respecter le droit d'auteur, avec des exigences renforcées pour les plus puissants.</p>
+
+<h3>Deux rôles</h3>
+
+<p>Le règlement distingue le <dfn>fournisseur</dfn> (<em>provider</em>), qui développe un système et le met sur le marché, du <dfn>déployeur</dfn> (<em>deployer</em>), qui l'utilise dans son activité. La plupart des entreprises sont déployeurs. Elles deviennent fournisseurs dès qu'elles mettent un système à leur nom, ou modifient substantiellement celui d'un tiers.</p>
+
+<h3>Le calendrier</h3>
+
+<table>
+  <thead><tr><th>Date</th><th>Ce qui s'applique</th></tr></thead>
+  <tbody>
+    <tr><th>2 février 2025</th><td>Les interdictions, et l'obligation de former les personnels qui utilisent l'IA</td></tr>
+    <tr><th>2 août 2025</th><td>Les obligations des fournisseurs de modèles à usage général</td></tr>
+    <tr><th>Août 2026</th><td>L'essentiel des obligations de transparence</td></tr>
+    <tr><th>2 décembre 2027</th><td>Les systèmes à haut risque autonomes</td></tr>
+    <tr><th>2 août 2028</th><td>Les systèmes à haut risque intégrés à des produits déjà réglementés</td></tr>
+  </tbody>
+</table>
+
+<aside class="note piege">
+  <p class="etiquette">Attention aux dates</p>
+  <p>Les obligations des systèmes à haut risque étaient d'abord prévues pour août 2026. Un texte de simplification adopté à l'été 2026, dit « omnibus numérique », les a repoussées à fin 2027 et 2028. Le calendrier a donc déjà bougé une fois : avant d'engager un projet, on vérifie les dates sur le texte en vigueur.</p>
+</aside>
+
+<p>Les sanctions vont jusqu'à 35 millions d'euros ou 7 % du chiffre d'affaires mondial pour les pratiques interdites. L'obligation de formation, souvent appelée <dfn>maîtrise de l'IA</dfn> (<em>AI literacy</em>), concerne toute organisation qui utilise ces outils, quelle que soit sa taille.</p>
+
+<h2>Le RGPD s'applique toujours</h2>
+
+<p>Dès qu'un système traite des données personnelles, le règlement général sur la protection des données, <strong>RGPD</strong>, que les anglophones appellent <strong>GDPR</strong> (<em>General Data Protection Regulation</em>), s'ajoute au précédent. Il impose une base légale, une finalité, la minimisation des données, et des droits pour les personnes.</p>
+
+<p>Deux de ses dispositions touchent directement l'IA. Une personne peut refuser d'être soumise à une décision <strong>entièrement automatisée</strong> qui l'affecte de façon significative. Et un traitement à risque exige une analyse d'impact préalable, l'<strong>AIPD</strong> (analyse d'impact relative à la protection des données), en anglais <strong>DPIA</strong> (<em>Data Protection Impact Assessment</em>).</p>
+
+<h2>Normes et cadres</h2>
+
+<table>
+  <thead><tr><th>Référence</th><th>Nature</th><th>Ce qu'elle apporte</th></tr></thead>
+  <tbody>
+    <tr><th>ISO/IEC 42001</th><td>Norme internationale, 2023, certifiable</td><td>Un système de management de l'IA : politique, rôles, risques, amélioration continue</td></tr>
+    <tr><th>NIST AI RMF</th><td>Cadre américain, 2023, volontaire</td><td>Une méthode de gestion des risques en quatre fonctions : gouverner, cartographier, mesurer, gérer</td></tr>
+    <tr><th>Carte de modèle<br><em>model card</em></th><td>Document descriptif</td><td>Pour chaque modèle : usages prévus, données, performances, limites</td></tr>
+  </tbody>
+</table>
+
+<p>ISO désigne l'Organisation internationale de normalisation (<em>International Organization for Standardization</em>) et IEC la Commission électrotechnique internationale (<em>International Electrotechnical Commission</em>). NIST est l'institut américain des normes (<em>National Institute of Standards and Technology</em>), et RMF son cadre de gestion des risques (<em>Risk Management Framework</em>).</p>
+
+<h2>La gouvernance interne</h2>
+
+<ul>
+  <li><strong>Un inventaire.</strong> La liste des systèmes d'IA en service, avec pour chacun un usage, un responsable et un niveau de risque. On ne gouverne pas ce qu'on n'a pas recensé.</li>
+  <li><strong>Une politique d'usage.</strong> Quelles données peuvent aller dans quel outil. Une règle simple, connue de tous, vaut mieux qu'une charte de vingt pages.</li>
+  <li><strong>Une offre interne.</strong> Des outils approuvés, assez bons pour que personne n'ait de raison d'en utiliser d'autres en cachette.</li>
+  <li><strong>Une instance de décision</strong> qui réunit métier, technique, juridique, sécurité et conformité.</li>
+  <li><strong>De la formation</strong>, désormais obligatoire.</li>
+</ul>
+
+<h3>La supervision humaine</h3>
+
+<p>Deux postures existent. L'humain <strong>dans la boucle</strong> valide chaque décision avant qu'elle ne s'applique. L'humain <strong>sur la boucle</strong> surveille le système et peut l'arrêter. Dans les deux cas, la responsabilité reste humaine : « c'est le modèle qui l'a dit » n'est une défense ni devant un client, ni devant un juge.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>La supervision de façade. Une personne qui valide deux cents décisions par heure, en suivant le modèle dans 99 % des cas, ne supervise rien. Une supervision réelle suppose du temps, la compétence pour contredire le système, et le droit de le faire.</p>
+</aside>
+
+<h2>Choisir un cas d'usage</h2>
+
+<p>Trois critères se croisent : la <strong>valeur</strong> attendue, la <strong>faisabilité</strong> technique, et le <strong>risque</strong>. Les meilleurs premiers projets ont un profil reconnaissable : une tâche fréquente, dont le résultat se vérifie facilement, et où une erreur coûte peu. Résumer, classer, extraire, rédiger un premier jet relu par un expert.</p>
+
+<p>On mesure ensuite le retour sur investissement, le <strong>ROI</strong> (<em>Return on Investment</em>), sur des faits : temps gagné, qualité, adoption réelle. Une étude de faisabilité limitée, ou <strong>PoC</strong> (<em>Proof of Concept</em>), sert à apprendre vite, à condition d'avoir fixé d'avance ce qui décidera de la suite.</p>
+
+<h2>Choisir un modèle</h2>
+
+<ul>
+  <li><strong>La qualité</strong>, mesurée sur ses propres cas, pas sur un classement.</li>
+  <li><strong>Le coût et la latence</strong>, à l'échelle visée.</li>
+  <li><strong>La confidentialité</strong> : où tournent les données, avec quels engagements.</li>
+  <li><strong>La licence</strong>, pour un modèle à poids ouverts.</li>
+  <li><strong>La pérennité</strong> : les modèles sont retirés après un an ou deux.</li>
+</ul>
+
+<p>Le dernier point dicte une règle d'architecture : ne pas câbler une application sur un modèle. Une couche intermédiaire et un jeu d'évaluation permettent d'en changer en quelques jours. Ceux qui ne l'ont pas prévu subissent chaque retrait de modèle comme un projet.</p>
+
+<h2>Construire ou acheter</h2>
+
+<table>
+  <thead><tr><th>Voie</th><th>Convient quand</th></tr></thead>
+  <tbody>
+    <tr><th>Un produit prêt à l'emploi</th><td>Le besoin est commun à toutes les entreprises : assistant bureautique, aide au code</td></tr>
+    <tr><th>Une application bâtie sur une API</th><td>Le besoin est propre à l'entreprise, ses données et ses processus font la différence</td></tr>
+    <tr><th>Un modèle hébergé en interne</th><td>La confidentialité ou le volume l'imposent</td></tr>
+  </tbody>
+</table>
+
+<p>Une <strong>API</strong> (<em>Application Programming Interface</em>) est l'interface par laquelle un programme en interroge un autre.</p>
+
+<h2>Les dérives à reconnaître</h2>
+
+<ul>
+  <li><strong>Le pilote éternel.</strong> Des dizaines d'expérimentations, aucune en production.</li>
+  <li><strong>La solution qui cherche son problème.</strong> « Il nous faut de l'IA » précède « pour quoi faire ».</li>
+  <li><strong>Le projet sans mesure.</strong> Ni jeu d'évaluation, ni indicateur de valeur.</li>
+  <li><strong>L'agent tout-puissant.</strong> Trop de droits, pas de validation humaine.</li>
+  <li><strong>Le fournisseur boîte noire.</strong> Aucune visibilité sur le modèle utilisé, les données, les sous-traitants.</li>
+</ul>
+
+<h2>Dix questions avant de lancer un projet</h2>
+
+<ol>
+  <li>Quel problème résout-on, et pour qui ?</li>
+  <li>Faut-il de l'IA, ou une règle simple suffit-elle ?</li>
+  <li>Que se passe-t-il quand le système se trompe, et qui s'en aperçoit ?</li>
+  <li>Sur quelles données s'appuie-t-il, et a-t-on le droit de les utiliser ainsi ?</li>
+  <li>Comment mesure-t-on que ça marche, avant et après la mise en service ?</li>
+  <li>Dans quelle catégorie de risque le règlement européen le place-t-il ?</li>
+  <li>Où partent les données, et avec quels engagements ?</li>
+  <li>Quelle est la pire action possible, et qu'est-ce qui l'empêche ?</li>
+  <li>Combien cela coûte-t-il à l'échelle visée ?</li>
+  <li>Qui en répond, et comment l'arrête-t-on ?</li>
+</ol>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Le règlement européen classe les usages par risque : interdit, élevé, limité, minimal. Les obligations du haut risque s'appliquent à partir de fin 2027.</li>
+    <li>Le RGPD s'ajoute dès qu'il y a des données personnelles, avec un droit de refuser une décision entièrement automatisée.</li>
+    <li>Gouverner commence par un inventaire, une politique d'usage simple et une offre interne crédible.</li>
+    <li>La responsabilité reste humaine, et la supervision doit être réelle.</li>
+    <li>Un bon premier cas d'usage est fréquent, vérifiable et peu risqué. Un bon choix de modèle reste réversible.</li>
+  </ul>
+</aside>

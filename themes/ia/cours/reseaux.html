@@ -1,0 +1,93 @@
+<p>Le deep learning, <strong>DL</strong> (<em>Deep Learning</em>, apprentissage profond), repose sur un objet simple empilé un très grand nombre de fois : le neurone artificiel. Il n'a de biologique que le nom. Comprendre comment un tel empilement apprend suffit à éclairer presque tout ce qui suit, des images aux modèles de langage.</p>
+
+<h2>Un neurone, puis des couches</h2>
+
+<p>Un <dfn>neurone artificiel</dfn> fait deux opérations. Il calcule une somme pondérée de ses entrées : chaque entrée est multipliée par un <dfn>poids</dfn>. Puis il passe le résultat dans une <dfn>fonction d'activation</dfn>, qui décide de ce qu'il transmet. La plus courante, <strong>ReLU</strong> (<em>Rectified Linear Unit</em>), laisse passer les valeurs positives et remplace les négatives par zéro.</p>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 236" role="img" aria-label="Un réseau à trois couches : trois neurones d'entrée, quatre neurones cachés, deux neurones de sortie, tous reliés entre couches voisines.">
+    <text class="t m" x="150" y="22">Entrée</text>
+    <text class="t m" x="375" y="22">Couche cachée</text>
+    <text class="t m" x="600" y="22">Sortie</text>
+    <path class="f" d="M163 70L362 45M163 70L362 95M163 70L362 145M163 70L362 195M163 120L362 45M163 120L362 95M163 120L362 145M163 120L362 195M163 170L362 45M163 170L362 95M163 170L362 145M163 170L362 195"/>
+    <path class="f" d="M388 45L587 95M388 45L587 145M388 95L587 95M388 95L587 145M388 145L587 95M388 145L587 145M388 195L587 95M388 195L587 145"/>
+    <circle class="b" cx="150" cy="70" r="13"/><circle class="b" cx="150" cy="120" r="13"/><circle class="b" cx="150" cy="170" r="13"/>
+    <circle class="ba" cx="375" cy="45" r="13"/><circle class="ba" cx="375" cy="95" r="13"/><circle class="ba" cx="375" cy="145" r="13"/><circle class="ba" cx="375" cy="195" r="13"/>
+    <circle class="b" cx="600" cy="95" r="13"/><circle class="b" cx="600" cy="145" r="13"/>
+    <text class="ts m" x="375" y="230">chaque trait porte un poids, ajusté pendant l'entraînement</text>
+  </svg>
+  </div>
+  <figcaption>Un réseau minuscule. Les modèles actuels comptent des milliards de traits.</figcaption>
+</figure>
+
+<p>Les neurones sont rangés en <dfn>couches</dfn>. La couche d'entrée reçoit les données, la couche de sortie donne la réponse, et les couches <dfn>cachées</dfn> font le travail entre les deux. Un réseau est dit profond quand il en compte beaucoup. Chaque couche transforme un peu la représentation : dans un réseau d'images, les premières repèrent des contours, les suivantes des formes, les dernières des objets.</p>
+
+<p>L'ensemble des poids forme les <dfn>paramètres</dfn> du modèle. Leur nombre donne la taille d'un modèle : des milliers pour un petit réseau, des milliards pour un modèle de langage.</p>
+
+<h2>Comment un réseau apprend</h2>
+
+<ol>
+  <li><strong>On présente un exemple</strong>, et le réseau produit une réponse.</li>
+  <li><strong>On mesure l'erreur</strong> avec une <dfn>fonction de perte</dfn> (<em>loss</em>) : un nombre, d'autant plus grand que la réponse est mauvaise.</li>
+  <li><strong>On calcule la part de chaque poids dans cette erreur.</strong> C'est la <dfn>rétropropagation</dfn> (<em>backpropagation</em>) : l'erreur est remontée de la sortie vers l'entrée.</li>
+  <li><strong>On corrige légèrement chaque poids</strong> dans le sens qui réduit l'erreur. C'est la <dfn>descente de gradient</dfn> (<em>gradient descent</em>).</li>
+  <li><strong>On recommence</strong>, des millions de fois.</li>
+</ol>
+
+<p>Quelques mots de réglage reviennent sans cesse. Le <dfn>taux d'apprentissage</dfn> (<em>learning rate</em>) fixe la taille de chaque correction : trop grand, l'entraînement diverge ; trop petit, il n'avance pas. Les exemples sont présentés par paquets, les <dfn>lots</dfn> (<em>batches</em>). Un passage complet sur toutes les données est une <dfn>époque</dfn> (<em>epoch</em>). La variante la plus courante de l'algorithme s'appelle la descente de gradient stochastique, <strong>SGD</strong> (<em>Stochastic Gradient Descent</em>), et son successeur le plus utilisé se nomme Adam.</p>
+
+<p>Contre le surapprentissage, deux parades classiques : le <dfn>dropout</dfn>, qui éteint au hasard une partie des neurones pendant l'entraînement, et l'<dfn>arrêt anticipé</dfn> (<em>early stopping</em>), qui stoppe dès que l'erreur de validation remonte.</p>
+
+<h2>Pourquoi des processeurs graphiques</h2>
+
+<p>Tout ce calcul se ramène à des multiplications de grands tableaux de nombres, indépendantes les unes des autres. Un processeur classique, le <strong>CPU</strong> (<em>Central Processing Unit</em>), les enchaîne. Un processeur graphique, le <strong>GPU</strong> (<em>Graphics Processing Unit</em>), conçu pour calculer des millions de pixels à la fois, les fait en parallèle. Le gain se compte en dizaines de fois.</p>
+
+<p>C'est ce matériel, autant que les algorithmes, qui a rendu le deep learning praticable. Entraîner un grand modèle mobilise des milliers de GPU pendant des semaines. L'inférence en demande bien moins par requête, mais à chaque requête.</p>
+
+<h2>Les grandes architectures</h2>
+
+<table>
+  <thead><tr><th>Architecture</th><th>En toutes lettres</th><th>Terrain</th></tr></thead>
+  <tbody>
+    <tr><th>MLP</th><td><em>Multi-Layer Perceptron</em>, réseau à couches entièrement reliées</td><td>Le réseau de base, données en tableau</td></tr>
+    <tr><th>CNN</th><td><em>Convolutional Neural Network</em>, réseau à convolution</td><td>Images, vidéo</td></tr>
+    <tr><th>RNN, LSTM</th><td><em>Recurrent Neural Network</em> et sa variante <em>Long Short-Term Memory</em></td><td>Séquences. Largement remplacés par les Transformers</td></tr>
+    <tr><th>Transformer</th><td>Réseau fondé sur un mécanisme d'attention</td><td>Texte d'abord, puis presque tout</td></tr>
+    <tr><th>Modèle de diffusion</th><td>Réseau qui apprend à retirer du bruit, étape par étape</td><td>Génération d'images, de vidéo, de son</td></tr>
+  </tbody>
+</table>
+
+<p>Un sigle plus ancien se rencontre encore pour la génération d'images : le <strong>GAN</strong> (<em>Generative Adversarial Network</em>), où deux réseaux s'affrontent, l'un fabriquant de fausses images, l'autre cherchant à les démasquer.</p>
+
+<h2>Les embeddings : du sens en coordonnées</h2>
+
+<p>Un réseau ne manipule que des nombres. Un mot, une phrase, une image doivent donc être traduits en une liste de nombres, un vecteur. Quand cette traduction est apprise, on parle d'<dfn>embedding</dfn>, ou plongement.</p>
+
+<p>La propriété qui compte est géométrique : deux contenus de sens proche reçoivent des vecteurs proches. « Voiture » et « automobile » sont voisins, « voiture » et « fromage » sont loin. Le sens devient une distance, que l'on peut calculer. Toute la recherche sémantique repose là-dessus, et le chapitre sur le <strong>RAG</strong> (<em>Retrieval-Augmented Generation</em>, génération augmentée par la recherche) en fera grand usage.</p>
+
+<h2>Apprendre une fois, réutiliser partout</h2>
+
+<p>Entraîner un grand réseau à partir de rien demande des données et un calcul hors de portée de presque tout le monde. La pratique a donc changé. On part d'un modèle déjà entraîné sur une masse de données générales : c'est le <dfn>pré-entraînement</dfn> (<em>pre-training</em>). Puis on l'ajuste sur sa propre tâche avec peu d'exemples : c'est le <dfn>fine-tuning</dfn>. L'ensemble s'appelle l'<dfn>apprentissage par transfert</dfn> (<em>transfer learning</em>).</p>
+
+<p>Poussée à l'extrême, cette logique a donné les <dfn>modèles de fondation</dfn> (<em>foundation models</em>) : de très grands modèles, entraînés une fois à grands frais, que des milliers d'organisations réutilisent pour des tâches que leurs concepteurs n'avaient pas prévues.</p>
+
+<h2>Une boîte noire</h2>
+
+<p>Un réseau de neurones ne contient aucune règle lisible. Ce qu'il sait est réparti dans des millions de poids, dont aucun n'a de sens pris isolément. On peut mesurer ce qu'il fait, pas lire pourquoi il le fait. Des techniques d'<dfn>interprétabilité</dfn> cherchent à ouvrir la boîte, avec des résultats encore partiels.</p>
+
+<aside class="note question">
+  <p class="etiquette">Le réflexe</p>
+  <p>Puisqu'on ne peut pas relire un réseau, on ne peut lui faire confiance que par la mesure. Devant un modèle, la question n'est pas « comment raisonne-t-il ? » mais « sur quoi a-t-il été testé, et avec quels résultats ? ».</p>
+</aside>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Un neurone fait une somme pondérée, puis applique une fonction d'activation. Un réseau en empile des couches.</li>
+    <li>Apprendre, c'est ajuster les poids : mesurer l'erreur, la rétropropager, corriger, recommencer.</li>
+    <li>Les GPU font ces calculs en parallèle. Sans eux, pas de deep learning à grande échelle.</li>
+    <li>Un embedding traduit un contenu en vecteur : le sens devient une distance.</li>
+    <li>On ne repart presque jamais de zéro : on ajuste un modèle pré-entraîné. Et l'on juge un réseau à la mesure, faute de pouvoir le lire.</li>
+  </ul>
+</aside>

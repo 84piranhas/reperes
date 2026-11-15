@@ -1,0 +1,168 @@
+[
+  {
+    "id": "paysage-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Comment s'emboîtent intelligence artificielle, machine learning et deep learning ?",
+    "choix": [
+      "Le deep learning est une partie du machine learning, lui-même une partie de l'intelligence artificielle",
+      "Ce sont trois techniques concurrentes, sans lien entre elles",
+      "L'intelligence artificielle est une partie du deep learning",
+      "Le machine learning est une partie du deep learning"
+    ],
+    "bonnes": [0],
+    "explication": "Du plus large au plus étroit : l'intelligence artificielle, le machine learning, le deep learning, puis l'IA générative. Chaque terme est un sous-ensemble du précédent."
+  },
+  {
+    "id": "paysage-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce qui distingue le machine learning de la programmation classique ?",
+    "choix": [
+      "On fournit des exemples, et la machine en déduit la règle",
+      "Un humain écrit des règles plus nombreuses et plus fines",
+      "Le programme s'exécute sur plusieurs machines à la fois",
+      "Le programme est écrit dans un langage plus récent"
+    ],
+    "bonnes": [0],
+    "explication": "En programmation classique, l'humain écrit la règle. En machine learning, il fournit des données et les réponses attendues, et l'algorithme produit la règle, sous forme de poids."
+  },
+  {
+    "id": "paysage-03",
+    "type": "single",
+    "niveau": 1,
+    "q": "Quelle différence y a-t-il entre l'entraînement et l'inférence ?",
+    "choix": [
+      "L'entraînement fabrique le modèle en ajustant ses poids, l'inférence l'utilise pour répondre",
+      "L'entraînement est réservé aux images, l'inférence au texte",
+      "L'entraînement se fait chez l'utilisateur, l'inférence chez le fournisseur",
+      "Ce sont deux noms pour la même opération"
+    ],
+    "bonnes": [0],
+    "explication": "L'entraînement est long, coûteux et rare. L'inférence est rapide et se produit à chaque requête. Presque toutes les organisations ne font que de l'inférence, sur un modèle entraîné par d'autres."
+  },
+  {
+    "id": "paysage-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Des milliers de paiements sont marqués « fraude » ou « normal », et l'on entraîne un modèle à les distinguer. De quel mode d'apprentissage s'agit-il ?",
+    "choix": ["Supervisé", "Non supervisé", "Par renforcement", "Symbolique"],
+    "bonnes": [0],
+    "explication": "Chaque exemple porte la bonne réponse, son étiquette : c'est de l'apprentissage supervisé. Sans étiquettes, on chercherait une structure dans les données, ce qui serait du non supervisé."
+  },
+  {
+    "id": "paysage-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'est-ce qui rend l'apprentissage auto-supervisé si adapté aux modèles de langage ?",
+    "choix": [
+      "L'étiquette vient du texte lui-même : aucune annotation humaine n'est nécessaire",
+      "Le modèle se corrige tout seul une fois en service",
+      "Il fonctionne sans aucune donnée d'entraînement",
+      "Il garantit des réponses exactes"
+    ],
+    "bonnes": [0],
+    "explication": "On cache la suite d'un texte et le modèle apprend à la prédire. Comme personne n'a besoin d'annoter, on peut entraîner sur des quantités de texte gigantesques."
+  },
+  {
+    "id": "paysage-06",
+    "type": "vf",
+    "niveau": 1,
+    "q": "Un modèle entraîné continue d'apprendre de lui-même à chaque conversation avec un utilisateur.",
+    "bonnes": [1],
+    "explication": "Un modèle entraîné est figé : ses poids ne changent pas pendant l'inférence. Il ne retient rien d'une conversation à l'autre, sauf si l'application lui renvoie l'historique ou si un nouvel entraînement est lancé."
+  },
+  {
+    "id": "paysage-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "On veut regrouper des clients qui se ressemblent, sans catégories définies à l'avance. Quelle famille de tâche est-ce ?",
+    "choix": ["Le regroupement (clustering)", "La classification", "La régression", "La génération"],
+    "bonnes": [0],
+    "explication": "Sans catégories connues d'avance, on cherche des groupes dans les données : c'est du regroupement, une tâche non supervisée. La classification suppose des catégories déjà définies."
+  },
+  {
+    "id": "paysage-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Un système expert des années 1980, fait de règles écrites à la main, relève-t-il de l'intelligence artificielle ?",
+    "choix": [
+      "Oui : c'est de l'IA symbolique, sans apprentissage",
+      "Non : sans apprentissage, ce n'est pas de l'IA",
+      "Oui : c'est du deep learning avant l'heure",
+      "Non : l'IA n'existe que depuis 2012"
+    ],
+    "bonnes": [0],
+    "explication": "L'intelligence artificielle est plus large que l'apprentissage. Des règles écrites à la main en font partie. C'est le machine learning qui suppose d'apprendre à partir d'exemples."
+  },
+  {
+    "id": "paysage-09",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Quels ingrédients expliquent l'accélération du deep learning depuis 2012 ?",
+    "choix": [
+      "Des volumes de données bien plus grands",
+      "Des processeurs graphiques capables de calculer en parallèle",
+      "De meilleures architectures de réseaux",
+      "L'abandon des données au profit de règles écrites à la main"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Données, puissance de calcul et architectures : aucun des trois n'aurait suffi seul. Le deep learning est justement l'opposé des règles écrites à la main."
+  },
+  {
+    "id": "paysage-10",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle est la nature de la réponse d'un modèle appris ?",
+    "choix": [
+      "Elle est probable, jamais garantie : le modèle se trompe parfois",
+      "Elle est toujours exacte si le modèle est assez grand",
+      "Elle est identique à celle qu'aurait donnée un programme classique",
+      "Elle est accompagnée d'une preuve vérifiable"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle fait ce que ses exemples lui ont appris, avec une certaine probabilité. Concevoir un système d'IA, c'est prévoir ce qui se passe quand il se trompe."
+  },
+  {
+    "id": "paysage-11",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une direction demande un plan qui repose sur l'arrivée prochaine d'une intelligence artificielle générale. Quelle est la réponse la plus fondée ?",
+    "choix": [
+      "Il n'en existe ni définition partagée ni test reconnu : c'est une hypothèse à ne pas planifier",
+      "Elle est déjà disponible chez les principaux fournisseurs",
+      "Elle est techniquement impossible, la question est close",
+      "Elle arrivera à une date connue, qu'il suffit d'attendre"
+    ],
+    "bonnes": [0],
+    "explication": "Tous les systèmes en service sont spécialisés, même quand leur spécialité est aussi large que le langage. Le sujet fait débat, sans définition commune, et ne peut pas fonder une décision d'entreprise."
+  },
+  {
+    "id": "paysage-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "Où trouve-t-on aujourd'hui la majorité de l'IA en service dans les entreprises ?",
+    "choix": [
+      "Dans du machine learning classique : notation, détection de fraude, prévision, recommandation",
+      "Dans les assistants conversationnels ouverts au public",
+      "Dans la génération d'images",
+      "Dans les systèmes experts à base de règles"
+    ],
+    "bonnes": [0],
+    "explication": "L'IA générative est la plus visible, mais le machine learning classique reste le plus déployé. Il ne s'évalue ni ne se gouverne comme un assistant conversationnel."
+  },
+  {
+    "id": "paysage-13",
+    "type": "single",
+    "niveau": 3,
+    "q": "Pourquoi ne peut-on pas lire dans un modèle la raison d'une de ses réponses ?",
+    "choix": [
+      "Ce qu'il a appris est réparti dans des millions de poids numériques, sans règle lisible",
+      "Les fournisseurs chiffrent leurs modèles",
+      "Les règles sont écrites dans un langage que peu de gens connaissent",
+      "La loi interdit de consulter les règles d'un modèle"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle n'est pas une liste de règles mais un ensemble de nombres. On peut le prouver utile par la mesure, pas le relire comme un programme. C'est l'origine du problème d'explicabilité."
+  }
+]

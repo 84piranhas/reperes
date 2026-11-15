@@ -1,0 +1,130 @@
+<p>« Intelligence artificielle » est un mot-valise. Il désigne à la fois un filtre antispam vieux de vingt ans, un modèle qui prévoit une panne, et un assistant qui rédige un contrat. Ces systèmes n'ont ni la même technique, ni les mêmes limites, ni les mêmes risques. Ce chapitre range les mots, pour que la suite du cours parle toujours de la même chose.</p>
+
+<p>Deux conventions valent pour tout le cours. Chaque sigle est écrit en toutes lettres à sa première apparition dans un chapitre, en anglais puisque c'est ainsi qu'il circule, puis traduit, et un tableau les récapitule en fin de chapitre. Et les chapitres suivent trois parcours : le <strong>socle</strong> s'adresse à tous, <strong>construire</strong> à ceux qui développent des applications avec des modèles, <strong>industrialiser</strong> à ceux qui adaptent, déploient et exploitent les modèles.</p>
+
+<h2>Quatre mots emboîtés</h2>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 232" role="img" aria-label="Quatre ensembles emboîtés : l'intelligence artificielle contient le machine learning, qui contient le deep learning, qui contient l'IA générative.">
+    <rect class="b" x="20" y="10" width="710" height="212" rx="12"/>
+    <text class="t" x="38" y="36">Intelligence artificielle</text>
+    <text class="ts" x="38" y="54">règles écrites à la main, recherche de solutions, apprentissage</text>
+    <rect class="bv" x="58" y="66" width="652" height="146" rx="10"/>
+    <text class="t" x="76" y="90">Machine learning</text>
+    <text class="ts" x="76" y="108">la machine apprend la règle à partir d'exemples</text>
+    <rect class="bv" x="96" y="120" width="594" height="82" rx="10"/>
+    <text class="t" x="114" y="146">Deep learning</text>
+    <text class="ts" x="114" y="164">réseaux de neurones à nombreuses couches</text>
+    <text class="ts" x="114" y="182">image, son, texte</text>
+    <rect class="ba" x="430" y="130" width="246" height="62" rx="9"/>
+    <text class="t m" x="553" y="156">IA générative</text>
+    <text class="ts m" x="553" y="174">texte, image, audio, code</text>
+  </svg>
+  </div>
+  <figcaption>Chaque terme est un sous-ensemble du précédent.</figcaption>
+</figure>
+
+<ul>
+  <li><strong>L'intelligence artificielle</strong>, <strong>IA</strong> en français et <strong>AI</strong> en anglais (<em>Artificial Intelligence</em>), regroupe toute technique qui fait accomplir à une machine une tâche qu'on associait à l'intelligence. Elle inclut des systèmes sans aucun apprentissage, faits de règles écrites à la main : on parle d'IA symbolique, ou de systèmes experts.</li>
+  <li><strong>Le machine learning</strong>, <strong>ML</strong>, ou apprentissage automatique, en est une branche : au lieu d'écrire la règle, on fournit des exemples, et la machine en déduit la règle.</li>
+  <li><strong>Le deep learning</strong>, <strong>DL</strong>, ou apprentissage profond, est une famille du machine learning qui utilise des réseaux de neurones à nombreuses couches. C'est lui qui a fait progresser l'image, le son et le texte.</li>
+  <li><strong>L'IA générative</strong> désigne les modèles de deep learning qui produisent du contenu : texte, image, audio, code. Les grands modèles de langage, les <strong>LLM</strong> (<em>Large Language Models</em>), en sont la forme la plus répandue.</li>
+</ul>
+
+<aside class="note piege">
+  <p class="etiquette">Idée reçue</p>
+  <p>« L'IA, c'est ChatGPT. » La majorité de l'IA en service dans les entreprises est du machine learning classique : notation de risque, détection de fraude, prévision de la demande, recommandation. Elle est moins visible, souvent plus rentable, et elle ne s'évalue ni ne se gouverne comme un assistant conversationnel.</p>
+</aside>
+
+<h2>Programmer ou faire apprendre</h2>
+
+<p>En programmation classique, un humain écrit les règles. La machine applique ces règles à des données et produit des réponses. En machine learning, on inverse : on fournit des données <em>et</em> les réponses attendues, et l'algorithme produit les règles. Ces règles ne sont pas lisibles. Elles prennent la forme de nombres, les <dfn>paramètres</dfn> ou <dfn>poids</dfn>, dont l'ensemble constitue un <dfn>modèle</dfn>.</p>
+
+<p>La conséquence est profonde. Un programme classique fait exactement ce qu'on lui a écrit, et l'on peut le prouver. Un modèle fait ce que ses exemples lui ont appris, <strong>avec une certaine probabilité</strong>. Il se trompe parfois, et personne ne peut lire dans ses poids pourquoi.</p>
+
+<h2>Trois façons d'apprendre</h2>
+
+<table>
+  <thead><tr><th>Mode</th><th>Principe</th><th>Exemple</th></tr></thead>
+  <tbody>
+    <tr><th>Supervisé<br><em>supervised</em></th><td>Chaque exemple porte la bonne réponse, l'étiquette</td><td>Des paiements marqués « fraude » ou « normal »</td></tr>
+    <tr><th>Non supervisé<br><em>unsupervised</em></th><td>Aucune étiquette : l'algorithme cherche une structure</td><td>Regrouper des clients qui se ressemblent</td></tr>
+    <tr><th>Par renforcement<br><em>reinforcement</em></th><td>Essais et erreurs, guidés par une récompense</td><td>Un programme qui apprend à jouer au go</td></tr>
+  </tbody>
+</table>
+
+<p>Une quatrième voie a rendu possibles les modèles de langage : l'apprentissage <dfn>auto-supervisé</dfn> (<em>self-supervised</em>). L'étiquette est tirée de la donnée elle-même. On cache la suite d'un texte et l'on demande au modèle de la prédire. Aucun humain n'a besoin d'annoter quoi que ce soit, ce qui permet d'apprendre sur des quantités de texte gigantesques.</p>
+
+<h2>Deux temps : entraîner, puis utiliser</h2>
+
+<ul>
+  <li><strong>L'entraînement</strong> (<em>training</em>) fabrique le modèle : on ajuste ses poids sur des exemples. C'est long, coûteux, et rare.</li>
+  <li><strong>L'inférence</strong> (<em>inference</em>) l'utilise : on lui présente un cas nouveau, il répond. C'est rapide, et cela se produit à chaque requête.</li>
+</ul>
+
+<p>Cette distinction commande l'économie du domaine. Quelques acteurs entraînent les très grands modèles. Tous les autres font de l'inférence, sur un modèle loué ou téléchargé. Et un modèle entraîné est figé : il ne sait rien de ce qui s'est passé après la fin de son entraînement, et il n'apprend pas de vos conversations, sauf si quelqu'un lance un nouvel entraînement.</p>
+
+<h2>Les grandes familles de tâches</h2>
+
+<table>
+  <thead><tr><th>Tâche</th><th>La question posée</th></tr></thead>
+  <tbody>
+    <tr><th>Classification</th><td>À quelle catégorie ce cas appartient-il ?</td></tr>
+    <tr><th>Régression</th><td>Quelle valeur numérique prévoir ?</td></tr>
+    <tr><th>Regroupement<br><em>clustering</em></th><td>Quels cas se ressemblent ?</td></tr>
+    <tr><th>Détection d'anomalies</th><td>Ce cas sort-il de l'ordinaire ?</td></tr>
+    <tr><th>Recommandation</th><td>Que proposer à cette personne ?</td></tr>
+    <tr><th>Génération</th><td>Quel texte, quelle image, quel code produire ?</td></tr>
+  </tbody>
+</table>
+
+<p>Ces tâches se déclinent par type de donnée : tableaux de chiffres, images, son, et texte. Le traitement du langage porte un sigle à connaître, <strong>NLP</strong> (<em>Natural Language Processing</em>, traitement automatique du langage naturel).</p>
+
+<h2>Soixante-dix ans en six dates</h2>
+
+<table>
+  <thead><tr><th>Année</th><th>Ce qui se passe</th></tr></thead>
+  <tbody>
+    <tr><th>1956</th><td>Le terme « intelligence artificielle » est forgé lors d'une conférence d'été à Dartmouth.</td></tr>
+    <tr><th>Années 1980</th><td>Âge d'or des systèmes experts, faits de règles écrites à la main.</td></tr>
+    <tr><th>1997</th><td>Deep Blue bat le champion du monde d'échecs, par la force du calcul.</td></tr>
+    <tr><th>2012</th><td>Un réseau de neurones profond, AlexNet, écrase un concours de reconnaissance d'images : le deep learning décolle.</td></tr>
+    <tr><th>2017</th><td>Des chercheurs de Google publient l'architecture Transformer, base de tous les modèles de langage actuels.</td></tr>
+    <tr><th>Fin 2022</th><td>ChatGPT met un grand modèle de langage entre les mains du public.</td></tr>
+  </tbody>
+</table>
+
+<p>Trois ingrédients expliquent l'accélération depuis 2012 : beaucoup plus de données, des processeurs graphiques capables de calculer en parallèle, et de meilleures architectures. Aucun des trois n'aurait suffi seul.</p>
+
+<h2>Étroite, générale</h2>
+
+<p>Tous les systèmes en service sont spécialisés, même quand leur spécialité est aussi large que le langage. L'idée d'une intelligence artificielle générale, <strong>AGI</strong> (<em>Artificial General Intelligence</em>), capable d'accomplir toute tâche intellectuelle aussi bien qu'un humain, fait l'objet de débats vifs. Il n'en existe ni définition partagée ni test reconnu. Dans une décision d'entreprise, c'est une hypothèse à ne pas planifier.</p>
+
+<h2>Ce que ces systèmes font bien, et mal</h2>
+
+<table>
+  <thead><tr><th>Points forts</th><th>Points faibles</th></tr></thead>
+  <tbody>
+    <tr><td>Repérer des régularités dans de grands volumes</td><td>Garantir qu'une réponse est exacte</td></tr>
+    <tr><td>Produire un texte fluide, résumer, traduire, reformuler</td><td>Signaler ce qu'ils ne savent pas</td></tr>
+    <tr><td>Classer, extraire, trier à grande échelle</td><td>Expliquer fidèlement pourquoi ils ont répondu cela</td></tr>
+    <tr><td>Travailler vite, sans fatigue, à faible coût unitaire</td><td>Sortir de ce qui ressemble à leurs données d'entraînement</td></tr>
+  </tbody>
+</table>
+
+<aside class="note question">
+  <p class="etiquette">Le réflexe</p>
+  <p>Devant tout système présenté comme « de l'IA », trois questions suffisent à le situer. Est-ce un modèle appris, ou des règles ? S'il est appris, sur quelles données ? Et que se passe-t-il quand il se trompe, puisqu'il se trompera ?</p>
+</aside>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>IA, machine learning, deep learning, IA générative : quatre ensembles emboîtés, du plus large au plus étroit.</li>
+    <li>En machine learning, on fournit des exemples et la machine en déduit des règles, sous forme de poids illisibles.</li>
+    <li>Supervisé, non supervisé, par renforcement, et auto-supervisé pour les modèles de langage.</li>
+    <li>L'entraînement fabrique le modèle, l'inférence l'utilise. Un modèle entraîné est figé.</li>
+    <li>Un modèle répond avec une probabilité, jamais avec une garantie. Tout le reste du cours en découle.</li>
+  </ul>
+</aside>

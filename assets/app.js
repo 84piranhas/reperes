@@ -274,10 +274,11 @@ function vueSommaire(t) {
       <p class="surtitre">Le cours</p>
       <h1>${fmt(t.titre)}</h1>
       <p class="chapo">Les chapitres se lisent dans l'ordre, mais chacun tient debout tout seul.</p>
+      ${t.parcours ? `<p class="legende">${fmt(t.parcours)}</p>` : ''}
       <ol class="sommaire">${t.chapitres.map((c, i) => `
         <li class="${s.lus[c.id] ? 'lu' : ''}"><a href="#/t/${t.id}/cours/${c.id}">
           <span class="num">${i + 1}</span>
-          <span class="txt"><strong>${fmt(c.titre)}</strong><span>${fmt(c.resume)}</span></span>
+          <span class="txt"><strong>${fmt(c.titre)}</strong>${c.parcours ? `<em class="parcours">${esc(c.parcours)}</em>` : ''}<span>${fmt(c.resume)}</span></span>
           <span class="meta">${s.lus[c.id] ? '✓ Lu' : `${c.minutes} min`}</span>
         </a></li>`).join('')}
       </ol>
@@ -312,7 +313,7 @@ async function vueChapitre(t, id) {
         <ol>${t.chapitres.map(x => `<li class="${x.id === id ? 'ici' : ''} ${s.lus[x.id] ? 'lu' : ''}" data-chap="${x.id}"><a href="${base}/cours/${x.id}"><span>${fmt(x.titre)}</span></a></li>`).join('')}</ol>
       </nav>
       <article class="chapitre">
-        <p class="surtitre">Chapitre ${i + 1} sur ${t.chapitres.length} · ${c.minutes} min de lecture</p>
+        <p class="surtitre">Chapitre ${i + 1} sur ${t.chapitres.length} · ${c.minutes} min de lecture${c.parcours ? ` · ${esc(c.parcours)}` : ''}</p>
         <h1>${fmt(c.titre)}</h1>
         <p class="chapo">${fmt(c.resume)}</p>
         <div class="prose">${typo(corps)}</div>

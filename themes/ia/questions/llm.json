@@ -1,0 +1,192 @@
+[
+  {
+    "id": "llm-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que fait fondamentalement un grand modèle de langage ?",
+    "choix": [
+      "Il prédit le token suivant, encore et encore",
+      "Il cherche la réponse dans une base de connaissances",
+      "Il applique des règles de grammaire écrites à la main",
+      "Il interroge un moteur de recherche avant de répondre"
+    ],
+    "bonnes": [0],
+    "explication": "Toute réponse est produite un token à la fois, chacun tiré selon des probabilités calculées à partir du texte déjà présent. Sans outil branché, le modèle ne consulte rien."
+  },
+  {
+    "id": "llm-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce qu'un token ?",
+    "choix": [
+      "Un fragment de texte, souvent un mot court ou un morceau de mot",
+      "Une clé d'accès à l'interface du fournisseur",
+      "Un paramètre du réseau de neurones",
+      "Une phrase complète"
+    ],
+    "bonnes": [0],
+    "explication": "Le modèle lit et écrit des tokens, pas des mots. Un token vaut environ trois quarts de mot en anglais. C'est l'unité qui mesure la taille du contexte, la vitesse et le coût."
+  },
+  {
+    "id": "llm-03",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que désigne la fenêtre de contexte ?",
+    "choix": [
+      "Tout ce que le modèle a sous les yeux au moment de répondre, mesuré en tokens",
+      "La période couverte par ses données d'entraînement",
+      "Le délai maximal accordé pour une réponse",
+      "La zone de l'écran où s'affiche la conversation"
+    ],
+    "bonnes": [0],
+    "explication": "Consignes, conversation, documents fournis et réponse en cours : tout doit tenir dans la fenêtre de contexte. Ce qui n'y figure pas n'existe pas pour le modèle."
+  },
+  {
+    "id": "llm-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Un assistant semble se souvenir de ce qui a été dit dix messages plus tôt. Comment est-ce possible ?",
+    "choix": [
+      "L'application lui renvoie tout l'historique à chaque message",
+      "Le modèle modifie ses poids pendant la conversation",
+      "Le modèle garde une mémoire interne propre à chaque utilisateur",
+      "Le fournisseur réentraîne le modèle entre deux messages"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle n'a aucune mémoire d'un appel à l'autre, et ses poids sont figés. La mémoire apparente vient de l'application, qui remet l'historique dans la fenêtre de contexte."
+  },
+  {
+    "id": "llm-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est le rôle du mécanisme d'attention dans un Transformer ?",
+    "choix": [
+      "Pour interpréter un token, pondérer tous les autres tokens du texte selon leur importance",
+      "Filtrer les demandes dangereuses avant de répondre",
+      "Compresser le texte pour réduire le nombre de tokens",
+      "Signaler à l'utilisateur les passages incertains"
+    ],
+    "bonnes": [0],
+    "explication": "L'attention relie chaque token à ceux qui l'éclairent, où qu'ils soient dans le texte. C'est elle qui rattache un pronom au nom qu'il désigne, plusieurs phrases plus haut."
+  },
+  {
+    "id": "llm-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est l'effet d'une température réglée à zéro ?",
+    "choix": [
+      "Le modèle prend presque toujours le token le plus probable : des réponses plus stables",
+      "Le modèle devient parfaitement exact",
+      "Le modèle refuse de répondre quand il doute",
+      "Le modèle répond plus vite"
+    ],
+    "bonnes": [0],
+    "explication": "La température règle la part de hasard dans le tirage. À zéro, les réponses sont plus stables, sans être garanties identiques ni exactes : la stabilité n'est pas la vérité."
+  },
+  {
+    "id": "llm-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'est-ce qu'une hallucination ?",
+    "choix": [
+      "Un contenu faux mais plausible, produit avec la même assurance qu'un contenu vrai",
+      "Une panne du serveur qui héberge le modèle",
+      "Un refus de répondre à une demande légitime",
+      "Une réponse tronquée faute de tokens"
+    ],
+    "bonnes": [0],
+    "explication": "Le modèle vise le plausible, pas le vrai. Quand les deux divergent, il invente une référence ou un chiffre sans le signaler. C'est une conséquence du mécanisme, pas une panne."
+  },
+  {
+    "id": "llm-08",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Avec un modèle assez récent et assez grand, le risque d'hallucination disparaît.",
+    "bonnes": [1],
+    "explication": "Les modèles récents hallucinent moins, aucun ne s'en abstient. On réduit le phénomène en fournissant les sources dans le contexte, et l'on conçoit le système en supposant qu'il se produira."
+  },
+  {
+    "id": "llm-09",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que signifie la date de coupure des connaissances d'un modèle ?",
+    "choix": [
+      "Il ignore ce qui s'est passé après la fin de son entraînement, sauf si on le lui fournit",
+      "Il cessera de fonctionner à cette date",
+      "Il ne peut pas lire de documents antérieurs à cette date",
+      "Sa licence expire à cette date"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle entraîné est figé. Tout ce qui est postérieur à sa date de coupure doit lui être apporté dans la fenêtre de contexte, par des documents ou un outil de recherche."
+  },
+  {
+    "id": "llm-10",
+    "type": "single",
+    "niveau": 2,
+    "q": "Dans la fabrication d'un modèle de langage, que produit l'étape de pré-entraînement ?",
+    "choix": [
+      "Un modèle capable de continuer n'importe quel texte, pas encore de tenir une conversation",
+      "Un modèle spécialisé sur les documents d'une entreprise",
+      "Un modèle qui refuse les demandes dangereuses",
+      "Un modèle réduit pour tourner sur un ordinateur portable"
+    ],
+    "bonnes": [0],
+    "explication": "Le pré-entraînement apprend à prédire la suite d'un texte. La capacité à suivre des consignes vient de l'ajustement sur des instructions, et les refus viennent de l'étape d'alignement."
+  },
+  {
+    "id": "llm-11",
+    "type": "single",
+    "niveau": 3,
+    "q": "On demande à un modèle sans outil le produit de deux nombres à douze chiffres. Que faut-il attendre ?",
+    "choix": [
+      "Un résultat d'apparence correcte, souvent faux : le modèle imite le calcul",
+      "Un résultat toujours exact : c'est un ordinateur",
+      "Un refus systématique de répondre",
+      "Un résultat exact, mais très lent à obtenir"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle de langage n'est pas une calculatrice. Il produit une suite de chiffres plausible. Pour un calcul fiable, il faut lui brancher un outil qui calcule réellement."
+  },
+  {
+    "id": "llm-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une équipe valide une fonctionnalité fondée sur un modèle de langage après un seul essai réussi. Quelle est l'objection ?",
+    "choix": [
+      "Le système est non déterministe : il se juge sur un taux de réussite, pas sur un essai",
+      "Un seul essai suffit si la température est à zéro",
+      "Il aurait fallu faire l'essai avec un modèle plus grand",
+      "Un essai réussi prouve que les suivants le seront"
+    ],
+    "bonnes": [0],
+    "explication": "Deux appels identiques peuvent donner deux réponses différentes, même à température nulle. On teste donc sur de nombreux cas et de nombreuses répétitions, et l'on raisonne en taux."
+  },
+  {
+    "id": "llm-13",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que veut dire « modèle à poids ouverts » (open weights) ?",
+    "choix": [
+      "On peut télécharger le modèle et le faire tourner soi-même, dans les limites de sa licence",
+      "Le modèle est libre de tout usage, sans aucune condition",
+      "Le modèle n'est accessible que par l'interface du fournisseur",
+      "Les données d'entraînement du modèle sont publiques"
+    ],
+    "bonnes": [0],
+    "explication": "Les poids sont publiés, ce qui permet d'héberger le modèle chez soi. Cela ne dit rien des données d'entraînement, et chaque modèle garde sa licence, parfois restrictive."
+  },
+  {
+    "id": "llm-14",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Qu'est-ce qu'un grand modèle de langage n'est pas ?",
+    "choix": [
+      "Une base de données qui retrouve une information enregistrée",
+      "Un moteur de recherche qui consulte le web à chaque question",
+      "Une calculatrice qui garantit ses résultats",
+      "Un réseau de neurones entraîné sur du texte"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Il reconstruit un texte probable, ne consulte rien sans outil et imite le calcul. C'est en revanche bien un réseau de neurones entraîné sur du texte."
+  }
+]

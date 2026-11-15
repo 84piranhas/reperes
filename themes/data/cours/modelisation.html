@@ -47,7 +47,7 @@
 
 <p>Beaucoup d'objets financiers ne sont pas plats par nature. Un swap a deux jambes, chaque jambe a un échéancier, chaque échéance a ses flux. Les formats modernes savent stocker cette arborescence telle quelle. On parle de données <dfn>semi-structurées</dfn>.</p>
 
-<p><dfn>Aplatir</dfn> (<em>flatten</em>), c'est transformer cet arbre en lignes et en colonnes : une ligne par jambe ou par flux, avec les informations de l'opération répétées. L'opération rend les données plus faciles à interroger en SQL, mais elle multiplie les lignes. Compter les opérations sur une table aplatie par flux est une erreur classique.</p>
+<p><dfn>Aplatir</dfn> (<em>flatten</em>), c'est transformer cet arbre en lignes et en colonnes : une ligne par jambe ou par flux, avec les informations de l'opération répétées. L'opération rend les données plus faciles à interroger en <strong>SQL</strong> (<em>Structured Query Language</em>, le langage d'interrogation des bases), mais elle multiplie les lignes. Compter les opérations sur une table aplatie par flux est une erreur classique.</p>
 
 <h2>Schéma à l'écriture ou à la lecture</h2>
 
@@ -64,7 +64,7 @@
   <thead><tr><th>Format</th><th>Organisation</th><th>Schéma</th><th>Usage</th></tr></thead>
   <tbody>
     <tr><th>CSV</th><td>Lignes, texte</td><td>Aucun : les types sont devinés</td><td>Échange universel, lisible, fragile</td></tr>
-    <tr><th>JSON</th><td>Lignes, texte imbriqué</td><td>Implicite</td><td>API, événements, semi-structuré</td></tr>
+    <tr><th>JSON</th><td>Lignes, texte imbriqué</td><td>Implicite</td><td>API (<em>Application Programming Interface</em>), événements, semi-structuré</td></tr>
     <tr><th>Avro</th><td>Lignes, binaire</td><td>Embarqué, fait pour évoluer</td><td>Flux d'événements</td></tr>
     <tr><th>Parquet, ORC</th><td>Colonnes, binaire compressé</td><td>Embarqué, typé</td><td>Analytique, lake</td></tr>
   </tbody>

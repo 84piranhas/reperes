@@ -1,0 +1,127 @@
+<p>Un grand modèle de langage, ou <strong>LLM</strong> (<em>Large Language Model</em>), ne fait qu'une chose : prédire le morceau de texte qui vient ensuite. Qu'il réponde à une question, écrive du code ou résume un rapport, il le fait en devinant la suite, un morceau à la fois. Presque toutes ses forces et toutes ses faiblesses se déduisent de ce mécanisme.</p>
+
+<h2>Les tokens</h2>
+
+<p>Un modèle ne lit ni des lettres ni des mots, mais des <dfn>tokens</dfn> (jetons) : des fragments de texte, souvent un mot court, une syllabe ou un signe de ponctuation. Le découpage s'appelle la <dfn>tokenisation</dfn>, et la méthode la plus répandue porte le sigle <strong>BPE</strong> (<em>Byte-Pair Encoding</em>).</p>
+
+<p>Un ordre de grandeur à retenir : un token vaut environ trois quarts de mot en anglais, un peu moins en français. Le token est l'unité de tout : la taille de ce que le modèle peut lire, sa vitesse, et la facture.</p>
+
+<h2>La boucle de génération</h2>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 152" role="img" aria-label="Le texte est découpé en tokens, le modèle calcule des probabilités, un token est choisi, ajouté au texte, et la boucle recommence.">
+    <rect class="b" x="10" y="14" width="128" height="82" rx="10"/>
+    <rect class="b" x="160" y="14" width="128" height="82" rx="10"/>
+    <rect class="ba" x="310" y="14" width="128" height="82" rx="10"/>
+    <rect class="b" x="460" y="14" width="128" height="82" rx="10"/>
+    <rect class="b" x="610" y="14" width="128" height="82" rx="10"/>
+    <path class="f" d="M140 55h12M290 55h12M440 55h12M590 55h12"/>
+    <path class="fp" d="M159 55l-8-4.5v9zM309 55l-8-4.5v9zM459 55l-8-4.5v9zM609 55l-8-4.5v9z"/>
+    <text class="t m" x="74" y="42">Texte</text>
+    <text class="ts m" x="74" y="63">consignes, question,</text>
+    <text class="ts m" x="74" y="80">documents</text>
+    <text class="t m" x="224" y="42">Tokens</text>
+    <text class="ts m" x="224" y="63">le texte découpé</text>
+    <text class="ts m" x="224" y="80">en fragments</text>
+    <text class="t m" x="374" y="42">Modèle</text>
+    <text class="ts m" x="374" y="63">des milliards</text>
+    <text class="ts m" x="374" y="80">de poids</text>
+    <text class="t m" x="524" y="42">Probabilités</text>
+    <text class="ts m" x="524" y="63">une pour chaque</text>
+    <text class="ts m" x="524" y="80">token possible</text>
+    <text class="t m" x="674" y="42">Token choisi</text>
+    <text class="ts m" x="674" y="63">tiré selon</text>
+    <text class="ts m" x="674" y="80">ces probabilités</text>
+    <path class="f" d="M674 98v22H74v-14"/>
+    <path class="fp" d="M74 99l-4.5 8h9z"/>
+    <text class="ts m" x="374" y="140">le token choisi est ajouté au texte, et l'on recommence</text>
+  </svg>
+  </div>
+  <figcaption>Un token à la fois, jusqu'à ce que le modèle produise un signal de fin.</figcaption>
+</figure>
+
+<p>À chaque tour, le modèle ne produit pas un mot mais une liste de probabilités : tel token a 40 % de chances de venir ensuite, tel autre 12 %. Un token est tiré, ajouté au texte, et tout recommence. Une réponse de cinq cents tokens demande cinq cents tours de boucle. Le modèle n'a ni plan caché ni brouillon : il avance sans pouvoir revenir en arrière.</p>
+
+<h2>Le Transformer et l'attention</h2>
+
+<p>L'architecture qui a rendu cela possible date de 2017 et s'appelle le <dfn>Transformer</dfn>. Son idée centrale est l'<dfn>attention</dfn> : pour interpréter un token, le modèle regarde tous les autres tokens du texte et pondère ceux qui comptent. Dans « la banque a relevé ses taux, elle craint l'inflation », c'est l'attention qui relie « elle » à « la banque ».</p>
+
+<p>Deux sigles en sont issus. <strong>BERT</strong> (<em>Bidirectional Encoder Representations from Transformers</em>) lit un texte pour le comprendre et le classer. <strong>GPT</strong> (<em>Generative Pre-trained Transformer</em>) le prolonge pour en générer. Les assistants actuels sont de cette seconde famille.</p>
+
+<h2>La fenêtre de contexte</h2>
+
+<p>La <dfn>fenêtre de contexte</dfn> (<em>context window</em>) est tout ce que le modèle a sous les yeux au moment de répondre : les consignes, la conversation, les documents fournis, et sa propre réponse en cours. Elle se mesure en tokens, de quelques milliers pour les premiers modèles à plusieurs centaines de milliers aujourd'hui, parfois un million et plus.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Idée reçue</p>
+  <p>« Le modèle se souvient de notre conversation. » Un modèle n'a aucune mémoire d'un appel à l'autre. Si l'assistant semble se souvenir, c'est que l'application lui renvoie tout l'historique à chaque message. Ce qui n'est pas dans la fenêtre de contexte n'existe pas pour lui.</p>
+</aside>
+
+<h2>Comment on fabrique un LLM</h2>
+
+<ol>
+  <li><strong>Le pré-entraînement.</strong> Le modèle lit une part considérable du texte disponible et apprend à prédire la suite. C'est de l'apprentissage auto-supervisé. Il en sort capable de continuer n'importe quel texte, pas encore de tenir une conversation. Le coût se chiffre, pour les modèles de pointe, en centaines de millions de dollars de calcul selon les estimations publiques.</li>
+  <li><strong>L'ajustement sur des instructions.</strong> On lui montre des exemples de consignes suivies de bonnes réponses. C'est un fine-tuning supervisé, <strong>SFT</strong> (<em>Supervised Fine-Tuning</em>). Il apprend à répondre plutôt qu'à continuer.</li>
+  <li><strong>L'alignement.</strong> Des humains comparent des réponses, et le modèle est entraîné à produire celles qu'ils préfèrent : c'est le <strong>RLHF</strong> (<em>Reinforcement Learning from Human Feedback</em>). S'y ajoutent des règles de sécurité, qui lui font refuser certaines demandes.</li>
+</ol>
+
+<p>À l'issue, le modèle est figé. Ses connaissances s'arrêtent à une <dfn>date de coupure</dfn> (<em>knowledge cutoff</em>) : il ignore tout ce qui a suivi, à moins qu'on ne le lui fournisse dans le contexte.</p>
+
+<h2>Les réglages de la génération</h2>
+
+<table>
+  <thead><tr><th>Réglage</th><th>Effet</th></tr></thead>
+  <tbody>
+    <tr><th>Température</th><td>À zéro, le modèle prend presque toujours le token le plus probable : réponses stables. Plus haut, il s'autorise des choix moins probables : réponses variées.</td></tr>
+    <tr><th>Top-p</th><td>Restreint le tirage aux tokens les plus probables, jusqu'à un cumul donné.</td></tr>
+    <tr><th>Longueur maximale</th><td>Plafonne le nombre de tokens de la réponse.</td></tr>
+  </tbody>
+</table>
+
+<p>Même à température nulle, deux appels identiques peuvent donner deux réponses légèrement différentes. Un système bâti sur un LLM est <strong>non déterministe</strong>, et se teste comme tel : par des taux de réussite, pas par un essai unique.</p>
+
+<h2>L'hallucination</h2>
+
+<p>Le modèle produit le texte le plus <em>plausible</em>, pas le plus <em>vrai</em>. La plupart du temps, les deux coïncident. Quand ils divergent, le modèle écrit avec la même assurance une référence qui n'existe pas, un chiffre inventé, une citation jamais prononcée. On appelle cela une <dfn>hallucination</dfn>.</p>
+
+<p>Ce n'est pas une panne que l'on corrigerait une fois pour toutes : c'est une conséquence du mécanisme. Les modèles récents hallucinent moins, aucun ne s'en abstient. On réduit le phénomène en fournissant les sources dans le contexte, et l'on conçoit le système en supposant qu'il se produira.</p>
+
+<h2>Images, son, et modèles qui raisonnent</h2>
+
+<p>Les modèles actuels sont souvent <dfn>multimodaux</dfn> : ils acceptent des images, du son ou de la vidéo en entrée, et en produisent parfois en sortie. Le principe ne change pas, une image étant elle aussi découpée en tokens.</p>
+
+<p>Les <dfn>modèles de raisonnement</dfn> (<em>reasoning models</em>) rédigent une réflexion intermédiaire avant leur réponse. Ils réussissent mieux les problèmes à étapes, au prix de plus de tokens, donc de plus de temps et d'argent.</p>
+
+<h2>Propriétaires ou ouverts</h2>
+
+<table>
+  <thead><tr><th></th><th>Modèle propriétaire</th><th>Modèle à poids ouverts</th></tr></thead>
+  <tbody>
+    <tr><th>Accès</th><td>Par l'API du fournisseur, sans voir le modèle</td><td>On télécharge les poids et on les fait tourner soi-même</td></tr>
+    <tr><th>Exemples</th><td>GPT, Claude, Gemini</td><td>Llama, Mistral, Gemma, Qwen</td></tr>
+    <tr><th>Atouts</th><td>Souvent les plus capables, rien à exploiter</td><td>Contrôle des données, coût fixe, personnalisation</td></tr>
+    <tr><th>Contreparties</th><td>Dépendance, données envoyées à un tiers</td><td>Matériel et compétences à fournir</td></tr>
+  </tbody>
+</table>
+
+<p>Une <strong>API</strong> (<em>Application Programming Interface</em>) est l'interface par laquelle un programme en interroge un autre : on envoie un texte, on reçoit la réponse. Deux précisions. « Poids ouverts » (<em>open weights</em>) ne veut pas dire libre de tout usage : chaque modèle a sa licence. Et la taille ne fait pas tout : un petit modèle de langage, ou <strong>SLM</strong> (<em>Small Language Model</em>), suffit pour beaucoup de tâches simples, à une fraction du coût.</p>
+
+<h2>Ce qu'un LLM n'est pas</h2>
+
+<ul>
+  <li><strong>Ce n'est pas une base de données.</strong> Il ne retrouve pas une information : il reconstruit un texte probable.</li>
+  <li><strong>Ce n'est pas un moteur de recherche.</strong> Sans outil de recherche branché, il ne consulte rien.</li>
+  <li><strong>Ce n'est pas une calculatrice.</strong> Il imite le calcul, et se trompe sur les grands nombres s'il n'a pas d'outil pour calculer.</li>
+</ul>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Un LLM prédit le token suivant, encore et encore. Le token est l'unité de taille, de vitesse et de coût.</li>
+    <li>La fenêtre de contexte est tout ce qu'il voit. Il n'a aucune mémoire d'un appel à l'autre.</li>
+    <li>Pré-entraînement, ajustement sur des instructions, alignement : puis le modèle est figé à sa date de coupure.</li>
+    <li>Il produit du plausible, pas du vrai. L'hallucination est une conséquence du mécanisme, pas une panne.</li>
+    <li>Ses réponses varient d'un appel à l'autre : un système bâti dessus se teste par des taux, pas par un essai.</li>
+  </ul>
+</aside>

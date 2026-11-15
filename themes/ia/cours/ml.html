@@ -1,0 +1,132 @@
+<p>Le machine learning, <strong>ML</strong> (<em>Machine Learning</em>, apprentissage automatique), tient en une promesse : trouver dans des exemples passés une règle qui marchera sur des cas futurs. Tout l'art est dans la seconde moitié de la phrase. Un modèle qui récite ses exemples ne vaut rien. Ce chapitre donne le vocabulaire et les réflexes qui permettent de juger si un modèle a réellement appris.</p>
+
+<h2>Le vocabulaire de base</h2>
+
+<p>Prenons un exemple qui servira jusqu'au bout : repérer les paiements frauduleux.</p>
+
+<ul>
+  <li>Une <dfn>observation</dfn>, ou exemple, est un cas : ici, un paiement.</li>
+  <li>Les <dfn>variables</dfn> (<em>features</em>) sont ce que l'on sait de chaque cas : montant, heure, pays, ancienneté du compte.</li>
+  <li>L'<dfn>étiquette</dfn> (<em>label</em>, ou <em>target</em>) est la réponse que l'on veut prédire : fraude ou non.</li>
+  <li>Le <dfn>modèle</dfn> est la fonction apprise, qui va des variables à l'étiquette.</li>
+</ul>
+
+<p>Si l'étiquette est une catégorie, la tâche est une <strong>classification</strong>. Si c'est un nombre, comme le montant d'un sinistre, c'est une <strong>régression</strong>.</p>
+
+<h2>Apprendre, régler, mesurer : trois jeux de données</h2>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 124" role="img" aria-label="Les données sont partagées en trois : entraînement, validation et test.">
+    <rect class="ba" x="20" y="16" width="428" height="50" rx="9"/>
+    <rect class="b" x="456" y="16" width="134" height="50" rx="9"/>
+    <rect class="b" x="598" y="16" width="134" height="50" rx="9"/>
+    <text class="t m" x="234" y="46">Entraînement</text>
+    <text class="t m" x="523" y="46">Validation</text>
+    <text class="t m" x="665" y="46">Test</text>
+    <text class="ts m" x="234" y="90">le modèle y apprend</text>
+    <text class="ts m" x="523" y="90">on y règle et on y compare</text>
+    <text class="ts m" x="665" y="90">on y mesure une seule fois,</text>
+    <text class="ts m" x="665" y="107">à la fin</text>
+  </svg>
+  </div>
+  <figcaption>Le jeu de test ne sert qu'une fois. C'est ce qui lui donne sa valeur.</figcaption>
+</figure>
+
+<p>Un modèle se juge sur des données qu'il n'a jamais vues. On partage donc les exemples en trois parts. Le jeu d'<strong>entraînement</strong> (<em>training set</em>) sert à apprendre. Le jeu de <strong>validation</strong> sert à régler le modèle et à comparer des variantes. Le jeu de <strong>test</strong> est mis sous clé et ne sert qu'à la mesure finale.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>La <dfn>fuite de données</dfn> (<em>data leakage</em>) : une information qui ne sera pas disponible au moment de prédire s'est glissée dans l'entraînement. Exemple type : une variable « dossier transmis au service fraude », remplie après coup. Le modèle affiche des scores magnifiques, puis s'effondre en production. Un résultat trop beau doit d'abord faire chercher une fuite.</p>
+</aside>
+
+<h2>Trop peu, trop bien</h2>
+
+<ul>
+  <li>Le <dfn>sous-apprentissage</dfn> (<em>underfitting</em>) : le modèle est trop simple, il rate même ses exemples d'entraînement.</li>
+  <li>Le <dfn>surapprentissage</dfn> (<em>overfitting</em>) : le modèle a appris ses exemples par cœur, bruit compris. Il est excellent à l'entraînement et médiocre ailleurs.</li>
+</ul>
+
+<p>Ce que l'on cherche s'appelle la <dfn>généralisation</dfn> : bien répondre sur du neuf. On la surveille en comparant l'erreur à l'entraînement et l'erreur en validation. Un écart qui se creuse signale le surapprentissage. Les remèdes sont connus : plus de données, un modèle plus simple, ou une <dfn>régularisation</dfn>, qui pénalise la complexité.</p>
+
+<h2>Les grandes familles d'algorithmes</h2>
+
+<table>
+  <thead><tr><th>Famille</th><th>Idée</th><th>Usage typique</th></tr></thead>
+  <tbody>
+    <tr><th>Régression linéaire, logistique</th><td>Une somme pondérée des variables</td><td>Point de départ, modèles lisibles, notation de crédit</td></tr>
+    <tr><th>Arbre de décision</th><td>Une suite de questions oui ou non</td><td>Règles explicables</td></tr>
+    <tr><th>Forêt aléatoire<br><em>random forest</em></th><td>Beaucoup d'arbres qui votent</td><td>Robuste, peu de réglages</td></tr>
+    <tr><th>Gradient boosting</th><td>Des arbres ajoutés un à un, chacun corrigeant les erreurs des précédents</td><td>La référence sur données en tableau : fraude, risque, prévision</td></tr>
+    <tr><th>K-moyennes<br><em>k-means</em></th><td>Regrouper les cas autour de centres</td><td>Segmentation, sans étiquettes</td></tr>
+    <tr><th>Réseau de neurones</th><td>Des couches de calculs appris</td><td>Image, son, texte</td></tr>
+  </tbody>
+</table>
+
+<p>Un nom ancien revient encore dans les conversations : la machine à vecteurs de support, <strong>SVM</strong> (<em>Support Vector Machine</em>), longtemps dominante avant le deep learning. Quant au gradient boosting, on le rencontre sous le nom de ses outils, XGBoost ou LightGBM.</p>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>Sur des données en tableau, lignes et colonnes de chiffres et de catégories, le gradient boosting bat encore très souvent les réseaux de neurones, pour une fraction du coût. Proposer un grand modèle de langage pour prédire un taux de défaut est presque toujours une erreur d'outil.</p>
+</aside>
+
+<h2>Mesurer une classification</h2>
+
+<p>Tout part de quatre cases, que l'on appelle la <dfn>matrice de confusion</dfn>.</p>
+
+<table>
+  <thead><tr><th></th><th>Le modèle dit « fraude »</th><th>Le modèle dit « normal »</th></tr></thead>
+  <tbody>
+    <tr><th>C'est une fraude</th><td>Vrai positif</td><td>Faux négatif : fraude manquée</td></tr>
+    <tr><th>C'est normal</th><td>Faux positif : fausse alerte</td><td>Vrai négatif</td></tr>
+  </tbody>
+</table>
+
+<table>
+  <thead><tr><th>Métrique</th><th>La question</th></tr></thead>
+  <tbody>
+    <tr><th>Exactitude<br><em>accuracy</em></th><td>Quelle part des réponses est juste ?</td></tr>
+    <tr><th>Précision<br><em>precision</em></th><td>Quand le modèle dit « fraude », a-t-il raison ?</td></tr>
+    <tr><th>Rappel<br><em>recall</em></th><td>Quelle part des vraies fraudes a-t-il trouvée ?</td></tr>
+    <tr><th>Score F1</th><td>Un seul chiffre qui équilibre précision et rappel</td></tr>
+  </tbody>
+</table>
+
+<aside class="note piege">
+  <p class="etiquette">Idée reçue</p>
+  <p>« 99 % de réponses justes, c'est excellent. » Si une transaction sur cent est frauduleuse, un modèle qui répond toujours « normal » atteint 99 % d'exactitude et ne trouve aucune fraude. Dès que les classes sont déséquilibrées, l'exactitude ne dit rien. Il faut regarder la précision et le rappel.</p>
+</aside>
+
+<p>Un modèle de classification ne répond pas oui ou non : il donne un score, et l'on fixe un <dfn>seuil</dfn>. Baisser le seuil trouve plus de fraudes et déclenche plus de fausses alertes. Le bon seuil est une décision métier : combien coûte une fraude manquée, combien coûte un client bloqué à tort ? La courbe <strong>ROC</strong> (<em>Receiver Operating Characteristic</em>) et l'aire sous cette courbe, l'<strong>AUC</strong> (<em>Area Under the Curve</em>), résument la qualité du modèle sur tous les seuils à la fois.</p>
+
+<p>Pour une régression, on mesure l'écart entre la prévision et la réalité, en moyenne : c'est l'erreur absolue moyenne, <strong>MAE</strong> (<em>Mean Absolute Error</em>), ou la racine de l'erreur quadratique moyenne, <strong>RMSE</strong> (<em>Root Mean Squared Error</em>), qui pénalise davantage les grosses erreurs.</p>
+
+<h2>Les données d'abord</h2>
+
+<p>Un algorithme moyen sur de bonnes données bat un excellent algorithme sur de mauvaises données. Quatre questions comptent plus que le choix du modèle.</p>
+
+<ul>
+  <li><strong>Sont-elles représentatives ?</strong> Un modèle entraîné sur les clients d'hier juge mal ceux de demain s'ils sont différents.</li>
+  <li><strong>Les étiquettes sont-elles justes ?</strong> L'étiquetage est souvent manuel, coûteux et bruité.</li>
+  <li><strong>Portent-elles un biais ?</strong> Un modèle entraîné sur des décisions passées reproduit les préjugés de ces décisions.</li>
+  <li><strong>Les variables sont-elles bien construites ?</strong> Transformer les données brutes en variables utiles s'appelle l'<dfn>ingénierie des variables</dfn> (<em>feature engineering</em>), et c'est là que se gagne l'essentiel de la performance.</li>
+</ul>
+
+<h2>Paramètres et hyperparamètres</h2>
+
+<p>Les <dfn>paramètres</dfn> sont appris par le modèle. Les <dfn>hyperparamètres</dfn> sont choisis par l'humain avant l'entraînement : profondeur des arbres, nombre d'arbres, vitesse d'apprentissage. On les règle sur le jeu de validation. Quand les données sont rares, on recourt à la <dfn>validation croisée</dfn> (<em>cross-validation</em>) : on découpe les données en plusieurs parts, et chacune sert tour à tour de validation.</p>
+
+<h2>Un modèle vieillit</h2>
+
+<p>Le monde change, le modèle non. Deux dérives le guettent. La <dfn>dérive des données</dfn> (<em>data drift</em>) : les cas présentés ne ressemblent plus à ceux de l'entraînement. La <dfn>dérive de concept</dfn> (<em>concept drift</em>) : la relation elle-même a changé, les fraudeurs ont trouvé une nouvelle méthode. Dans les deux cas, la performance se dégrade sans bruit. Il faut donc la surveiller en production, et prévoir de réentraîner.</p>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Un modèle se juge sur des données qu'il n'a jamais vues : entraînement, validation, test.</li>
+    <li>Le surapprentissage, c'est apprendre par cœur. Le but est la généralisation.</li>
+    <li>Sur des données en tableau, le gradient boosting reste la référence.</li>
+    <li>L'exactitude trompe dès que les classes sont déséquilibrées. Précision, rappel et seuil sont des choix métier.</li>
+    <li>La qualité des données compte plus que l'algorithme, et un modèle en service se surveille parce qu'il dérive.</li>
+  </ul>
+</aside>

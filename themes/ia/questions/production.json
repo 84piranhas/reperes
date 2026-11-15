@@ -1,0 +1,192 @@
+[
+  {
+    "id": "production-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce qui distingue l'exploitation d'un modèle de celle d'un logiciel classique ?",
+    "choix": [
+      "Un modèle dépend de son code et de ses données : il faut versionner et surveiller les deux",
+      "Un modèle n'a pas besoin d'être testé",
+      "Un modèle ne tombe jamais en panne",
+      "Un modèle ne peut pas être mis à jour"
+    ],
+    "bonnes": [0],
+    "explication": "C'est la raison d'être du MLOps. Changer les données change le modèle, même si le code est identique. Reproduire un modèle exige de savoir exactement quelles données l'ont produit."
+  },
+  {
+    "id": "production-02",
+    "type": "single",
+    "niveau": 2,
+    "q": "À quoi sert un registre de modèles ?",
+    "choix": [
+      "À tenir l'inventaire des versions de modèles, de leurs performances et de leur statut",
+      "À stocker les données d'entraînement",
+      "À enregistrer les conversations des utilisateurs",
+      "À facturer l'usage des modèles aux équipes"
+    ],
+    "bonnes": [0],
+    "explication": "Le registre dit quelle version est en production, laquelle est en test, et ce que vaut chacune. Sans lui, personne ne sait ce qui tourne réellement."
+  },
+  {
+    "id": "production-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que contient la trace d'une requête dans une application à base de modèle de langage ?",
+    "choix": [
+      "Le prompt complet, les appels d'outils, la réponse, les tokens, la durée et le coût",
+      "Uniquement l'heure de la requête",
+      "Les poids du modèle au moment de l'appel",
+      "Le code source de l'application"
+    ],
+    "bonnes": [0],
+    "explication": "L'observabilité repose sur ces traces. Quand un utilisateur signale une réponse aberrante, elles sont le seul moyen de savoir ce que le modèle a réellement reçu et fait."
+  },
+  {
+    "id": "production-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle est la contrainte matérielle principale pour faire tourner un modèle sur un processeur graphique ?",
+    "choix": [
+      "Sa mémoire : le modèle doit y tenir tout entier",
+      "La taille de son écran",
+      "Sa vitesse d'accès à Internet",
+      "Le nombre de ses ports de connexion"
+    ],
+    "bonnes": [0],
+    "explication": "La mémoire du processeur graphique décide de ce qui peut tourner. Un modèle plus grand que cette mémoire ne se charge pas, d'où l'intérêt de la quantification."
+  },
+  {
+    "id": "production-05",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un service interne reçoit quelques requêtes par heure. L'équipe propose d'acheter des processeurs graphiques pour héberger son propre modèle et « économiser sur l'API ». Qu'en penser ?",
+    "choix": [
+      "À ce volume, l'API coûte bien moins cher : un GPU se paie qu'il travaille ou non",
+      "C'est toujours plus économique d'héberger soi-même",
+      "L'auto-hébergement supprime tous les coûts",
+      "Les API ne sont pas faites pour les faibles volumes"
+    ],
+    "bonnes": [0],
+    "explication": "L'auto-hébergement est un coût fixe, rentable seulement si les machines travaillent la plus grande partie du temps. Il peut se justifier par la confidentialité, pas par l'économie à ce volume."
+  },
+  {
+    "id": "production-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est le rôle d'une passerelle IA (AI gateway) ?",
+    "choix": [
+      "Servir de point d'entrée unique vers les modèles : clés, quotas, journalisation, filtrage, repli",
+      "Entraîner les modèles de l'entreprise",
+      "Stocker les documents d'un RAG",
+      "Remplacer le prompt système"
+    ],
+    "bonnes": [0],
+    "explication": "Placée entre les applications et les modèles, la passerelle centralise ce que chaque équipe aurait dû refaire : gestion des accès, plafonds, traces, et bascule sur un autre modèle en cas de panne."
+  },
+  {
+    "id": "production-07",
+    "type": "single",
+    "niveau": 3,
+    "q": "Pourquoi appeler une version précise d'un modèle plutôt que « la dernière » ?",
+    "choix": [
+      "Pour que le changement de version soit une décision, précédée d'une évaluation",
+      "Parce que les anciennes versions sont toujours meilleures",
+      "Parce que la dernière version est toujours plus chère",
+      "Pour éviter de payer les tokens de sortie"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle qui change sous une application en déplace le comportement sans prévenir. Épingler la version permet d'évaluer la nouvelle avant de basculer, et de suivre le calendrier de retrait du fournisseur."
+  },
+  {
+    "id": "production-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que deviennent les données placées dans un prompt envoyé à un fournisseur ?",
+    "choix": [
+      "Elles partent chez lui : leur conservation et leur usage dépendent de ses engagements contractuels",
+      "Elles restent sur le poste de l'utilisateur",
+      "Elles sont effacées avant d'atteindre le modèle",
+      "Elles sont toujours utilisées pour entraîner le modèle"
+    ],
+    "bonnes": [0],
+    "explication": "Tout prompt est traité par celui qui fait tourner le modèle. Entraînement, durée de conservation, région, accès : ces points se vérifient au contrat, et les offres gratuites grand public les garantissent rarement."
+  },
+  {
+    "id": "production-09",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un prototype coûte quelques euros par mois. Avant de l'ouvrir à dix mille personnes avec des agents, que faut-il faire ?",
+    "choix": [
+      "Projeter le coût à l'échelle et fixer des budgets : un agent multiplie les tokens par tâche",
+      "Rien : le coût par utilisateur restera le même",
+      "Supprimer la journalisation pour économiser",
+      "Passer à un modèle plus grand pour absorber la charge"
+    ],
+    "bonnes": [0],
+    "explication": "Un agent enchaîne des dizaines d'appels en renvoyant un contexte qui grossit. Le coût par utilisateur peut être mille fois celui d'un simple dialogue. Il se projette et se plafonne avant le lancement."
+  },
+  {
+    "id": "production-10",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est le métier de l'ingénieur IA (AI engineer), tel qu'on l'entend aujourd'hui ?",
+    "choix": [
+      "Construire des applications sur des modèles existants : prompts, RAG, agents, évaluations",
+      "Fabriquer les processeurs graphiques",
+      "Rédiger la réglementation applicable aux modèles",
+      "Étiqueter à la main les données d'entraînement"
+    ],
+    "bonnes": [0],
+    "explication": "L'ingénieur IA n'entraîne généralement pas de modèle : il assemble des modèles existants en applications fiables. L'entraînement et la mise en production des modèles reviennent à l'ingénieur machine learning."
+  },
+  {
+    "id": "production-11",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Regrouper davantage de requêtes pour les calculer ensemble améliore à la fois le débit et la latence.",
+    "bonnes": [1],
+    "explication": "Regrouper améliore le débit total, mais chaque requête attend d'être regroupée : la latence se dégrade. Les deux mesures se tirent dessus, et le réglage dépend de l'usage."
+  },
+  {
+    "id": "production-12",
+    "type": "single",
+    "niveau": 2,
+    "q": "En quoi consiste un déploiement progressif ?",
+    "choix": [
+      "Exposer la nouvelle version à une petite part du trafic avant de la généraliser",
+      "Déployer une fonctionnalité par an",
+      "Mettre en service sans tests pour gagner du temps",
+      "Remplacer tous les modèles le même jour"
+    ],
+    "bonnes": [0],
+    "explication": "Si la nouvelle version se comporte mal, seule une fraction des utilisateurs est touchée, et le retour en arrière est immédiat. C'est une assurance contre les régressions que les tests n'ont pas vues."
+  },
+  {
+    "id": "production-13",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Quelles questions poser à un fournisseur sur le sort des données envoyées ?",
+    "choix": [
+      "Servent-elles à entraîner ses modèles ?",
+      "Combien de temps sont-elles conservées ?",
+      "Dans quelle région sont-elles traitées ?",
+      "Quelle est la couleur de son interface ?"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Entraînement, durée de conservation, région de traitement, et accès par le personnel du fournisseur : ce sont les quatre points à faire figurer au contrat."
+  },
+  {
+    "id": "production-14",
+    "type": "single",
+    "niveau": 3,
+    "q": "Quelle est la première cause d'échec des projets d'intelligence artificielle ?",
+    "choix": [
+      "L'écart entre une démonstration convaincante et un service fiable en production",
+      "Le manque de modèles disponibles sur le marché",
+      "La lenteur des processeurs graphiques",
+      "L'absence de langages de programmation adaptés"
+    ],
+    "bonnes": [0],
+    "explication": "Une démonstration se construit en deux jours. Fiabilité, surveillance, sécurité et coût maîtrisé demandent des mois. Les projets qui sous-estiment cet écart restent au stade du prototype."
+  }
+]

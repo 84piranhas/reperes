@@ -1,0 +1,100 @@
+<p>Un système d'intelligence artificielle se trompe, parfois, d'une façon qu'on ne peut pas prévoir en le lisant. La seule manière de savoir ce qu'il vaut est donc de le mesurer. Sans mesure, on ne sait ni si un changement de prompt améliore les choses, ni si un nouveau modèle fait mieux que l'ancien, ni si le service se dégrade. L'évaluation est ce qui sépare un projet d'ingénierie d'une suite d'impressions.</p>
+
+<h2>Les benchmarks publics, et leurs limites</h2>
+
+<p>Un <dfn>benchmark</dfn> est un jeu d'épreuves standard sur lequel on compare des modèles. Les classements qui en sont tirés aident à faire un premier tri. Ils ont trois faiblesses.</p>
+
+<ul>
+  <li><strong>La contamination.</strong> Les épreuves sont publiques. Elles finissent dans les données d'entraînement, et le modèle a « vu le sujet ».</li>
+  <li><strong>La saturation.</strong> Quand tous les modèles dépassent 95 %, l'épreuve ne départage plus rien.</li>
+  <li><strong>L'écart avec le réel.</strong> Aucun benchmark ne contient vos documents, vos clients, votre vocabulaire.</li>
+</ul>
+
+<p>Un classement dit quel modèle essayer. Il ne dit pas lequel est le meilleur pour un usage donné.</p>
+
+<h2>Construire sa propre évaluation</h2>
+
+<p>Le cœur d'une évaluation est un <dfn>jeu de référence</dfn> (<em>golden dataset</em>) : des cas réels, chacun accompagné de la réponse attendue ou des critères d'une bonne réponse. Cinquante à deux cents cas bien choisis suffisent pour commencer. On y met trois sortes de cas.</p>
+
+<ul>
+  <li><strong>Les cas courants</strong>, représentatifs de l'usage réel.</li>
+  <li><strong>Les cas limites</strong> : question ambiguë, document incomplet, demande hors périmètre.</li>
+  <li><strong>Les cas hostiles</strong> : tentative de détournement, demande interdite.</li>
+</ul>
+
+<p>Ce jeu vit. Chaque incident de production y ajoute un cas, pour que la même erreur ne revienne pas sans être vue.</p>
+
+<h2>Trois façons de noter</h2>
+
+<table>
+  <thead><tr><th>Méthode</th><th>Principe</th><th>Force</th><th>Limite</th></tr></thead>
+  <tbody>
+    <tr><th>Par règles</th><td>Du code vérifie : la bonne valeur, le bon format, un test qui passe</td><td>Rapide, gratuit, sans ambiguïté</td><td>Ne juge pas un texte libre</td></tr>
+    <tr><th>Par un modèle juge</th><td>Un second modèle note la réponse selon une grille</td><td>Juge du texte libre, à grande échelle</td><td>Se trompe aussi : à calibrer</td></tr>
+    <tr><th>Par des humains</th><td>Des experts relisent et notent</td><td>La référence</td><td>Lent et coûteux</td></tr>
+  </tbody>
+</table>
+
+<p>La méthode du <dfn>modèle juge</dfn> (<em>LLM-as-a-judge</em>, LLM pour <em>Large Language Model</em>) est devenue la plus courante pour les textes libres. Elle demande deux précautions. La grille doit être précise : « la réponse cite-t-elle une source présente dans les documents ? » se juge bien, « la réponse est-elle bonne ? » se juge mal. Et le juge doit être <strong>calibré</strong> : on compare régulièrement ses notes à celles d'humains sur un échantillon.</p>
+
+<p>Deux métriques anciennes circulent encore : <strong>BLEU</strong> (<em>Bilingual Evaluation Understudy</em>) et <strong>ROUGE</strong> (<em>Recall-Oriented Understudy for Gisting Evaluation</em>). Elles comptent les mots communs entre la réponse et une référence. Deux phrases de même sens et de mots différents y obtiennent une mauvaise note : elles conviennent mal aux modèles actuels.</p>
+
+<h2>Quoi mesurer</h2>
+
+<table>
+  <thead><tr><th>Axe</th><th>Exemples de questions</th></tr></thead>
+  <tbody>
+    <tr><th>Qualité</th><td>La réponse est-elle exacte ? Fidèle aux sources ? Complète ? Au bon format ?</td></tr>
+    <tr><th>Sécurité</th><td>Le système refuse-t-il ce qu'il doit refuser ? Résiste-t-il aux tentatives de détournement ?</td></tr>
+    <tr><th>Coût</th><td>Combien de tokens par requête, par tâche réussie ?</td></tr>
+    <tr><th>Latence</th><td>Combien de temps avant le premier mot, et avant la fin ?</td></tr>
+  </tbody>
+</table>
+
+<p>Ces axes se tirent dessus. Un modèle plus grand est souvent meilleur, plus lent et plus cher. L'évaluation sert précisément à choisir en connaissance de cause : une baisse de qualité de deux points est-elle acceptable pour un coût divisé par dix ?</p>
+
+<h2>Avant, puis après la mise en service</h2>
+
+<ul>
+  <li><strong>Hors ligne</strong> (<em>offline</em>). Avant chaque déploiement, on rejoue le jeu de référence. Ces tests de non-régression s'intègrent à la chaîne d'intégration et de déploiement continus, <strong>CI/CD</strong> (<em>Continuous Integration / Continuous Delivery</em>) : un changement de prompt qui fait baisser le score est bloqué, comme un changement de code qui casse un test.</li>
+  <li><strong>En ligne</strong> (<em>online</em>). Une fois en service, on observe l'usage réel : avis des utilisateurs, taux de réponses corrigées ou abandonnées, taux de transfert vers un humain. Le <dfn>test A/B</dfn> expose deux versions à deux groupes d'utilisateurs et compare.</li>
+</ul>
+
+<p>Les deux sont nécessaires. Le hors-ligne attrape les régressions avant qu'elles n'atteignent les utilisateurs. L'en-ligne révèle les cas que personne n'avait imaginés.</p>
+
+<h2>Composer avec le hasard</h2>
+
+<p>Un même cas peut réussir une fois et échouer la suivante. On ne conclut donc rien d'un essai. On répète, on raisonne en <strong>taux de réussite</strong>, et l'on se méfie des petits écarts : passer de 82 % à 84 % sur cinquante cas ne prouve rien, la différence tient à un seul cas. Plus le jeu est petit, plus il faut un écart net pour conclure.</p>
+
+<h2>Attaquer son propre système</h2>
+
+<p>Le <dfn>red teaming</dfn> consiste à chercher délibérément à faire échouer le système : le faire sortir de son rôle, lui faire révéler ses consignes, lui faire produire un contenu interdit, le détourner par un document piégé. On le pratique avant toute mise en service, puis régulièrement, car les techniques d'attaque évoluent. Chaque attaque réussie devient un cas du jeu de référence.</p>
+
+<h2>Évaluer du machine learning classique</h2>
+
+<p>Les principes sont les mêmes, avec des outils plus anciens : un jeu de test mis de côté, des métriques comme la précision et le rappel, et une surveillance de la dérive en production. Une précaution s'y ajoute presque toujours : mesurer par <strong>sous-groupe</strong>. Un modèle bon en moyenne peut être mauvais pour une catégorie de clients, et c'est souvent là que se logent les biais.</p>
+
+<h2>Les pièges</h2>
+
+<ul>
+  <li><strong>Évaluer sur ses propres exemples.</strong> Les cas cités dans le prompt réussissent toujours. Ils ne mesurent rien.</li>
+  <li><strong>Optimiser pour le test.</strong> À force d'ajuster le prompt pour les deux cents cas du jeu, on finit par surapprendre le jeu. Il faut garder des cas jamais regardés.</li>
+  <li><strong>Un juge complaisant.</strong> Un modèle juge préfère volontiers les réponses longues, ou celles qui ressemblent à son propre style.</li>
+  <li><strong>La moyenne qui cache tout.</strong> 90 % de réussite peut vouloir dire 100 % sur les cas faciles et 20 % sur ceux qui comptent.</li>
+</ul>
+
+<aside class="note terrain">
+  <p class="etiquette">Sur le terrain</p>
+  <p>Les équipes qui progressent le plus vite ont une habitude commune : elles lisent des réponses. Chaque semaine, quelqu'un ouvre cinquante conversations réelles et note ce qui cloche. Aucune métrique ne remplace cette lecture, et c'est elle qui dit quelles métriques construire.</p>
+</aside>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Un classement public aide à trier. Seule une évaluation sur ses propres cas dit ce que vaut un système.</li>
+    <li>Un jeu de référence de cas courants, limites et hostiles, enrichi à chaque incident.</li>
+    <li>Noter par règles quand c'est possible, par un modèle juge calibré pour le texte libre, par des humains comme référence.</li>
+    <li>Tests de non-régression avant chaque déploiement, observation de l'usage réel après.</li>
+    <li>Raisonner en taux, se méfier des petits écarts et des moyennes, et lire régulièrement de vraies réponses.</li>
+  </ul>
+</aside>

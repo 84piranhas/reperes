@@ -1,0 +1,178 @@
+[
+  {
+    "id": "ml-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Dans un modèle qui détecte la fraude, que désigne l'étiquette (label) ?",
+    "choix": [
+      "La réponse à prédire : fraude ou non",
+      "Les informations connues sur chaque paiement",
+      "Le nom donné au modèle",
+      "Le seuil à partir duquel on alerte"
+    ],
+    "bonnes": [0],
+    "explication": "L'étiquette est la réponse que le modèle doit apprendre à prédire. Les informations connues sur chaque cas, montant ou heure, sont les variables (features)."
+  },
+  {
+    "id": "ml-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "À quoi sert le jeu de test ?",
+    "choix": [
+      "À mesurer une seule fois, à la fin, la performance sur des données jamais vues",
+      "À apprendre les poids du modèle",
+      "À régler les hyperparamètres au fil des essais",
+      "À stocker les exemples jugés trop difficiles"
+    ],
+    "bonnes": [0],
+    "explication": "Le jeu de test reste sous clé jusqu'à la mesure finale. S'il sert à régler le modèle, il cesse d'être neuf, et le chiffre obtenu surestime la performance réelle."
+  },
+  {
+    "id": "ml-03",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce que le surapprentissage (overfitting) ?",
+    "choix": [
+      "Le modèle a appris ses exemples par cœur : excellent à l'entraînement, médiocre sur du neuf",
+      "Le modèle est trop simple pour apprendre quoi que ce soit",
+      "Le modèle a été entraîné trop longtemps et a perdu ses poids",
+      "Le modèle contient trop de variables pour tenir en mémoire"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle surappris a mémorisé le bruit de ses exemples. On le repère à l'écart entre l'erreur d'entraînement et l'erreur de validation. Un modèle trop simple relève du sous-apprentissage."
+  },
+  {
+    "id": "ml-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Une transaction sur cent est frauduleuse. Un modèle répond toujours « normal ». Quelle est son exactitude (accuracy), et que vaut-il ?",
+    "choix": [
+      "99 %, et il ne vaut rien : il ne trouve aucune fraude",
+      "99 %, et il est donc excellent",
+      "1 %, et il ne vaut rien",
+      "50 %, comme un tirage au sort"
+    ],
+    "bonnes": [0],
+    "explication": "Avec des classes déséquilibrées, l'exactitude est trompeuse. Ce modèle a un rappel nul. Il faut regarder la précision et le rappel sur la classe rare."
+  },
+  {
+    "id": "ml-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que mesure le rappel (recall) d'un modèle de détection de fraude ?",
+    "choix": [
+      "La part des vraies fraudes que le modèle a trouvées",
+      "La part des alertes qui étaient de vraies fraudes",
+      "La part de toutes les réponses qui sont justes",
+      "La vitesse à laquelle le modèle répond"
+    ],
+    "bonnes": [0],
+    "explication": "Le rappel regarde les vraies fraudes : combien ont été trouvées ? La part des alertes justifiées, c'est la précision. Les deux tirent en sens inverse quand on déplace le seuil."
+  },
+  {
+    "id": "ml-06",
+    "type": "single",
+    "niveau": 3,
+    "q": "On abaisse le seuil à partir duquel un paiement est signalé comme fraude. Que se passe-t-il ?",
+    "choix": [
+      "Le rappel monte et la précision baisse : plus de fraudes trouvées, plus de fausses alertes",
+      "Le rappel et la précision montent ensemble",
+      "Le rappel baisse et la précision monte",
+      "Rien ne change : le seuil n'a pas d'effet sur ces mesures"
+    ],
+    "bonnes": [0],
+    "explication": "Un seuil plus bas signale davantage de cas. On manque moins de fraudes, mais on bloque plus de clients à tort. Le bon réglage dépend du coût de chaque erreur : c'est une décision métier."
+  },
+  {
+    "id": "ml-07",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un modèle affiche des scores presque parfaits en validation, puis s'effondre en production. Quelle cause chercher d'abord ?",
+    "choix": [
+      "Une fuite de données : une variable indisponible au moment de prédire s'est glissée dans l'entraînement",
+      "Un manque de puissance de calcul en production",
+      "Un nombre d'arbres insuffisant",
+      "Une erreur d'arrondi dans les montants"
+    ],
+    "bonnes": [0],
+    "explication": "La fuite de données donne au modèle une information qu'il n'aura pas en conditions réelles, par exemple une variable remplie après coup. Un résultat trop beau doit toujours faire chercher une fuite."
+  },
+  {
+    "id": "ml-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Sur des données en tableau, lignes et colonnes de chiffres et de catégories, quelle famille d'algorithmes reste la référence ?",
+    "choix": [
+      "Le gradient boosting",
+      "Les grands modèles de langage",
+      "Les modèles de génération d'images",
+      "Les systèmes experts à base de règles"
+    ],
+    "bonnes": [0],
+    "explication": "Le gradient boosting, connu sous le nom d'outils comme XGBoost, bat encore très souvent les réseaux de neurones sur ce type de données, pour une fraction du coût."
+  },
+  {
+    "id": "ml-09",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle différence y a-t-il entre un paramètre et un hyperparamètre ?",
+    "choix": [
+      "Le paramètre est appris par le modèle, l'hyperparamètre est choisi par l'humain avant l'entraînement",
+      "Le paramètre est choisi par l'humain, l'hyperparamètre est appris par le modèle",
+      "L'hyperparamètre est un paramètre de très grande valeur",
+      "Il n'y en a pas : les deux mots sont synonymes"
+    ],
+    "bonnes": [0],
+    "explication": "Les poids sont des paramètres, ajustés pendant l'entraînement. La profondeur des arbres ou la vitesse d'apprentissage sont des hyperparamètres, que l'on règle sur le jeu de validation."
+  },
+  {
+    "id": "ml-10",
+    "type": "single",
+    "niveau": 2,
+    "q": "Les fraudeurs changent de méthode, et le modèle, qui n'a pas changé, détecte de moins en moins bien. Comment s'appelle ce phénomène ?",
+    "choix": [
+      "La dérive de concept (concept drift)",
+      "Le surapprentissage",
+      "La fuite de données",
+      "La validation croisée"
+    ],
+    "bonnes": [0],
+    "explication": "La relation entre les variables et l'étiquette a changé : c'est une dérive de concept. Elle dégrade la performance sans bruit, d'où la nécessité de surveiller un modèle en service et de le réentraîner."
+  },
+  {
+    "id": "ml-11",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Un excellent algorithme compense des données de mauvaise qualité.",
+    "bonnes": [1],
+    "explication": "Un algorithme moyen sur de bonnes données bat un excellent algorithme sur de mauvaises données. Représentativité, justesse des étiquettes et construction des variables pèsent plus que le choix du modèle."
+  },
+  {
+    "id": "ml-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un modèle de sélection de candidatures est entraîné sur dix ans de décisions de recrutement. Quel risque faut-il anticiper ?",
+    "choix": [
+      "Il reproduira les préjugés présents dans ces décisions passées",
+      "Il sera incapable de lire les candidatures récentes",
+      "Il favorisera systématiquement les candidats les plus jeunes",
+      "Il refusera toutes les candidatures par prudence"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle apprend ce que ses données contiennent, biais compris. Si les décisions passées étaient biaisées, il les imite avec constance. Il faut mesurer ses résultats par sous-groupe."
+  },
+  {
+    "id": "ml-13",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Quels remèdes s'appliquent à un modèle qui surapprend ?",
+    "choix": [
+      "Lui donner plus de données d'entraînement",
+      "Choisir un modèle plus simple",
+      "Ajouter une régularisation, qui pénalise la complexité",
+      "Régler ses hyperparamètres sur le jeu de test"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Plus de données, moins de complexité, de la régularisation. Régler sur le jeu de test est au contraire une faute : il ne mesurerait plus rien d'honnête."
+  }
+]

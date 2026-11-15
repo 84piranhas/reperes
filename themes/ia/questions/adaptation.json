@@ -1,0 +1,178 @@
+[
+  {
+    "id": "adaptation-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Dans quel ordre faut-il envisager les moyens d'adapter un modèle à un besoin ?",
+    "choix": [
+      "Le prompt, puis les exemples, puis le RAG, puis seulement le fine-tuning",
+      "Le fine-tuning d'abord, le prompt en dernier recours",
+      "Un entraînement complet, puis des réglages de prompt",
+      "L'ordre n'a pas d'importance"
+    ],
+    "bonnes": [0],
+    "explication": "Chaque échelon coûte et engage davantage que le précédent. Un prompt se corrige en une minute, un modèle ajusté se réentraîne. On s'arrête dès que le besoin est couvert."
+  },
+  {
+    "id": "adaptation-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "En quoi consiste le fine-tuning ?",
+    "choix": [
+      "Reprendre l'entraînement d'un modèle existant sur ses propres exemples, ce qui modifie légèrement ses poids",
+      "Fournir des documents au modèle à chaque question",
+      "Réécrire le prompt système jusqu'à obtenir le bon résultat",
+      "Entraîner un modèle à partir de rien"
+    ],
+    "bonnes": [0],
+    "explication": "Le fine-tuning part d'un modèle déjà entraîné et en ajuste les poids. Fournir des documents à chaque question relève du RAG, qui ne touche pas au modèle."
+  },
+  {
+    "id": "adaptation-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Une équipe veut fine-tuner un modèle sur le règlement intérieur pour qu'il réponde aux questions des salariés. Quelle est l'objection ?",
+    "choix": [
+      "Le fine-tuning enseigne un comportement, pas des faits : le modèle imitera le style et inventera encore des articles",
+      "Le règlement intérieur est trop court pour entraîner un modèle",
+      "Le fine-tuning est interdit sur des documents internes",
+      "Le modèle refusera de répondre aux questions des salariés"
+    ],
+    "bonnes": [0],
+    "explication": "C'est l'erreur la plus répandue. Pour des connaissances, surtout si elles changent, l'outil est le RAG : le modèle lit les passages au moment de répondre, et peut les citer."
+  },
+  {
+    "id": "adaptation-04",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Dans quels cas le fine-tuning est-il un bon choix ?",
+    "choix": [
+      "Obtenir un ton constant, difficile à décrire mais facile à montrer",
+      "Spécialiser un petit modèle sur une tâche étroite et répétitive",
+      "Faire respecter un format strict sans avoir à le rappeler",
+      "Tenir le modèle au courant d'une actualité qui change chaque semaine"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Style, format et tâche étroite sont le terrain du fine-tuning. Des faits qui changent chaque semaine imposeraient un réentraînement permanent : c'est le rôle du RAG."
+  },
+  {
+    "id": "adaptation-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quel est le principe de LoRA ?",
+    "choix": [
+      "Geler le modèle d'origine et entraîner de petites matrices ajoutées à côté de ses couches",
+      "Supprimer la moitié des couches du modèle",
+      "Arrondir les poids du modèle sur moins de bits",
+      "Entraîner un petit modèle à imiter un grand"
+    ],
+    "bonnes": [0],
+    "explication": "Les adaptateurs entraînés pèsent souvent moins de 1 % du modèle. L'ajustement devient accessible sur un matériel modeste, et un même modèle peut porter plusieurs adaptateurs, un par tâche."
+  },
+  {
+    "id": "adaptation-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'appelle-t-on l'oubli catastrophique ?",
+    "choix": [
+      "En apprenant une nouvelle tâche, le modèle perd des capacités qu'il avait",
+      "Le modèle oublie la conversation d'un message à l'autre",
+      "Les données d'entraînement sont effacées par erreur",
+      "Le modèle refuse de répondre après une mise à jour"
+    ],
+    "bonnes": [0],
+    "explication": "Ajuster les poids pour une tâche peut en dégrader d'autres. D'où la nécessité d'évaluer le modèle ajusté au-delà de la seule tâche visée."
+  },
+  {
+    "id": "adaptation-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "En quoi consiste la distillation ?",
+    "choix": [
+      "Un petit modèle est entraîné à reproduire les réponses d'un grand modèle",
+      "Un grand modèle est découpé en plusieurs petits",
+      "Les poids d'un modèle sont arrondis sur moins de bits",
+      "Les documents sont résumés avant d'être indexés"
+    ],
+    "bonnes": [0],
+    "explication": "Le grand modèle, le professeur, produit des réponses. Le petit, l'élève, apprend à les imiter. Sur la tâche visée, il approche la qualité du professeur pour une fraction du coût."
+  },
+  {
+    "id": "adaptation-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que fait la quantification ?",
+    "choix": [
+      "Elle arrondit les poids sur moins de bits : un modèle plus léger, contre une légère perte de qualité",
+      "Elle compte le nombre de tokens d'une requête",
+      "Elle augmente le nombre de paramètres du modèle",
+      "Elle mesure la qualité du modèle sur un jeu de test"
+    ],
+    "bonnes": [0],
+    "explication": "Passer de 16 bits à 8 ou 4 bits par poids rend le modèle deux à quatre fois plus léger. C'est ce qui permet de le faire tourner sur un portable ou un seul processeur graphique."
+  },
+  {
+    "id": "adaptation-09",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une tâche de classification simple tourne sur un très grand modèle, à raison de dix millions d'appels par mois. La facture est trop lourde. Quel levier regarder d'abord ?",
+    "choix": [
+      "Distiller vers un petit modèle, qui fera la même tâche pour beaucoup moins cher",
+      "Augmenter la température",
+      "Ajouter un RAG",
+      "Allonger le prompt système"
+    ],
+    "bonnes": [0],
+    "explication": "Tâche simple et gros volume : c'est le cas d'école de la distillation. On garde le grand modèle pour produire les exemples, puis on sert un petit modèle spécialisé."
+  },
+  {
+    "id": "adaptation-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Le fournisseur remplace le modèle de base par une nouvelle version. Que devient un fine-tuning réalisé sur l'ancienne ?",
+    "choix": [
+      "Il est à refaire, et à réévaluer, sur la nouvelle version",
+      "Il se transfère automatiquement à la nouvelle version",
+      "Il reste valable indéfiniment",
+      "Il devient inutile : les nouvelles versions n'ont jamais besoin d'ajustement"
+    ],
+    "bonnes": [0],
+    "explication": "Un ajustement est attaché aux poids du modèle sur lequel il a été fait. Comme les modèles de base se renouvellent tous les quelques mois, c'est une dette à reconduire."
+  },
+  {
+    "id": "adaptation-11",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Un fine-tuning ne peut qu'améliorer un modèle : au pire, il ne change rien.",
+    "bonnes": [1],
+    "explication": "Un ajustement peut faire reculer le modèle sur des tâches non mesurées, lui faire réciter ses exemples, ou affaiblir ses règles de sécurité. Il se valide toujours sur un jeu d'évaluation distinct."
+  },
+  {
+    "id": "adaptation-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un modèle se trompe sur une tâche de raisonnement complexe. Quel est le premier réflexe ?",
+    "choix": [
+      "Améliorer le prompt et le contexte, ou essayer un meilleur modèle, avant tout fine-tuning",
+      "Lancer un fine-tuning sur quelques exemples",
+      "Quantifier le modèle",
+      "Réduire la fenêtre de contexte"
+    ],
+    "bonnes": [0],
+    "explication": "Le fine-tuning règle rarement un défaut de raisonnement. On épuise d'abord les échelons du haut : de meilleures consignes, un meilleur contexte, ou un modèle plus capable."
+  },
+  {
+    "id": "adaptation-13",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle est la condition la plus déterminante de la réussite d'un fine-tuning ?",
+    "choix": [
+      "La qualité des exemples d'entraînement",
+      "Le nombre de processeurs graphiques mobilisés",
+      "La longueur du prompt système",
+      "Le nombre de paramètres du modèle de base"
+    ],
+    "bonnes": [0],
+    "explication": "Le modèle ajusté ne dépasse pas la qualité des exemples qu'on lui montre. Leur préparation est le vrai travail d'un fine-tuning, bien avant le calcul."
+  }
+]

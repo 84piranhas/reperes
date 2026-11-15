@@ -1,0 +1,192 @@
+[
+  {
+    "id": "agents-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce qu'un agent ?",
+    "choix": [
+      "Un modèle placé dans une boucle, qui choisit des actions, observe leur résultat et recommence jusqu'à l'objectif",
+      "Un modèle plus grand que les autres",
+      "Un programme fait de règles écrites à la main",
+      "Un assistant conversationnel doté d'une voix"
+    ],
+    "bonnes": [0],
+    "explication": "Ce qui fait l'agent n'est pas la taille du modèle, mais la boucle : décider, agir par un outil, observer, recommencer. On passe de « réponds-moi » à « fais-le »."
+  },
+  {
+    "id": "agents-02",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quand un modèle « appelle un outil », que se passe-t-il réellement ?",
+    "choix": [
+      "Le modèle écrit une demande structurée, et c'est l'application qui exécute puis lui renvoie le résultat",
+      "Le modèle exécute lui-même l'outil sur les serveurs du fournisseur",
+      "Le modèle modifie ses poids pour intégrer l'outil",
+      "L'utilisateur doit lancer l'outil à la main"
+    ],
+    "bonnes": [0],
+    "explication": "Le modèle ne fait qu'écrire le nom de l'outil et ses arguments. L'exécution appartient à l'application. C'est pourquoi un modèle n'a que les pouvoirs des outils qu'on lui branche."
+  },
+  {
+    "id": "agents-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "À quoi sert le protocole MCP ?",
+    "choix": [
+      "À brancher des outils et des sources de données sur toute application compatible, de façon standard",
+      "À chiffrer les échanges entre l'utilisateur et le modèle",
+      "À compresser les modèles pour les faire tourner en local",
+      "À mesurer la qualité des réponses"
+    ],
+    "bonnes": [0],
+    "explication": "Avant ce standard, chaque outil demandait un développement pour chaque application. Un serveur MCP expose des outils une fois, et toute application compatible s'y connecte."
+  },
+  {
+    "id": "agents-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'est-ce qui distingue un workflow d'un agent ?",
+    "choix": [
+      "Dans un workflow, le code fixe les étapes. Dans un agent, le modèle choisit le chemin",
+      "Un workflow n'utilise pas de modèle de langage",
+      "Un agent est toujours plus fiable qu'un workflow",
+      "Un workflow ne peut pas appeler d'outils"
+    ],
+    "bonnes": [0],
+    "explication": "Le workflow est prévisible et facile à tester, l'agent est souple et moins prévisible. Un workflow peut très bien appeler un modèle et des outils à chaque étape."
+  },
+  {
+    "id": "agents-05",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une tâche suit toujours les mêmes quatre étapes dans le même ordre. Quelle architecture retenir ?",
+    "choix": [
+      "Un workflow : le chemin est connu, la solution la plus simple suffit",
+      "Un agent autonome, plus moderne",
+      "Un système multi-agents avec un orchestrateur",
+      "Un modèle plus grand, sans outil"
+    ],
+    "bonnes": [0],
+    "explication": "On ne passe à l'agent que lorsque le chemin ne peut pas être écrit d'avance. Ici, un workflow est plus prévisible, moins cher et plus simple à tester."
+  },
+  {
+    "id": "agents-06",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un agent réussit chaque étape 95 fois sur 100. Que vaut-il sur une tâche de vingt étapes ?",
+    "choix": [
+      "Il réussit un peu plus d'une fois sur trois : les erreurs se multiplient",
+      "Il réussit 95 fois sur 100, comme à chaque étape",
+      "Il réussit 75 fois sur 100",
+      "Il échoue toujours"
+    ],
+    "bonnes": [0],
+    "explication": "Les taux de réussite se multiplient : 0,95 puissance 20 donne environ 0,36. La fiabilité par étape doit être très élevée pour qu'une longue tâche aboutisse."
+  },
+  {
+    "id": "agents-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi une tâche d'agent coûte-t-elle beaucoup plus cher qu'une simple question ?",
+    "choix": [
+      "Chaque tour de boucle renvoie tout le contexte, qui grossit à chaque résultat d'outil",
+      "Les agents sont facturés à un tarif spécial",
+      "Les outils sont toujours payants",
+      "Le modèle est réentraîné à chaque tâche"
+    ],
+    "bonnes": [0],
+    "explication": "Le contexte s'allonge à chaque étape et il est relu à chaque tour. Une tâche d'agent consomme couramment dix à cent fois plus de tokens qu'une question, d'où l'intérêt de fixer des budgets."
+  },
+  {
+    "id": "agents-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que recouvre la validation humaine (HITL) ?",
+    "choix": [
+      "Une personne doit approuver les actions sensibles ou irréversibles avant leur exécution",
+      "Une personne relit toutes les réponses après coup, une fois par mois",
+      "Une personne rédige le prompt système",
+      "Une personne remplace l'agent en cas de panne"
+    ],
+    "bonnes": [0],
+    "explication": "Un courriel envoyé ou un paiement émis ne se rattrapent pas. Faire attendre ces actions jusqu'à l'accord d'une personne est le garde-fou le plus efficace contre l'erreur irréversible."
+  },
+  {
+    "id": "agents-09",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que demande le principe du moindre privilège appliqué à un agent ?",
+    "choix": [
+      "Ne lui brancher que les outils nécessaires, avec les droits les plus étroits",
+      "Lui donner les droits d'un administrateur pour éviter les blocages",
+      "Lui interdire tout outil",
+      "Limiter le nombre de personnes qui peuvent lui parler"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle a les pouvoirs de ses outils. Moins ils permettent, moins une erreur ou un détournement fait de dégâts. La lecture seule suffit tant que l'écriture n'est pas indispensable."
+  },
+  {
+    "id": "agents-10",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une équipe veut installer un serveur MCP trouvé sur Internet pour gagner du temps. Quelle précaution s'impose ?",
+    "choix": [
+      "Le vérifier comme toute dépendance : c'est du code tiers qui accède aux données et peut influencer le modèle",
+      "Aucune : un protocole standard garantit la sécurité des serveurs",
+      "Le faire tourner avec les droits d'administrateur pour qu'il fonctionne",
+      "Désactiver les journaux pour qu'il soit plus rapide"
+    ],
+    "bonnes": [0],
+    "explication": "Un standard décrit comment se brancher, pas ce que fait celui qui est branché. Un serveur MCP a la main sur des données et présente au modèle des descriptions d'outils qui peuvent le manipuler."
+  },
+  {
+    "id": "agents-11",
+    "type": "single",
+    "niveau": 2,
+    "q": "Sur une longue tâche, la fenêtre de contexte d'un agent déborde. Quel remède ?",
+    "choix": [
+      "Résumer ce qui précède et écrire l'essentiel dans une mémoire externe",
+      "Réentraîner le modèle en cours de tâche",
+      "Augmenter la température",
+      "Supprimer le prompt système"
+    ],
+    "bonnes": [0],
+    "explication": "La mémoire de travail d'un agent est sa fenêtre de contexte. Quand elle sature, on condense l'historique et l'on note l'essentiel dans des fichiers ou une base, à relire au besoin."
+  },
+  {
+    "id": "agents-12",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Un modèle de langage peut, de lui-même, envoyer un courriel ou supprimer un fichier.",
+    "bonnes": [1],
+    "explication": "Un modèle seul ne fait qu'écrire du texte. Il n'envoie un courriel que si l'application lui a branché un outil pour cela, et que cette application exécute sa demande."
+  },
+  {
+    "id": "agents-13",
+    "type": "single",
+    "niveau": 3,
+    "q": "Quelle question est la plus utile devant un projet d'agent ?",
+    "choix": [
+      "Quelle est la pire action qu'il puisse exécuter, et qu'est-ce qui l'en empêche ?",
+      "Combien de paramètres compte le modèle ?",
+      "L'agent a-t-il un nom et une personnalité ?",
+      "Combien d'outils peut-on lui brancher au maximum ?"
+    ],
+    "bonnes": [0],
+    "explication": "Le risque d'un agent se mesure à ses actions possibles, pas à ses capacités. Recenser la pire action et les barrières qui la séparent de l'exécution dit si le projet est exploitable."
+  },
+  {
+    "id": "agents-14",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Quels garde-fous rendent un agent exploitable en production ?",
+    "choix": [
+      "Un plafond de tours, de tokens et de dépense",
+      "Un environnement isolé pour exécuter le code",
+      "La journalisation de chaque décision et de chaque appel d'outil",
+      "Les droits d'un compte administrateur partagé"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Budgets, bac à sable et traces sont des garde-fous. Un compte administrateur partagé est l'inverse : l'agent doit agir avec une identité propre et des droits étroits."
+  }
+]

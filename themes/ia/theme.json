@@ -1,0 +1,96 @@
+{
+  "id": "ia",
+  "domaine": "Technologies · Intelligence artificielle",
+  "titre": "Intelligence artificielle : les notions indispensables",
+  "titreCourt": "Intelligence artificielle",
+  "accroche": "Machine learning, réseaux de neurones, grands modèles de langage, prompts, RAG, agents, évaluation, mise en production, sécurité et réglementation : ce que doit savoir quiconque conçoit, développe ou encadre des systèmes d'intelligence artificielle.",
+  "couleur": { "clair": "#4a3fa3", "sombre": "#a79cf2" },
+  "parcours": "Trois parcours. **Socle** : pour tous, sans écrire une ligne de code. **Construire** : pour qui développe des applications avec des modèles. **Industrialiser** : pour qui adapte, déploie et exploite les modèles.",
+  "capitalesIgnorees": ["NVIDIA", "PDF"],
+  "chapitres": [
+    {
+      "id": "paysage",
+      "titre": "Le paysage de l'IA",
+      "resume": "IA, machine learning, deep learning, IA générative : ce que recouvre chaque mot, les trois façons d'apprendre, l'entraînement et l'inférence, et ce que ces systèmes font bien ou mal.",
+      "minutes": 9,
+      "parcours": "Socle"
+    },
+    {
+      "id": "ml",
+      "titre": "Machine learning : apprendre à partir de données",
+      "resume": "Variables et étiquettes, jeux d'entraînement et de test, surapprentissage, familles d'algorithmes, métriques, et pourquoi tout commence par les données.",
+      "minutes": 11,
+      "parcours": "Socle"
+    },
+    {
+      "id": "reseaux",
+      "titre": "Réseaux de neurones et deep learning",
+      "resume": "Neurones, couches, poids, descente de gradient, GPU, grandes architectures et embeddings : comment un réseau apprend, et pourquoi il reste une boîte noire.",
+      "minutes": 10,
+      "parcours": "Socle"
+    },
+    {
+      "id": "llm",
+      "titre": "Transformers et grands modèles de langage",
+      "resume": "Tokens, attention, fenêtre de contexte, fabrication d'un LLM, température, hallucinations, modèles ouverts ou propriétaires : ce qu'est un modèle de langage, et ce qu'il n'est pas.",
+      "minutes": 12,
+      "parcours": "Socle"
+    },
+    {
+      "id": "prompts",
+      "titre": "Dialoguer avec un modèle : prompts, contexte, sorties",
+      "resume": "Structure d'un appel, règles d'un bon prompt, ingénierie de contexte, sorties structurées, coût et latence. Le prompt se gère comme du code.",
+      "minutes": 11,
+      "parcours": "Construire"
+    },
+    {
+      "id": "rag",
+      "titre": "RAG : brancher un modèle sur ses données",
+      "resume": "Embeddings, base vectorielle, découpage, recherche hybride, réponses sourcées. Ce qui casse le plus souvent, et quand préférer une autre approche.",
+      "minutes": 11,
+      "parcours": "Construire"
+    },
+    {
+      "id": "agents",
+      "titre": "Agents et outils",
+      "resume": "Appel d'outils, protocole MCP, workflows et agents, mémoire, multi-agents. Pourquoi les erreurs s'accumulent, et les garde-fous qui rendent un agent exploitable.",
+      "minutes": 11,
+      "parcours": "Construire"
+    },
+    {
+      "id": "evaluation",
+      "titre": "Évaluer : savoir si ça marche",
+      "resume": "Benchmarks et leurs limites, jeu de référence, notation par règles, par modèle juge ou par des humains, tests hors ligne et en ligne, red teaming.",
+      "minutes": 10,
+      "parcours": "Construire"
+    },
+    {
+      "id": "adaptation",
+      "titre": "Adapter un modèle : fine-tuning, distillation, quantification",
+      "resume": "L'échelle des options, du prompt à l'entraînement. Ce que le fine-tuning apporte et n'apporte pas, LoRA, distillation, quantification.",
+      "minutes": 10,
+      "parcours": "Industrialiser"
+    },
+    {
+      "id": "production",
+      "titre": "Mettre en production : MLOps, LLMOps, infrastructure",
+      "resume": "Du prototype au service : cycle de vie, observabilité, où faire tourner un modèle, GPU et mémoire, coûts, passerelle, fiabilité et confidentialité.",
+      "minutes": 12,
+      "parcours": "Industrialiser"
+    },
+    {
+      "id": "risques",
+      "titre": "Sécurité, risques et limites",
+      "resume": "Hallucinations, injection de prompt, fuite de données, empoisonnement, biais, explicabilité, propriété intellectuelle, et la défense en profondeur qui y répond.",
+      "minutes": 12,
+      "parcours": "Socle"
+    },
+    {
+      "id": "gouvernance",
+      "titre": "Gouvernance, réglementation et choix",
+      "resume": "Règlement européen sur l'IA, RGPD, normes, politique d'usage, choix d'un cas d'usage et d'un modèle, et dix questions à poser avant de lancer un projet.",
+      "minutes": 12,
+      "parcours": "Socle"
+    }
+  ]
+}

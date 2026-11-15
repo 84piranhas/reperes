@@ -1,0 +1,178 @@
+[
+  {
+    "id": "evaluation-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "Pourquoi l'évaluation est-elle indispensable à un système fondé sur un modèle ?",
+    "choix": [
+      "On ne peut pas prévoir ses erreurs en le lisant : seule la mesure dit ce qu'il vaut",
+      "La réglementation impose de publier un score",
+      "Les fournisseurs refusent de vendre un modèle non évalué",
+      "Elle rend le modèle déterministe"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle n'est pas un programme que l'on relit. Sans mesure, impossible de savoir si un changement de prompt ou de modèle améliore ou dégrade le service."
+  },
+  {
+    "id": "evaluation-02",
+    "type": "single",
+    "niveau": 2,
+    "q": "Qu'appelle-t-on la contamination d'un benchmark ?",
+    "choix": [
+      "Les épreuves publiques se retrouvent dans les données d'entraînement : le modèle a déjà vu le sujet",
+      "Le benchmark contient des erreurs de correction",
+      "Deux modèles ont été évalués sur la même machine",
+      "Le benchmark a été traduit automatiquement"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle qui a rencontré les épreuves pendant son entraînement obtient un score qui surestime ses capacités. C'est une forme de fuite de données à l'échelle d'un benchmark."
+  },
+  {
+    "id": "evaluation-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Un modèle est premier d'un classement public. Que peut-on en conclure pour son propre cas d'usage ?",
+    "choix": [
+      "Qu'il mérite d'être essayé, pas qu'il est le meilleur pour cet usage",
+      "Qu'il est le meilleur choix dans tous les cas",
+      "Qu'il n'est pas nécessaire de l'évaluer soi-même",
+      "Qu'il coûtera moins cher que les autres"
+    ],
+    "bonnes": [0],
+    "explication": "Aucun benchmark ne contient vos documents, vos clients ni votre vocabulaire. Un classement sert à faire un premier tri. Le choix se fait sur une évaluation construite à partir de ses propres cas."
+  },
+  {
+    "id": "evaluation-04",
+    "type": "single",
+    "niveau": 1,
+    "q": "Qu'est-ce qu'un jeu de référence (golden dataset) ?",
+    "choix": [
+      "Des cas réels, chacun accompagné de la réponse attendue ou des critères d'une bonne réponse",
+      "L'ensemble des données d'entraînement du modèle",
+      "La liste des meilleurs prompts d'une équipe",
+      "Un classement public de modèles"
+    ],
+    "bonnes": [0],
+    "explication": "C'est le socle de toute évaluation. Cinquante à deux cents cas bien choisis, courants, limites et hostiles, suffisent pour commencer. Il s'enrichit à chaque incident."
+  },
+  {
+    "id": "evaluation-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "On veut vérifier qu'une extraction de facture renvoie bien le bon montant, dans le bon format. Quelle méthode de notation choisir ?",
+    "choix": [
+      "Des règles écrites en code, qui comparent la valeur et vérifient le format",
+      "Un modèle juge doté d'une grille détaillée",
+      "Un panel d'experts humains",
+      "Une métrique de recouvrement de mots"
+    ],
+    "bonnes": [0],
+    "explication": "Quand la bonne réponse est une valeur précise, du code la vérifie mieux que tout : c'est rapide, gratuit et sans ambiguïté. Le modèle juge se réserve au texte libre."
+  },
+  {
+    "id": "evaluation-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle précaution demande la méthode du modèle juge ?",
+    "choix": [
+      "Le calibrer : comparer régulièrement ses notes à celles d'humains sur un échantillon",
+      "Lui faire noter ses propres réponses",
+      "Lui donner la consigne la plus générale possible",
+      "Ne l'utiliser qu'une fois, avant la mise en service"
+    ],
+    "bonnes": [0],
+    "explication": "Un modèle juge se trompe aussi, et il a ses penchants. Une grille précise et un calibrage régulier contre des notes humaines sont les deux conditions de sa fiabilité."
+  },
+  {
+    "id": "evaluation-07",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un modèle juge note systématiquement mieux les réponses les plus longues. Qu'est-ce que cela révèle ?",
+    "choix": [
+      "Un biais du juge, à corriger par une grille plus précise et un calibrage",
+      "Que les réponses longues sont toujours meilleures",
+      "Que le jeu de référence est trop petit",
+      "Que le modèle évalué est défectueux"
+    ],
+    "bonnes": [0],
+    "explication": "Les modèles juges préfèrent volontiers la longueur, ou leur propre style. Une grille qui porte sur des critères vérifiables, plutôt que sur une impression d'ensemble, réduit ce biais."
+  },
+  {
+    "id": "evaluation-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "À quoi servent les tests de non-régression rejoués avant chaque déploiement ?",
+    "choix": [
+      "À bloquer un changement de prompt ou de modèle qui fait baisser le score",
+      "À entraîner le modèle sur de nouveaux cas",
+      "À mesurer la satisfaction des utilisateurs",
+      "À réduire le coût par requête"
+    ],
+    "bonnes": [0],
+    "explication": "Intégrés à la chaîne de déploiement, ils traitent un prompt comme du code : une modification qui dégrade le résultat sur le jeu de référence ne part pas en production."
+  },
+  {
+    "id": "evaluation-09",
+    "type": "single",
+    "niveau": 3,
+    "q": "Sur un jeu de cinquante cas, un nouveau prompt passe de 82 % à 84 % de réussite. Que conclure ?",
+    "choix": [
+      "Rien : l'écart tient à un seul cas, et le système est non déterministe",
+      "Que le nouveau prompt est meilleur",
+      "Que le nouveau prompt est moins bon",
+      "Que le jeu de référence est contaminé"
+    ],
+    "bonnes": [0],
+    "explication": "Deux points sur cinquante cas, c'est un cas. Avec des réponses qui varient d'un appel à l'autre, un tel écart n'a pas de sens. Il faut un jeu plus grand, des répétitions, ou un écart net."
+  },
+  {
+    "id": "evaluation-10",
+    "type": "single",
+    "niveau": 2,
+    "q": "En quoi consiste le red teaming ?",
+    "choix": [
+      "Chercher délibérément à faire échouer ou à détourner son propre système",
+      "Faire relire le code par une seconde équipe",
+      "Comparer deux modèles concurrents",
+      "Former les utilisateurs aux bonnes pratiques"
+    ],
+    "bonnes": [0],
+    "explication": "On attaque son système avant que d'autres ne le fassent : sortie de rôle, fuite des consignes, document piégé. Chaque attaque réussie devient un cas du jeu de référence."
+  },
+  {
+    "id": "evaluation-11",
+    "type": "single",
+    "niveau": 3,
+    "q": "Un système affiche 90 % de réussite en moyenne. Quelle question poser avant de s'en satisfaire ?",
+    "choix": [
+      "Comment ce taux se répartit-il selon les types de cas et les sous-groupes ?",
+      "Combien de paramètres compte le modèle ?",
+      "Le prompt système fait-il plus d'une page ?",
+      "La température est-elle à zéro ?"
+    ],
+    "bonnes": [0],
+    "explication": "Une moyenne peut cacher 100 % sur les cas faciles et 20 % sur ceux qui comptent, ou un mauvais résultat pour une catégorie de personnes. C'est souvent là que se logent les biais."
+  },
+  {
+    "id": "evaluation-12",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Les exemples cités dans le prompt sont de bons cas pour mesurer la qualité du système.",
+    "bonnes": [1],
+    "explication": "Le modèle a ces exemples sous les yeux : ils réussissent toujours. Une évaluation honnête porte sur des cas qui ne figurent ni dans le prompt ni dans les réglages."
+  },
+  {
+    "id": "evaluation-13",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Qu'observe-t-on dans une évaluation en ligne, une fois le système en service ?",
+    "choix": [
+      "Les avis laissés par les utilisateurs",
+      "Le taux de transfert vers un humain",
+      "La comparaison de deux versions par un test A/B",
+      "Le score du modèle sur un benchmark public"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "L'évaluation en ligne observe l'usage réel : avis, abandons, transferts, tests A/B. Un benchmark public ne dit rien de ce qui se passe avec ses propres utilisateurs."
+  }
+]

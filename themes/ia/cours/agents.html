@@ -1,0 +1,124 @@
+<p>Un modèle de langage seul ne fait qu'écrire du texte. Un <dfn>agent</dfn> est un système où ce modèle, placé dans une boucle, choisit des actions, en observe le résultat et recommence jusqu'à atteindre un objectif. C'est ce qui fait passer de « réponds-moi » à « fais-le ». C'est aussi ce qui change la nature des risques : une erreur n'est plus une phrase fausse, mais une action exécutée.</p>
+
+<h2>La boucle</h2>
+
+<figure class="schema">
+  <div class="cadre">
+  <svg viewBox="0 0 750 154" role="img" aria-label="L'objectif est donné au modèle, qui demande un appel d'outil. L'application l'exécute et renvoie le résultat au modèle, et la boucle recommence.">
+    <rect class="b" x="10" y="18" width="150" height="78" rx="10"/>
+    <rect class="ba" x="200" y="18" width="150" height="78" rx="10"/>
+    <rect class="b" x="390" y="18" width="150" height="78" rx="10"/>
+    <rect class="b" x="580" y="18" width="150" height="78" rx="10"/>
+    <path class="f" d="M162 57h28M352 57h28M542 57h28"/>
+    <path class="fp" d="M199 57l-8-4.5v9zM389 57l-8-4.5v9zM579 57l-8-4.5v9z"/>
+    <text class="t m" x="85" y="46">Objectif</text>
+    <text class="ts m" x="85" y="66">la demande</text>
+    <text class="ts m" x="85" y="82">et les consignes</text>
+    <text class="t m" x="275" y="46">Modèle</text>
+    <text class="ts m" x="275" y="66">choisit</text>
+    <text class="ts m" x="275" y="82">la prochaine action</text>
+    <text class="t m" x="465" y="46">Appel d'outil</text>
+    <text class="ts m" x="465" y="66">nom de l'outil</text>
+    <text class="ts m" x="465" y="82">et arguments</text>
+    <text class="t m" x="655" y="46">Résultat</text>
+    <text class="ts m" x="655" y="66">produit par</text>
+    <text class="ts m" x="655" y="82">l'application</text>
+    <path class="facc" d="M655 98v24H275v-14"/>
+    <path class="fpacc" d="M275 99l-4.5 8h9z"/>
+    <text class="ts m" x="465" y="142">le résultat revient au modèle, qui choisit l'étape suivante, ou répond</text>
+  </svg>
+  </div>
+  <figcaption>La boucle tourne jusqu'à ce que le modèle estime l'objectif atteint, ou qu'une limite l'arrête.</figcaption>
+</figure>
+
+<h2>L'appel d'outils</h2>
+
+<p>Le mécanisme de base s'appelle l'<dfn>appel d'outils</dfn> (<em>tool use</em>, ou <em>function calling</em>). On décrit au modèle les outils disponibles : leur nom, ce qu'ils font, leurs arguments. Quand il juge utile d'en employer un, il n'exécute rien. Il <em>écrit</em> une demande structurée, en <strong>JSON</strong> (<em>JavaScript Object Notation</em>) : « appelle l'outil de recherche de commande avec le numéro 4521 ». C'est l'application qui exécute, puis renvoie le résultat au modèle.</p>
+
+<p>Cette séparation est le point le plus important du chapitre. <strong>Un modèle n'a aucun pouvoir propre. Il a exactement ceux des outils qu'on lui branche.</strong> Toute la sécurité d'un agent se joue donc dans ce que ces outils permettent.</p>
+
+<table>
+  <thead><tr><th>Famille d'outils</th><th>Ce qu'elle apporte</th></tr></thead>
+  <tbody>
+    <tr><th>Recherche</th><td>Des informations à jour : web, documents internes</td></tr>
+    <tr><th>Lecture et écriture de fichiers</th><td>Travailler sur des documents, garder des notes</td></tr>
+    <tr><th>Exécution de code</th><td>Calculer juste, analyser des données</td></tr>
+    <tr><th>Applications métier</th><td>Lire et modifier des systèmes par leur <strong>API</strong> (<em>Application Programming Interface</em>)</td></tr>
+    <tr><th>Pilotage d'un ordinateur</th><td>Cliquer et taper comme un humain, quand il n'existe pas d'API</td></tr>
+  </tbody>
+</table>
+
+<h2>MCP, la prise standard</h2>
+
+<p>Brancher chaque outil sur chaque application demandait un développement à chaque fois. Un standard ouvert, lancé fin 2024, a changé cela : <strong>MCP</strong> (<em>Model Context Protocol</em>). Un <dfn>serveur MCP</dfn> expose des outils et des données, et toute application compatible peut s'y connecter. Les principaux fournisseurs l'ont adopté.</p>
+
+<p>Un second protocole, <strong>A2A</strong> (<em>Agent2Agent</em>), vise la communication entre agents de systèmes différents. La distinction est simple : MCP relie un agent à ses outils, A2A relie des agents entre eux.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>Un serveur MCP est du code tiers auquel on donne la main sur ses données. En installer un trouvé sur Internet revient à installer un logiciel inconnu, avec en plus la capacité d'influencer le modèle par les descriptions d'outils qu'il lui présente. Il se choisit et se vérifie comme n'importe quelle dépendance.</p>
+</aside>
+
+<h2>Workflow ou agent</h2>
+
+<table>
+  <thead><tr><th></th><th>Workflow</th><th>Agent</th></tr></thead>
+  <tbody>
+    <tr><th>Qui décide du chemin</th><td>Le code : les étapes sont fixées d'avance</td><td>Le modèle : il choisit à chaque tour</td></tr>
+    <tr><th>Comportement</th><td>Prévisible, facile à tester</td><td>Souple, plus difficile à prévoir</td></tr>
+    <tr><th>Coût et latence</th><td>Maîtrisés</td><td>Variables, parfois élevés</td></tr>
+    <tr><th>Convient pour</th><td>Une tâche dont on connaît les étapes</td><td>Une tâche ouverte, dont le chemin dépend de ce qu'on trouve</td></tr>
+  </tbody>
+</table>
+
+<p>La règle de conception est constante : <strong>la solution la plus simple qui marche</strong>. Beaucoup de besoins présentés comme des agents sont en réalité des workflows, où le modèle remplit une case à chaque étape. On ne passe à l'agent que lorsque le chemin ne peut pas être écrit d'avance.</p>
+
+<h2>Quelques architectures</h2>
+
+<ul>
+  <li><strong>L'enchaînement.</strong> La sortie d'un appel devient l'entrée du suivant.</li>
+  <li><strong>Le routage.</strong> Un premier appel classe la demande et l'envoie vers le bon traitement.</li>
+  <li><strong>L'orchestrateur et ses sous-agents.</strong> Un agent découpe la tâche et confie les morceaux à d'autres, chacun dans son propre contexte. C'est ce qu'on appelle un système <dfn>multi-agents</dfn>.</li>
+  <li><strong>L'évaluateur.</strong> Un second appel relit le travail du premier et demande des corrections.</li>
+</ul>
+
+<h2>La mémoire</h2>
+
+<p>Le modèle n'a pas de mémoire propre. Sa mémoire de travail est sa fenêtre de contexte, qui se remplit à chaque étape : chaque résultat d'outil s'y ajoute. Sur une longue tâche, elle déborde. Deux remèdes : résumer régulièrement ce qui précède, et écrire l'essentiel à l'extérieur, dans des fichiers ou une base, pour le relire au besoin. Cette mémoire externe est aussi ce qui permet à un agent de reprendre un travail d'un jour à l'autre.</p>
+
+<h2>Pourquoi les agents échouent</h2>
+
+<ul>
+  <li><strong>Les erreurs se multiplient.</strong> Un agent juste à 95 % à chaque étape ne réussit une tâche de vingt étapes qu'un peu plus d'une fois sur trois. La fiabilité par étape doit être très haute pour que l'ensemble tienne.</li>
+  <li><strong>Les boucles.</strong> L'agent répète la même action sans progresser.</li>
+  <li><strong>Les coûts.</strong> Chaque tour renvoie tout le contexte. Une tâche d'agent consomme couramment dix à cent fois plus de tokens qu'une simple question.</li>
+  <li><strong>Les actions irréversibles.</strong> Un courriel envoyé, un fichier supprimé, un paiement émis ne se rattrapent pas.</li>
+  <li><strong>L'injection.</strong> Une page web ou un document lu par l'agent peut contenir des instructions qui le détournent. Le chapitre sur les risques y revient.</li>
+</ul>
+
+<h2>Les garde-fous</h2>
+
+<ul>
+  <li><strong>Le moindre privilège.</strong> Ne brancher que les outils nécessaires, avec les droits les plus étroits. Lecture seule tant que l'écriture n'est pas indispensable.</li>
+  <li><strong>Le bac à sable</strong> (<em>sandbox</em>). Exécuter le code et les commandes dans un environnement isolé.</li>
+  <li><strong>La validation humaine</strong>, ou <strong>HITL</strong> (<em>Human-in-the-Loop</em>). Toute action sensible ou irréversible attend l'accord d'une personne.</li>
+  <li><strong>Les budgets.</strong> Un plafond de tours, de tokens, de durée et de dépense.</li>
+  <li><strong>Les traces.</strong> Chaque décision, chaque appel d'outil et chaque résultat sont journalisés.</li>
+  <li><strong>Une identité propre.</strong> L'agent agit avec son propre compte et ses propres droits, pas avec ceux d'un administrateur.</li>
+</ul>
+
+<aside class="note question">
+  <p class="etiquette">Le réflexe</p>
+  <p>Devant un projet d'agent, la question décisive n'est pas « que sait-il faire ? » mais « quelle est la pire action qu'il puisse exécuter, et qu'est-ce qui l'en empêche ? ».</p>
+</aside>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>Un agent est un modèle dans une boucle : il choisit une action, observe le résultat, recommence.</li>
+    <li>Le modèle demande, l'application exécute. Il n'a que les pouvoirs des outils qu'on lui branche.</li>
+    <li>MCP standardise le branchement des outils. Un serveur MCP se vérifie comme toute dépendance.</li>
+    <li>Workflow quand le chemin est connu, agent quand il ne l'est pas. Toujours la solution la plus simple qui marche.</li>
+    <li>Les erreurs s'accumulent d'étape en étape. Moindre privilège, bac à sable, validation humaine, budgets et traces rendent un agent exploitable.</li>
+  </ul>
+</aside>

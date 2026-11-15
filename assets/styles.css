@@ -143,6 +143,10 @@ main:focus { outline: none; }
 .sommaire strong { display: block; font: 600 19px/1.3 var(--serif); }
 .sommaire .txt span { display: block; color: var(--muted); font-size: 15.5px; margin-top: 3px; }
 .sommaire .meta { white-space: nowrap; padding-top: 3px; }
+/* Parcours : étiquette facultative d'un chapitre, et sa légende au-dessus du sommaire. */
+.sommaire .parcours { display: inline-block; margin: 5px 0 1px; padding: 1px 9px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); color: var(--accent); font: 650 11.5px/1.6 var(--sans); letter-spacing: .07em; text-transform: uppercase; }
+.legende { color: var(--muted); font-size: 15.5px; max-width: 70ch; margin: -14px 0 26px; }
+.legende strong { color: var(--text); font-weight: 650; }
 .sommaire .lu .meta { color: var(--ok); font-weight: 600; }
 
 /* ---------- Lecture d'un chapitre ---------- */

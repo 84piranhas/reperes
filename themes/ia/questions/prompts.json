@@ -1,0 +1,178 @@
+[
+  {
+    "id": "prompts-01",
+    "type": "single",
+    "niveau": 1,
+    "q": "À quoi sert le prompt système ?",
+    "choix": [
+      "À fixer le cadre de l'assistant : mission, ton, règles, format attendu",
+      "À stocker les réponses précédentes du modèle",
+      "À transmettre la question de l'utilisateur",
+      "À chiffrer la conversation"
+    ],
+    "bonnes": [0],
+    "explication": "Le prompt système est rédigé par le concepteur de l'application et reste invisible pour l'utilisateur final. C'est là que se décide le comportement d'un assistant."
+  },
+  {
+    "id": "prompts-02",
+    "type": "single",
+    "niveau": 1,
+    "q": "Que désigne le few-shot ?",
+    "choix": [
+      "Donner au modèle quelques exemples d'entrées et de sorties attendues",
+      "Limiter la réponse à quelques mots",
+      "Répéter la même question plusieurs fois",
+      "Entraîner le modèle sur un petit jeu de données"
+    ],
+    "bonnes": [0],
+    "explication": "Deux ou trois exemples dans le prompt montrent au modèle ce que l'on attend, souvent mieux qu'une longue description. Sans exemple, on parle de zero-shot. Les poids du modèle ne changent pas."
+  },
+  {
+    "id": "prompts-03",
+    "type": "single",
+    "niveau": 2,
+    "q": "Pourquoi encadrer par des balises le document que le modèle doit traiter ?",
+    "choix": [
+      "Pour qu'il distingue les données à traiter des consignes à suivre",
+      "Pour réduire le nombre de tokens facturés",
+      "Pour accélérer la réponse",
+      "Pour empêcher le modèle de lire le document"
+    ],
+    "bonnes": [0],
+    "explication": "Un document peut contenir des phrases qui ressemblent à des instructions. Le délimiter aide le modèle à le traiter comme une donnée. Cela réduit le risque sans le supprimer."
+  },
+  {
+    "id": "prompts-04",
+    "type": "single",
+    "niveau": 2,
+    "q": "Quelle consigne réduit le plus directement les inventions du modèle ?",
+    "choix": [
+      "L'autoriser à répondre qu'il ne sait pas quand le document ne le dit pas",
+      "Lui demander d'être sûr de lui",
+      "Lui interdire de se tromper",
+      "Lui demander une réponse plus longue"
+    ],
+    "bonnes": [0],
+    "explication": "Sans cette permission, le modèle comble les vides par du plausible. Lui ouvrir une sortie honnête, et lui fournir les sources, sont les deux gestes les plus efficaces contre l'hallucination."
+  },
+  {
+    "id": "prompts-05",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que dit l'ingénierie de contexte sur la quantité d'information à fournir ?",
+    "choix": [
+      "Le bon contexte est le plus petit qui contient ce qu'il faut",
+      "Plus on fournit de documents, meilleure est la réponse",
+      "Il faut toujours remplir la fenêtre de contexte",
+      "La quantité n'a aucun effet sur la qualité"
+    ],
+    "bonnes": [0],
+    "explication": "Un document hors sujet distrait le modèle, une information noyée dans un long texte est moins bien exploitée, et chaque token se paie à chaque appel. Plus de contexte n'est pas mieux."
+  },
+  {
+    "id": "prompts-06",
+    "type": "single",
+    "niveau": 2,
+    "q": "À quoi servent les sorties structurées ?",
+    "choix": [
+      "À obtenir une réponse conforme à un schéma, qu'un programme peut lire",
+      "À rendre la réponse plus agréable à lire pour un humain",
+      "À garantir que le contenu de la réponse est exact",
+      "À réduire la taille du modèle"
+    ],
+    "bonnes": [0],
+    "explication": "Le modèle répond dans un format imposé, avec tels champs de tels types. La forme est garantie, pas le fond : le code qui reçoit la sortie doit toujours la valider."
+  },
+  {
+    "id": "prompts-07",
+    "type": "single",
+    "niveau": 2,
+    "q": "Comment un appel à un modèle est-il facturé ?",
+    "choix": [
+      "Au token, avec un tarif pour l'entrée et un tarif plus élevé pour la sortie",
+      "Au nombre de questions posées, quelle que soit leur longueur",
+      "À la durée de la conversation, à la minute",
+      "Au forfait mensuel par utilisateur, dans tous les cas"
+    ],
+    "bonnes": [0],
+    "explication": "Les tokens envoyés et les tokens produits sont comptés séparément, la sortie coûtant plusieurs fois plus cher. Comme l'historique est renvoyé à chaque message, une longue conversation paie son début à répétition."
+  },
+  {
+    "id": "prompts-08",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que permet le cache de prompt (prompt caching) ?",
+    "choix": [
+      "De payer à tarif réduit un début de prompt identique d'un appel à l'autre",
+      "De garder en mémoire les réponses pour ne plus appeler le modèle",
+      "De stocker le prompt système à l'abri des utilisateurs",
+      "D'allonger la fenêtre de contexte"
+    ],
+    "bonnes": [0],
+    "explication": "Quand de longs appels partagent le même début, consignes ou documents de référence, le fournisseur le réutilise et le facture moins cher. Le modèle est tout de même appelé à chaque fois."
+  },
+  {
+    "id": "prompts-09",
+    "type": "single",
+    "niveau": 2,
+    "q": "Que mesure le TTFT ?",
+    "choix": [
+      "Le délai avant que le premier token de la réponse n'arrive",
+      "Le nombre total de tokens d'une réponse",
+      "Le coût d'un appel",
+      "Le taux de réponses justes"
+    ],
+    "bonnes": [0],
+    "explication": "La latence se décompose en délai avant le premier token, qui dépend surtout de la longueur de l'entrée, puis en débit de génération. Le streaming rend ce délai supportable en affichant le texte à mesure."
+  },
+  {
+    "id": "prompts-10",
+    "type": "vf",
+    "niveau": 2,
+    "q": "Le streaming réduit la durée totale nécessaire pour produire une réponse.",
+    "bonnes": [1],
+    "explication": "Le streaming affiche la réponse à mesure qu'elle s'écrit. La durée totale est la même, mais l'utilisateur lit au lieu d'attendre devant un écran vide."
+  },
+  {
+    "id": "prompts-11",
+    "type": "single",
+    "niveau": 3,
+    "q": "Le fournisseur met à jour le modèle qu'utilise une application. Le prompt n'a pas changé. Que faut-il faire ?",
+    "choix": [
+      "Repasser la batterie de tests : un prompt ne se comporte pas à l'identique d'un modèle à l'autre",
+      "Rien : le prompt étant identique, le comportement l'est aussi",
+      "Réécrire entièrement le prompt",
+      "Baisser la température pour compenser"
+    ],
+    "bonnes": [0],
+    "explication": "Un prompt est mis au point pour un modèle donné. Un changement ou une mise à jour du modèle peut déplacer le comportement sans qu'une ligne ait bougé. Seuls des tests le révèlent."
+  },
+  {
+    "id": "prompts-12",
+    "type": "single",
+    "niveau": 3,
+    "q": "Une équipe place une clé d'accès à un service interne dans le prompt système, « puisque l'utilisateur ne le voit pas ». Quelle est l'objection ?",
+    "choix": [
+      "Un prompt système peut être extrait par un utilisateur insistant : il ne doit contenir aucun secret",
+      "La clé allonge inutilement le prompt et coûte des tokens",
+      "Le modèle ne sait pas lire les clés d'accès",
+      "La clé empêche la mise en cache du prompt"
+    ],
+    "bonnes": [0],
+    "explication": "Un prompt système n'est pas un coffre-fort : on parvient souvent à le faire réciter au modèle. Les secrets restent dans le code de l'application, jamais dans ce que le modèle lit."
+  },
+  {
+    "id": "prompts-13",
+    "type": "multi",
+    "niveau": 2,
+    "q": "Quels leviers réduisent le coût d'une application fondée sur un modèle de langage ?",
+    "choix": [
+      "Choisir le plus petit modèle qui fait le travail",
+      "N'envoyer dans le contexte que ce qui sert",
+      "Accepter un traitement par lots, différé, quand l'usage le permet",
+      "Demander des réponses plus longues et plus détaillées"
+    ],
+    "bonnes": [0, 1, 2],
+    "explication": "Modèle adapté, contexte resserré et traitement différé font baisser la facture. Des réponses plus longues l'alourdissent : les tokens de sortie sont les plus chers."
+  }
+]

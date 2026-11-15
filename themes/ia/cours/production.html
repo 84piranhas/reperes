@@ -1,0 +1,111 @@
+<p>Une démonstration convaincante se construit en deux jours. Un service fiable, surveillé, sécurisé et d'un coût maîtrisé demande des mois. Cet écart entre le prototype et la production est la première cause d'échec des projets d'intelligence artificielle (IA). Ce chapitre décrit ce qui le comble : des pratiques d'exploitation, des choix d'infrastructure et une discipline sur les coûts.</p>
+
+<h2>MLOps : exploiter du machine learning</h2>
+
+<p>Le <strong>MLOps</strong> (<em>Machine Learning Operations</em>) applique au machine learning les pratiques du <strong>DevOps</strong> (<em>Development and Operations</em>), qui rapprochent le développement et l'exploitation des logiciels. La différence tient en une phrase : un logiciel classique dépend de son code, un modèle dépend de son code <em>et</em> de ses données.</p>
+
+<table>
+  <thead><tr><th>Pratique</th><th>Ce qu'elle garantit</th></tr></thead>
+  <tbody>
+    <tr><th>Versionner code, données et modèle</th><td>Savoir exactement ce qui a produit tel modèle, et pouvoir le refaire</td></tr>
+    <tr><th>Pipeline d'entraînement automatisé</th><td>Réentraîner sans intervention manuelle, de la même façon à chaque fois</td></tr>
+    <tr><th>Registre de modèles<br><em>model registry</em></th><td>Un inventaire des versions, de leurs performances et de leur statut</td></tr>
+    <tr><th>Déploiement progressif</th><td>Exposer la nouvelle version à une petite part du trafic avant de généraliser</td></tr>
+    <tr><th>Surveillance</th><td>Détecter la baisse de performance et la dérive des données</td></tr>
+  </tbody>
+</table>
+
+<p>L'ensemble s'appuie sur une chaîne d'intégration et de déploiement continus, <strong>CI/CD</strong> (<em>Continuous Integration / Continuous Delivery</em>) : chaque changement est testé automatiquement avant d'atteindre la production.</p>
+
+<h2>LLMOps : exploiter une application à base de modèle de langage</h2>
+
+<p>Quand on utilise un modèle de langage sans l'entraîner, les objets à gérer changent. Le <strong>LLMOps</strong> (<em>Large Language Model Operations</em>) s'occupe de quatre choses.</p>
+
+<ul>
+  <li><strong>Les prompts</strong>, versionnés et déployés comme du code.</li>
+  <li><strong>Les évaluations</strong>, rejouées à chaque changement de prompt ou de modèle.</li>
+  <li><strong>L'observabilité.</strong> Chaque requête laisse une <dfn>trace</dfn> : le prompt complet, les appels d'outils, la réponse, les tokens consommés, la durée, le coût. Sans ces traces, un incident ne s'explique pas.</li>
+  <li><strong>Les garde-fous</strong> : filtrage des entrées et des sorties, limites, alertes.</li>
+</ul>
+
+<h2>Où faire tourner le modèle</h2>
+
+<table>
+  <thead><tr><th>Option</th><th>Principe</th><th>Atout</th><th>Contrepartie</th></tr></thead>
+  <tbody>
+    <tr><th>API du fournisseur</th><td>On appelle le modèle chez celui qui l'a créé</td><td>Rien à exploiter, les meilleurs modèles</td><td>Données envoyées à un tiers, dépendance</td></tr>
+    <tr><th>Plateforme cloud</th><td>Le même type de modèle, servi par son fournisseur de cloud habituel</td><td>Contrats, régions et sécurité déjà en place</td><td>Catalogue et délais propres à la plateforme</td></tr>
+    <tr><th>Auto-hébergement</th><td>Un modèle à poids ouverts, sur ses propres machines</td><td>Contrôle total des données, coût fixe</td><td>Matériel, compétences, exploitation</td></tr>
+    <tr><th>Sur le poste</th><td>Un petit modèle sur l'ordinateur ou le téléphone</td><td>Hors ligne, rien ne sort de l'appareil</td><td>Modèles limités</td></tr>
+  </tbody>
+</table>
+
+<p>Une <strong>API</strong> (<em>Application Programming Interface</em>) est l'interface par laquelle un programme en interroge un autre. La plupart des organisations combinent plusieurs options : un fournisseur pour les usages courants, un modèle hébergé en interne pour les données les plus sensibles.</p>
+
+<h2>Le matériel, en trois notions</h2>
+
+<ul>
+  <li><strong>Le processeur graphique</strong>, ou <strong>GPU</strong> (<em>Graphics Processing Unit</em>). C'est lui qui calcule. Un constructeur, NVIDIA, domine très largement ce marché. D'autres puces spécialisées existent, comme les <strong>TPU</strong> (<em>Tensor Processing Units</em>) de Google.</li>
+  <li><strong>La mémoire du GPU</strong>, ou <strong>VRAM</strong> (<em>Video Random Access Memory</em>). C'est la contrainte principale : le modèle doit y tenir tout entier. Un modèle de 7 milliards de paramètres pèse environ 14 gigaoctets en précision normale et 4 à 5 une fois quantifié sur 4 bits. Un modèle de 70 milliards en demande dix fois plus.</li>
+  <li><strong>Le serveur d'inférence.</strong> Le logiciel qui charge le modèle et répond aux requêtes. Son travail principal est de regrouper les requêtes simultanées pour les calculer ensemble, ce qui multiplie le débit.</li>
+</ul>
+
+<p>Deux mesures de performance se tirent dessus : la <strong>latence</strong>, le temps de réponse à une requête, et le <strong>débit</strong>, le nombre de tokens produits par seconde pour l'ensemble des utilisateurs. Regrouper davantage de requêtes améliore le débit et dégrade la latence.</p>
+
+<h2>Les coûts</h2>
+
+<table>
+  <thead><tr><th></th><th>Par API</th><th>En auto-hébergement</th></tr></thead>
+  <tbody>
+    <tr><th>On paie</th><td>Chaque token</td><td>Chaque heure de GPU, utilisé ou non</td></tr>
+    <tr><th>Profil</th><td>Coût variable, nul sans usage</td><td>Coût fixe, à amortir</td></tr>
+    <tr><th>Avantageux quand</th><td>L'usage est faible ou irrégulier</td><td>L'usage est élevé et régulier</td></tr>
+  </tbody>
+</table>
+
+<p>L'auto-hébergement ne devient rentable que si les machines travaillent la plus grande partie du temps. Un GPU allumé jour et nuit pour servir quelques requêtes par heure coûte bien plus cher qu'une API.</p>
+
+<p>La discipline qui suit ces dépenses s'appelle le <strong>FinOps</strong>, contraction de <em>Finance</em> et <em>Operations</em>. Elle rattache chaque coût à un usage : par requête, par utilisateur, par tâche réussie.</p>
+
+<aside class="note piege">
+  <p class="etiquette">Le piège</p>
+  <p>La facture surprise. Un prototype coûte quelques euros. Le même service ouvert à dix mille personnes, avec des agents qui enchaînent cinquante appels par tâche, peut coûter mille fois plus par utilisateur qu'un simple dialogue. Le coût se projette à l'échelle avant le lancement, et se plafonne par des budgets.</p>
+</aside>
+
+<h2>Tenir quand ça ne répond plus</h2>
+
+<p>Un service qui dépend d'un modèle hérite de ses pannes. Les fournisseurs imposent des <dfn>limites de débit</dfn> (<em>rate limits</em>), connaissent des incidents, et retirent leurs anciens modèles selon un calendrier annoncé. Trois parades sont devenues standard.</p>
+
+<ul>
+  <li><strong>La passerelle IA</strong> (<em>AI gateway</em>, AI pour <em>Artificial Intelligence</em>). Un point d'entrée unique entre les applications et les modèles. Elle porte les clés d'accès, les quotas par équipe, la journalisation, le filtrage, et bascule sur un modèle de <dfn>repli</dfn> (<em>fallback</em>) quand le premier ne répond pas.</li>
+  <li><strong>Les versions épinglées.</strong> L'application appelle une version précise d'un modèle, pas « la dernière ». Le changement de version est alors une décision, précédée d'une évaluation.</li>
+  <li><strong>Le mode dégradé.</strong> Ce que fait le service quand le modèle est indisponible doit être prévu, et non découvert.</li>
+</ul>
+
+<h2>Où vont les données</h2>
+
+<p>Tout ce qui figure dans un prompt part chez celui qui fait tourner le modèle. Quatre questions se posent donc à tout fournisseur. Les données servent-elles à entraîner ses modèles ? Combien de temps sont-elles conservées ? Dans quelle région sont-elles traitées ? Qui peut y accéder chez lui ? Les offres professionnelles apportent des engagements contractuels sur ces points. Les versions gratuites grand public, souvent non.</p>
+
+<h2>Les métiers</h2>
+
+<table>
+  <thead><tr><th>Métier</th><th>Ce qu'il fait</th></tr></thead>
+  <tbody>
+    <tr><th>Data scientist</th><td>Explore les données, conçoit et évalue des modèles</td></tr>
+    <tr><th>Ingénieur machine learning<br><em>ML engineer</em></th><td>Entraîne les modèles et les met en production</td></tr>
+    <tr><th>Ingénieur IA<br><em>AI engineer</em></th><td>Construit des applications sur des modèles existants : prompts, RAG (<em>Retrieval-Augmented Generation</em>, génération augmentée par la recherche), agents, évaluations</td></tr>
+    <tr><th>Ingénieur MLOps, ingénieur plateforme</th><td>Bâtit et exploite l'infrastructure commune</td></tr>
+    <tr><th>Ingénieur de données<br><em>data engineer</em></th><td>Fournit des données fiables à tous les autres</td></tr>
+  </tbody>
+</table>
+
+<aside class="note retenir">
+  <p class="etiquette">À retenir</p>
+  <ul>
+    <li>L'écart entre démonstration et production est la première cause d'échec. Il se comble par des pratiques d'exploitation.</li>
+    <li>MLOps pour les modèles que l'on entraîne, LLMOps pour les applications bâties sur un modèle de langage : versionner, évaluer, tracer.</li>
+    <li>API, cloud, auto-hébergement ou poste : le choix dépend des données, du volume et des compétences.</li>
+    <li>La mémoire du GPU décide de ce qui peut tourner. L'auto-hébergement ne se rentabilise qu'à forte utilisation.</li>
+    <li>Une passerelle, des versions épinglées, un mode dégradé, et des engagements écrits sur le sort des données.</li>
+  </ul>
+</aside>
