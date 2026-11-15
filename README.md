@@ -38,6 +38,7 @@ Aucun code n'est à modifier : l'accueil, le sommaire, le test et le glossaire s
 | `accroche` | Une ou deux phrases de présentation |
 | `couleur` | Couleur d'accent, `clair` et `sombre` |
 | `chapitres` | Liste ordonnée : `id`, `titre`, `resume`, `minutes` |
+| `capitalesIgnorees` | Facultatif : mots en capitales qui ne sont pas des sigles à définir |
 
 ### Un chapitre de cours
 
@@ -72,9 +73,22 @@ Un tableau JSON. Chaque question :
 - `niveau` : 1 définition, 2 compréhension, 3 mise en situation.
 - Dans les textes, `` `code` `` et `**gras**` sont reconnus.
 
-### glossaire.json
+### glossaire.json et sigles
 
-Un tableau d'objets `{ "t": "Terme", "d": "Définition courte.", "c": "id-du-chapitre" }`.
+Un tableau d'objets :
+
+```json
+{ "t": "OLTP", "s": "Online Transaction Processing", "f": "traitement transactionnel en ligne", "d": "Définition courte.", "c": "id-du-chapitre" }
+```
+
+- `t` le terme, `d` sa définition, `c` le chapitre où il est expliqué (facultatif).
+- `s` : pour un sigle, sa forme en toutes lettres, dans la langue où il circule (l'anglais le plus souvent). `f` : sa traduction ou une précision en clair. Un terme sans `s` est un simple terme de glossaire.
+
+**Règle du site : aucun sigle sans sa forme développée.** Trois mécanismes y veillent.
+
+1. Dans le texte d'un chapitre, tout sigle est écrit en toutes lettres à sa première apparition : `<strong>OLTP</strong> (<em>Online Transaction Processing</em>, traitement transactionnel en ligne)`. Quand le cours emploie un terme français, il donne aussi le sigle ou le terme anglais d'usage.
+2. Le site ajoute tout seul, à partir du glossaire, un tableau « Sigles de ce chapitre » en fin de chapitre, et une ligne « Sigles » sous la correction de chaque question. Il n'y a rien à écrire pour cela, sinon l'entrée du glossaire.
+3. `outils/verifier.py` échoue si un mot en capitales figure dans un chapitre ou une question sans entrée dotée d'un champ `s`. Les faux positifs (devises, « CV ») se déclarent dans `capitalesIgnorees` de `theme.json`.
 
 ## Travailler en local
 

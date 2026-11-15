@@ -195,6 +195,14 @@ main:focus { outline: none; }
   .note.question { --teinte: #a99bf0; }
 }
 
+/* Récapitulatif des sigles, ajouté automatiquement en fin de chapitre. */
+.note.sigles { --teinte: var(--muted); padding-bottom: 14px; font-size: 15.5px; }
+.note.sigles .tableau { margin: 0 0 12px; border-radius: 10px; }
+.note.sigles table { min-width: 0; font-size: 15px; }
+.note.sigles .meta { margin: 0; }
+.prose em { font-style: italic; }
+.tableau th em { font-weight: 400; color: var(--muted); }
+
 .schema { margin: 26px 0 30px; }
 .schema .cadre { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 14px; }
 .schema svg { display: block; width: 100%; min-width: 600px; height: auto; font-family: var(--sans); }
@@ -265,8 +273,11 @@ main:focus { outline: none; }
 .retour:not(:empty) { margin-top: 20px; }
 .verdict { padding: 16px 18px; border-radius: 12px; border: 1px solid var(--line); border-left: 4px solid var(--ok); background: var(--surface); font-size: 16.5px; }
 .verdict.ko { border-left-color: var(--ko); }
-.verdict strong:first-child { color: var(--ok); }
-.verdict.ko strong:first-child { color: var(--ko); }
+.verdict > strong:first-child { color: var(--ok); }
+.verdict.ko > strong:first-child { color: var(--ko); }
+.sigles { font-size: 14.5px; color: var(--muted); }
+.verdict .sigles { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--line); }
+.sigles b { font-weight: 650; color: var(--text); }
 .quiz .actions { margin-top: 24px; justify-content: space-between; }
 .raccourcis { color: var(--muted); font-size: 13px; margin-top: 26px; }
 kbd { font: 12px var(--mono); border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px; padding: 1px 5px; background: var(--surface); }
@@ -309,6 +320,8 @@ kbd { font: 12px var(--mono); border: 1px solid var(--line-strong); border-botto
 .glossaire dl { margin: 18px 0 0; }
 .terme { padding: 14px 0; border-bottom: 1px solid var(--line); }
 .terme dt { font: 600 19px/1.3 var(--serif); }
+.terme .developpe { font: 400 15.5px/1.4 var(--sans); color: var(--accent); margin-left: 6px; }
+.glossaire .filtre { margin: 6px 0 4px; }
 .terme dd { margin: 4px 0 0; color: var(--muted); font-size: 16px; }
 .terme dd a { font-size: 14px; white-space: nowrap; }
 

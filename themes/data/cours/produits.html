@@ -14,29 +14,29 @@
 
 <p>Une plateforme de données a des clients internes : les risques, la finance, les quants, le reporting. La traiter comme un produit, c'est connaître ces utilisateurs, mesurer ce qu'ils utilisent vraiment, tenir une feuille de route par priorités, et savoir dire non.</p>
 
-<p>Une idée résume bien la démarche : la <dfn>route pavée</dfn>. La plateforme propose un chemin standard, où l'alimentation, la sécurité et la supervision sont déjà réglées. Si ce chemin est plus simple que de bricoler dans son coin, les équipes le prennent d'elles-mêmes. La bonne pratique devient la voie de la facilité.</p>
+<p>Une idée résume bien la démarche : la <dfn>route pavée</dfn> (<em>paved road</em>). La plateforme propose un chemin standard, où l'alimentation, la sécurité et la supervision sont déjà réglées. Si ce chemin est plus simple que de bricoler dans son coin, les équipes le prennent d'elles-mêmes. La bonne pratique devient la voie de la facilité.</p>
 
 <h2>Les niveaux de service</h2>
 
 <table>
   <thead><tr><th>Sigle</th><th>Ce que c'est</th><th>Exemple</th></tr></thead>
   <tbody>
-    <tr><th>SLI</th><td>L'indicateur : ce que l'on mesure</td><td>L'heure à laquelle le jeu de clôture est disponible</td></tr>
-    <tr><th>SLO</th><td>L'objectif : la cible que l'on se fixe</td><td>Avant 19 h 30, 99 % des jours ouvrés</td></tr>
-    <tr><th>SLA</th><td>L'engagement formel, avec ses conséquences</td><td>La même cible, garantie aux risques, avec escalade en cas d'écart</td></tr>
+    <tr><th>SLI</th><td><em>Service Level Indicator</em>. L'indicateur : ce que l'on mesure</td><td>L'heure à laquelle le jeu de clôture est disponible</td></tr>
+    <tr><th>SLO</th><td><em>Service Level Objective</em>. L'objectif : la cible que l'on se fixe</td><td>Avant 19 h 30, 99 % des jours ouvrés</td></tr>
+    <tr><th>SLA</th><td><em>Service Level Agreement</em>. L'engagement formel, avec ses conséquences</td><td>La même cible, garantie aux risques, avec escalade en cas d'écart</td></tr>
   </tbody>
 </table>
 
 <p>Pour un produit de données, le service ne se réduit pas à la disponibilité. Une plateforme « en ligne » qui sert les données de la veille est en panne du point de vue de ses utilisateurs. La fraîcheur, la complétude et l'exactitude sont des niveaux de service au même titre.</p>
 
-<p>Un objectif de 99 % laisse 1 % d'écart toléré, soit deux ou trois jours par an. Ce reliquat s'appelle le <dfn>budget d'erreur</dfn>. Tant qu'il n'est pas consommé, on peut prendre des risques pour évoluer. Quand il l'est, la fiabilité passe avant les nouveautés. L'arbitrage, d'habitude implicite, devient une règle.</p>
+<p>Un objectif de 99 % laisse 1 % d'écart toléré, soit deux ou trois jours par an. Ce reliquat s'appelle le <dfn>budget d'erreur</dfn> (<em>error budget</em>). Tant qu'il n'est pas consommé, on peut prendre des risques pour évoluer. Quand il l'est, la fiabilité passe avant les nouveautés. L'arbitrage, d'habitude implicite, devient une règle.</p>
 
 <h2>Faire tourner et faire évoluer</h2>
 
-<p>Tout budget se partage entre faire tourner l'existant et le faire évoluer. Plus la première part grossit, moins il reste de quoi changer quoi que ce soit. Trois phénomènes la font grossir.</p>
+<p>Tout budget se partage entre faire tourner l'existant et le faire évoluer. Les banques ont deux sigles pour cela : <strong>RTB</strong> (<em>Run the Bank</em>) et <strong>CTB</strong> (<em>Change the Bank</em>). Plus la première part grossit, moins il reste de quoi changer quoi que ce soit. Trois phénomènes la font grossir.</p>
 
 <ul>
-  <li><strong>La dette technique.</strong> Chaque raccourci pris pour livrer plus vite se rembourse avec intérêts à chaque évolution suivante.</li>
+  <li><strong>La dette technique</strong> (<em>technical debt</em>). Chaque raccourci pris pour livrer plus vite se rembourse avec intérêts à chaque évolution suivante.</li>
   <li><strong>L'obsolescence.</strong> Une version qui n'est plus maintenue par son éditeur devient un risque de sécurité, et un point d'attention pour le superviseur.</li>
   <li><strong>L'empilement.</strong> On ajoute la nouvelle plateforme sans éteindre l'ancienne, et l'on paie les deux.</li>
 </ul>
@@ -45,11 +45,11 @@
 
 <h2>Ce que ça coûte</h2>
 
-<p>Le <dfn>coût total de possession</dfn> additionne tout ce qu'un système coûte sur sa durée de vie : licences, infrastructure, exploitation, personnes, migration à l'entrée, formation, et sortie. Le prix d'achat n'en est souvent qu'une petite part.</p>
+<p>Le <dfn>coût total de possession</dfn> (<strong>TCO</strong>, <em>Total Cost of Ownership</em>) additionne tout ce qu'un système coûte sur sa durée de vie : licences, infrastructure, exploitation, personnes, migration à l'entrée, formation, et sortie. Le prix d'achat n'en est souvent qu'une petite part.</p>
 
-<p>Le cloud a changé la nature de la dépense. Sur site, on investit d'avance dans une capacité fixe. Dans le cloud, on paie à l'usage : c'est souple, mais la facture suit la consommation, et une seule requête mal écrite qui balaie une table immense coûte de l'argent à chaque exécution.</p>
+<p>Le cloud a changé la nature de la dépense. Sur site, on investit d'avance dans une capacité fixe : c'est une dépense d'investissement, ou <strong>CAPEX</strong> (<em>Capital Expenditure</em>). Dans le cloud, on paie à l'usage, en dépense d'exploitation, ou <strong>OPEX</strong> (<em>Operating Expenditure</em>) : c'est souple, mais la facture suit la consommation, et une seule requête mal écrite qui balaie une table immense coûte de l'argent à chaque exécution.</p>
 
-<p>La discipline qui répond à cela s'appelle le <dfn>FinOps</dfn>. Elle rend la dépense visible, l'attribue aux équipes qui la génèrent, et l'optimise avec elles. Deux degrés existent : montrer à chaque équipe ce qu'elle consomme, ou le lui refacturer. Dans les deux cas, on raisonne en <strong>coût unitaire</strong> : par requête, par jeu de données, par calcul.</p>
+<p>La discipline qui répond à cela s'appelle le <dfn>FinOps</dfn>, contraction de <em>Finance</em> et <em>Operations</em>. Elle rend la dépense visible, l'attribue aux équipes qui la génèrent, et l'optimise avec elles. Deux degrés existent : montrer à chaque équipe ce qu'elle consomme (<em>showback</em>), ou le lui refacturer (<em>chargeback</em>). Dans les deux cas, on raisonne en <strong>coût unitaire</strong> : par requête, par jeu de données, par calcul.</p>
 
 <aside class="note terrain">
   <p class="etiquette">Sur le terrain</p>
@@ -67,14 +67,14 @@
   </tbody>
 </table>
 
-<p>La règle tient en une ligne : on construit ce qui différencie, on achète ce qui est banal. Avant de signer, on examine la <dfn>réversibilité</dfn>. Les données et leurs métadonnées s'exportent-elles dans un format ouvert ? Combien coûterait la sortie ? La dépendance à un fournisseur n'est pas un mal en soi, à condition d'être choisie et chiffrée, pas découverte.</p>
+<p>La règle tient en une ligne : on construit ce qui différencie, on achète ce qui est banal. Avant de signer, on examine la <dfn>réversibilité</dfn>, ce que les contrats appellent <em>exit strategy</em>. Les données et leurs métadonnées s'exportent-elles dans un format ouvert ? Combien coûterait la sortie ? La dépendance à un fournisseur (<em>vendor lock-in</em>) n'est pas un mal en soi, à condition d'être choisie et chiffrée, pas découverte.</p>
 
 <h2>Migrer sans casser</h2>
 
 <ul>
-  <li><strong>La bascule en une fois.</strong> Tout change le même jour. C'est court, et très risqué.</li>
+  <li><strong>La bascule en une fois</strong> (<em>big bang</em>). Tout change le même jour. C'est court, et très risqué.</li>
   <li><strong>Le remplacement progressif.</strong> Le nouveau système reprend les fonctions une à une, les usages sont redirigés un par un, jusqu'à ce que l'ancien puisse être éteint. Les anglophones parlent de <em>strangler fig</em>, le figuier étrangleur.</li>
-  <li><strong>La marche en parallèle.</strong> L'ancien et le nouveau tournent ensemble, on compare leurs résultats, on explique chaque écart, puis on bascule. Pour des chiffres de risque ou de résultat, cette étape n'est pas facultative : les fonctions de contrôle exigent que les écarts soient compris.</li>
+  <li><strong>La marche en parallèle</strong> (<em>parallel run</em>). L'ancien et le nouveau tournent ensemble, on compare leurs résultats, on explique chaque écart, puis on bascule. Pour des chiffres de risque ou de résultat, cette étape n'est pas facultative : les fonctions de contrôle exigent que les écarts soient compris.</li>
 </ul>
 
 <aside class="note piege">
@@ -83,6 +83,8 @@
 </aside>
 
 <h2>Mesurer ce qui compte</h2>
+
+<p>Un petit nombre d'indicateurs clés, les <strong>KPI</strong> (<em>Key Performance Indicators</em>), suffit, à condition que chacun réponde à une question.</p>
 
 <table>
   <thead><tr><th>Ce qu'on veut savoir</th><th>Ce qu'on mesure</th></tr></thead>
@@ -105,7 +107,7 @@
   <li><strong>La copie de trop.</strong> Chaque équipe tient son propre exemplaire du référentiel ou des données de marché, et les exemplaires divergent.</li>
   <li><strong>L'outil unique.</strong> Une seule technologie pour tous les usages, y compris ceux pour lesquels elle n'est pas faite.</li>
   <li><strong>L'architecture pour le CV.</strong> Une technologie choisie parce qu'elle est à la mode, sans besoin qui la justifie.</li>
-  <li><strong>Le tableur clandestin.</strong> Un processus critique qui tourne dans un classeur, hors de tout contrôle.</li>
+  <li><strong>Le tableur clandestin.</strong> Un processus critique qui tourne dans un classeur, hors de tout contrôle. Le sujet a son sigle : <strong>EUC</strong> (<em>End-User Computing</em>).</li>
 </ul>
 
 <h2>Dix questions pour lire une architecture</h2>
@@ -130,14 +132,14 @@
 <table>
   <thead><tr><th>Métier</th><th>Ce qu'il fait</th></tr></thead>
   <tbody>
-    <tr><th>Ingénieur de données</th><td>Construit et exploite les pipelines et la plateforme</td></tr>
-    <tr><th>Architecte de données</th><td>Garantit la cohérence d'ensemble : modèles, choix structurants</td></tr>
-    <tr><th>Administrateur de bases</th><td>Veille aux performances, aux sauvegardes et à la disponibilité des bases</td></tr>
-    <tr><th>Ingénieur de fiabilité</th><td>Tient la production : supervision, automatisation, incidents</td></tr>
-    <tr><th>Analyste, ingénieur analytique</th><td>Transforme les données en tables et en rapports prêts à l'usage</td></tr>
+    <tr><th>Ingénieur de données<br><em>data engineer</em></th><td>Construit et exploite les pipelines et la plateforme</td></tr>
+    <tr><th>Architecte de données<br><em>data architect</em></th><td>Garantit la cohérence d'ensemble : modèles, choix structurants</td></tr>
+    <tr><th>Administrateur de bases<br><em>DBA, Database Administrator</em></th><td>Veille aux performances, aux sauvegardes et à la disponibilité des bases</td></tr>
+    <tr><th>Ingénieur de fiabilité<br><em>SRE, Site Reliability Engineer</em></th><td>Tient la production : supervision, automatisation, incidents</td></tr>
+    <tr><th>Analyste, ingénieur analytique<br><em>data analyst, analytics engineer</em></th><td>Transforme les données en tables et en rapports prêts à l'usage</td></tr>
     <tr><th>Data scientist, quant</th><td>Conçoit les modèles et mène la recherche</td></tr>
-    <tr><th>Gestionnaire de données</th><td>Tient les définitions et traite les anomalies de qualité</td></tr>
-    <tr><th>Responsable de produit</th><td>Porte les priorités, la feuille de route et la relation avec les utilisateurs</td></tr>
+    <tr><th>Gestionnaire de données<br><em>data steward</em></th><td>Tient les définitions et traite les anomalies de qualité</td></tr>
+    <tr><th>Responsable de produit<br><em>PO, Product Owner</em></th><td>Porte les priorités, la feuille de route et la relation avec les utilisateurs</td></tr>
   </tbody>
 </table>
 

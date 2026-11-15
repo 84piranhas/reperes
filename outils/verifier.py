@@ -2,10 +2,12 @@
 """Vérifie la cohérence du contenu de themes/ avant de publier.
 
 Usage : python3 outils/verifier.py
-Sort en erreur (code 1) si un fichier manque ou si une question est mal formée.
+Sort en erreur (code 1) si un fichier manque, si une question est mal formée,
+ou si un sigle est employé sans être développé dans le glossaire.
 """
 
 import json
+import re
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
@@ -13,6 +15,8 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parent.parent / "themes"
 TYPES = {"single", "multi", "vf"}
 VIDES = {"br", "hr", "img", "input", "meta", "link", "path", "rect", "circle", "line", "polygon", "polyline", "ellipse", "use"}
+# Un sigle : au moins deux capitales, chiffres admis (S3, 3NF), « & » admis (P&L).
+SIGLE = re.compile(r"(?<![\w&])(?=[A-Z0-9&]*[A-Z][A-Z0-9&]*[A-Z])[A-Z0-9][A-Z0-9&]+(?![\w&])")
 erreurs = []
 
 
@@ -21,12 +25,13 @@ def erreur(message):
 
 
 class Balises(HTMLParser):
-    """Repère les balises mal fermées dans un fragment de cours."""
+    """Repère les balises mal fermées d'un fragment de cours, et en extrait le texte."""
 
     def __init__(self, nom):
         super().__init__()
         self.nom = nom
         self.pile = []
+        self.texte = []
 
     def handle_starttag(self, tag, attrs):
         if tag not in VIDES:
@@ -39,6 +44,9 @@ class Balises(HTMLParser):
             erreur(f"{self.nom} : </{tag}> inattendu (ouvert : {self.pile[-1] if self.pile else 'rien'})")
         else:
             self.pile.pop()
+
+    def handle_data(self, data):
+        self.texte.append(data)
 
 
 def lire_json(chemin):
@@ -58,7 +66,7 @@ def verifier_question(q, ou, vus):
         erreur(f"{ici} : identifiant en double")
     vus.add(ident)
     for champ in ("id", "type", "q", "bonnes", "explication"):
-        if not q.get(champ) and q.get(champ) != [0]:
+        if not q.get(champ):
             erreur(f"{ici} : champ « {champ} » manquant ou vide")
     genre = q.get("type")
     if genre not in TYPES:
@@ -82,6 +90,34 @@ def verifier_question(q, ou, vus):
         erreur(f"{ici} : une question à choix multiples a au moins deux bonnes réponses, et pas toutes")
 
 
+def verifier_glossaire(ident, termes, chapitres):
+    """Contrôle le glossaire et renvoie l'ensemble des sigles qu'il développe."""
+    vus = set()
+    connus = set()
+    for terme in termes:
+        nom = terme.get("t")
+        if not nom or not terme.get("d"):
+            erreur(f"{ident}/glossaire.json : terme incomplet ({terme})")
+            continue
+        if nom in vus:
+            erreur(f"{ident}/glossaire.json : « {nom} » figure deux fois")
+        vus.add(nom)
+        for champ in ("s", "f"):
+            if champ in terme and not (isinstance(terme[champ], str) and terme[champ].strip()):
+                erreur(f"{ident}/glossaire.json : « {nom} » a un champ « {champ} » vide")
+        if terme.get("f") and not terme.get("s"):
+            erreur(f"{ident}/glossaire.json : « {nom} » a un champ « f » sans champ « s »")
+        if terme.get("c") and terme["c"] not in chapitres:
+            erreur(f"{ident}/glossaire.json : « {nom} » renvoie à un chapitre inconnu « {terme['c']} »")
+        if terme.get("s"):
+            connus.update(SIGLE.findall(nom))
+    return connus
+
+
+def sigles_orphelins(texte, connus, ignores):
+    return sorted(set(SIGLE.findall(texte)) - connus - ignores)
+
+
 def verifier_theme(ident):
     dossier = RACINE / ident
     theme = lire_json(dossier / "theme.json")
@@ -93,6 +129,12 @@ def verifier_theme(ident):
         if not theme.get(champ):
             erreur(f"{ident}/theme.json : champ « {champ} » manquant")
     chapitres = [c.get("id") for c in theme.get("chapitres", [])]
+
+    glossaire = dossier / "glossaire.json"
+    termes = (lire_json(glossaire) if glossaire.exists() else []) or []
+    connus = verifier_glossaire(ident, termes, chapitres)
+    ignores = set(theme.get("capitalesIgnorees", []))
+
     vus = set()
     total = 0
     for chapitre in theme.get("chapitres", []):
@@ -108,6 +150,9 @@ def verifier_theme(ident):
             analyse.feed(cours.read_text(encoding="utf-8"))
             if analyse.pile:
                 erreur(f"{ident}/cours/{cid}.html : balises non fermées : {analyse.pile}")
+            orphelins = sigles_orphelins(" ".join(analyse.texte), connus, ignores)
+            if orphelins:
+                erreur(f"{ident}/cours/{cid}.html : sigles absents du glossaire : {', '.join(orphelins)}")
         questions = lire_json(dossier / "questions" / f"{cid}.json")
         if questions is None:
             continue
@@ -115,15 +160,13 @@ def verifier_theme(ident):
             erreur(f"{ident}/questions/{cid}.json : aucune question")
         for q in questions:
             verifier_question(q, f"{ident}/questions/{cid}.json", vus)
+            texte = " ".join([q.get("q", ""), *q.get("choix", []), q.get("explication", "")])
+            orphelins = sigles_orphelins(texte, connus, ignores)
+            if orphelins:
+                erreur(f"{ident}/questions/{cid}.json [{q.get('id', '?')}] : sigles absents du glossaire : {', '.join(orphelins)}")
         total += len(questions)
-    glossaire = dossier / "glossaire.json"
-    termes = lire_json(glossaire) if glossaire.exists() else []
-    for terme in termes or []:
-        if not terme.get("t") or not terme.get("d"):
-            erreur(f"{ident}/glossaire.json : terme incomplet ({terme})")
-        if terme.get("c") and terme["c"] not in chapitres:
-            erreur(f"{ident}/glossaire.json : « {terme.get('t')} » renvoie à un chapitre inconnu « {terme['c']} »")
-    print(f"  {ident} : {len(chapitres)} chapitres, {total} questions, {len(termes or [])} termes")
+    nb_sigles = sum(1 for t in termes if t.get("s"))
+    print(f"  {ident} : {len(chapitres)} chapitres, {total} questions, {len(termes)} termes dont {nb_sigles} sigles")
 
 
 def main():

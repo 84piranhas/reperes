@@ -2,13 +2,13 @@
 
 <h2>Le modèle relationnel</h2>
 
-<p>Depuis les années 1970, le modèle dominant range les données dans des <dfn>tables</dfn> : des lignes, des colonnes typées, et des <dfn>clés</dfn> qui relient les tables entre elles. Une table des opérations ne recopie pas le nom de la contrepartie : elle porte son identifiant, qui renvoie à la table des tiers. Le langage <strong>SQL</strong> permet d'interroger l'ensemble, et de recoller les tables par des <dfn>jointures</dfn>.</p>
+<p>Depuis les années 1970, le modèle dominant range les données dans des <dfn>tables</dfn> : des lignes, des colonnes typées, et des <dfn>clés</dfn> qui relient les tables entre elles. Une table des opérations ne recopie pas le nom de la contrepartie : elle porte son identifiant, qui renvoie à la table des tiers. Le langage <strong>SQL</strong> (<em>Structured Query Language</em>) permet d'interroger l'ensemble, et de recoller les tables par des <dfn>jointures</dfn>.</p>
 
 <p>Les grands noms à connaître : Oracle, Microsoft SQL Server, PostgreSQL (libre, devenu la référence par défaut), et Sybase (aujourd'hui SAP ASE), très présent historiquement en salle de marché.</p>
 
 <h2>Les transactions : ACID</h2>
 
-<p>Une <dfn>transaction</dfn> regroupe plusieurs modifications qui n'ont de sens qu'ensemble. Enregistrer une opération, c'est créer l'opération, mettre à jour la position et générer les flux attendus. Si la machine tombe au milieu, on ne veut pas d'une position mise à jour sans opération. Quatre propriétés, résumées par le sigle ACID, encadrent cela.</p>
+<p>Une <dfn>transaction</dfn> regroupe plusieurs modifications qui n'ont de sens qu'ensemble. Enregistrer une opération, c'est créer l'opération, mettre à jour la position et générer les flux attendus. Si la machine tombe au milieu, on ne veut pas d'une position mise à jour sans opération. Quatre propriétés, résumées par le sigle <strong>ACID</strong> (<em>Atomicity, Consistency, Isolation, Durability</em>), encadrent cela.</p>
 
 <table>
   <thead><tr><th>Propriété</th><th>Ce qu'elle garantit</th></tr></thead>
@@ -24,7 +24,7 @@
 
 <h2>Les index</h2>
 
-<p>Sans index, retrouver une opération par son numéro oblige à lire toute la table. Un <dfn>index</dfn> est une structure triée, tenue à jour à côté de la table, qui mène directement à la bonne ligne, comme l'index d'un livre. Sa contrepartie : chaque écriture doit aussi mettre l'index à jour, et il occupe de la place. Trop d'index ralentissent les écritures, pas assez ralentissent les lectures. Une grande part du travail d'un administrateur de bases (le DBA) consiste à régler cet équilibre.</p>
+<p>Sans index, retrouver une opération par son numéro oblige à lire toute la table. Un <dfn>index</dfn> est une structure triée, tenue à jour à côté de la table, qui mène directement à la bonne ligne, comme l'index d'un livre. Sa contrepartie : chaque écriture doit aussi mettre l'index à jour, et il occupe de la place. Trop d'index ralentissent les écritures, pas assez ralentissent les lectures. Une grande part du travail d'un administrateur de bases (le <strong>DBA</strong>, <em>Database Administrator</em>) consiste à régler cet équilibre.</p>
 
 <h2>Lignes ou colonnes</h2>
 
@@ -59,15 +59,15 @@
   <figcaption>La même table, deux organisations physiques, deux usages.</figcaption>
 </figure>
 
-<p>En <strong>lignes</strong>, toutes les valeurs d'un enregistrement sont côte à côte. Lire ou modifier une opération touche un seul endroit : c'est idéal pour l'opérationnel.</p>
+<p>En <strong>lignes</strong>, toutes les valeurs d'un enregistrement sont côte à côte. Lire ou modifier une opération touche un seul endroit : c'est idéal pour l'opérationnel, le monde <strong>OLTP</strong> (<em>Online Transaction Processing</em>).</p>
 
-<p>En <strong>colonnes</strong>, toutes les valeurs d'une même colonne sont côte à côte. Sur une table de quatre-vingts colonnes, une requête qui somme un nominal sur un milliard de lignes ne lit que cette colonne et ignore les soixante-dix-neuf autres. Les valeurs voisines se ressemblent, donc se compressent très bien. C'est idéal pour l'analytique, et médiocre pour modifier une ligne à la fois.</p>
+<p>En <strong>colonnes</strong>, toutes les valeurs d'une même colonne sont côte à côte. Sur une table de quatre-vingts colonnes, une requête qui somme un nominal sur un milliard de lignes ne lit que cette colonne et ignore les soixante-dix-neuf autres. Les valeurs voisines se ressemblent, donc se compressent très bien. C'est idéal pour l'analytique, le monde <strong>OLAP</strong> (<em>Online Analytical Processing</em>), et médiocre pour modifier une ligne à la fois. Quelques bases récentes visent les deux usages à la fois : on parle de <strong>HTAP</strong> (<em>Hybrid Transactional/Analytical Processing</em>).</p>
 
 <p>Côté analytique, les noms à connaître : Teradata et Vertica pour la génération sur site, Snowflake, BigQuery, Redshift et Databricks dans le cloud, ClickHouse pour la vitesse brute, DuckDB pour l'analyse sur une seule machine.</p>
 
 <h2>Les familles NoSQL</h2>
 
-<p>À la fin des années 2000, les géants du web butent sur les limites du relationnel : trop de données pour une machine, des structures trop changeantes. Naissent des bases qui relâchent certaines contraintes pour gagner en échelle ou en souplesse. Le terme <dfn>NoSQL</dfn> les regroupe, mais elles n'ont pas grand-chose en commun.</p>
+<p>À la fin des années 2000, les géants du web butent sur les limites du relationnel : trop de données pour une machine, des structures trop changeantes. Naissent des bases qui relâchent certaines contraintes pour gagner en échelle ou en souplesse. Le terme <dfn>NoSQL</dfn> (<em>Not only SQL</em>, « pas seulement SQL ») les regroupe, mais elles n'ont pas grand-chose en commun.</p>
 
 <table>
   <thead><tr><th>Famille</th><th>Principe</th><th>Usage typique</th><th>Exemples</th></tr></thead>
@@ -81,11 +81,11 @@
   </tbody>
 </table>
 
-<p>Ce que ces bases abandonnent le plus souvent : les jointures, et les transactions portant sur plusieurs enregistrements. Depuis, la frontière s'est estompée. Les bases dites <dfn>NewSQL</dfn>, comme Spanner ou CockroachDB, offrent SQL et transactions ACID sur une architecture distribuée, tandis que PostgreSQL sait stocker des documents.</p>
+<p>Ce que ces bases abandonnent le plus souvent : les jointures, et les transactions portant sur plusieurs enregistrements. Par opposition à ACID, on résume ce relâchement par le sigle <strong>BASE</strong> (<em>Basically Available, Soft state, Eventual consistency</em>) : disponible avant tout, cohérent seulement à terme. Depuis, la frontière s'est estompée. Les bases dites <dfn>NewSQL</dfn>, comme Spanner ou CockroachDB, offrent SQL et transactions ACID sur une architecture distribuée, tandis que PostgreSQL sait stocker des documents.</p>
 
 <h2>La mémoire vive</h2>
 
-<p>Lire en mémoire est des milliers de fois plus rapide que lire sur disque. Trois usages en tirent parti. Le <dfn>cache</dfn>, placé devant une base, sert très vite les lectures fréquentes, au prix d'une donnée parfois légèrement périmée. La <dfn>grille de données</dfn> en mémoire partage un état entre applications. Et les <dfn>cubes en mémoire</dfn> agrègent à la volée des millions de lignes de risque selon n'importe quel axe : portefeuille, devise, contrepartie.</p>
+<p>Lire en mémoire est des milliers de fois plus rapide que lire sur disque. Trois usages en tirent parti. Le <dfn>cache</dfn>, placé devant une base, sert très vite les lectures fréquentes, au prix d'une donnée parfois légèrement périmée. La <dfn>grille de données</dfn> en mémoire (<strong>IMDG</strong>, <em>In-Memory Data Grid</em>) partage un état entre applications. Et les <dfn>cubes en mémoire</dfn> agrègent à la volée des millions de lignes de risque selon n'importe quel axe : portefeuille, devise, contrepartie.</p>
 
 <aside class="note terrain">
   <p class="etiquette">Sur le terrain</p>

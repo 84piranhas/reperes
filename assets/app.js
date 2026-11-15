@@ -47,6 +47,36 @@ const sansAccent = s => s.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
 const pluriel = (n, mot) => `${n} ${mot}${n > 1 ? 's' : ''}`;
 const duree = min => min < 60 ? `${min} min` : `${Math.floor(min / 60)} h ${String(min % 60).padStart(2, '0')}`;
 
+/* ---------- Sigles ---------- */
+
+// Le glossaire est facultatif : un thème sans glossaire fonctionne, sans sigles développés.
+const chargerGlossaire = t => charger(`themes/${t.id}/glossaire.json`).catch(() => []);
+
+const motifs = new Map();
+function motif(terme) {
+  if (!motifs.has(terme)) {
+    const brut = terme.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    motifs.set(terme, new RegExp(`(^|[^\\p{L}\\p{N}])${brut}(?![\\p{L}\\p{N}])`, 'u'));
+  }
+  return motifs.get(terme);
+}
+// Les sigles du glossaire (entrées dotées du champ « s ») qui apparaissent dans un texte.
+const siglesDans = (texte, glossaire) => glossaire
+  .filter(x => x.s && motif(x.t).test(texte))
+  .sort((a, b) => a.t.localeCompare(b.t, 'fr'));
+// Texte d'un élément, nœud par nœud : « textContent » collerait entre elles les cellules d'un tableau.
+function texteDe(element) {
+  const marcheur = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  const morceaux = [];
+  while (marcheur.nextNode()) morceaux.push(marcheur.currentNode.nodeValue);
+  return morceaux.join(' ');
+}
+const siglesDeQuestion = (it, glossaire) => siglesDans([it.q.q, ...it.choix, it.q.explication].join('\n'), glossaire);
+const developpe = x => `<em>${esc(x.s)}</em>${x.f ? ` (${esc(x.f)})` : ''}`;
+const ligneSigles = liste => liste.length
+  ? `<p class="sigles"><b>Sigles.</b> ${liste.map(x => `${esc(x.t)} : ${developpe(x)}`).join(' · ')}</p>`
+  : '';
+
 function melanger(liste) {
   const a = [...liste];
   for (let i = a.length - 1; i > 0; i--) {
@@ -223,7 +253,7 @@ async function vueTheme(t) {
         </a>
       </div>
       <div class="annexes">
-        <a href="#/t/${t.id}/glossaire">Glossaire du thème</a>
+        <a href="#/t/${t.id}/glossaire">Glossaire et sigles du thème</a>
         <button type="button" class="lien pousse" id="raz"${lus || dernier ? '' : ' hidden'}>Effacer ma progression sur ce thème</button>
       </div>
     </section>`,
@@ -261,9 +291,10 @@ async function vueChapitre(t, id) {
   const i = t.chapitres.findIndex(c => c.id === id);
   if (i < 0) return vueIntrouvable();
   const c = t.chapitres[i];
-  const [corps, banque] = await Promise.all([
+  const [corps, banque, glossaire] = await Promise.all([
     charger(`themes/${t.id}/cours/${id}.html`, 'text'),
     chargerBanque(t),
+    chargerGlossaire(t),
   ]);
   const s = suivi(t.id);
   const nbQuestions = banque.filter(q => q.chapitre === id).length;
@@ -298,6 +329,21 @@ async function vueChapitre(t, id) {
       </article>
     </div>`,
     apres: racine => {
+      // Récapitulatif des sigles rencontrés dans le chapitre, tiré du glossaire.
+      const prose = racine.querySelector('.prose');
+      const sigles = siglesDans(texteDe(prose), glossaire);
+      if (sigles.length) {
+        const bloc = document.createElement('aside');
+        bloc.className = 'note sigles';
+        bloc.innerHTML = typo(`<p class="etiquette">Sigles de ce chapitre</p>
+          <div class="tableau"><table>
+            <thead><tr><th>Sigle</th><th>En toutes lettres</th><th>En clair</th></tr></thead>
+            <tbody>${sigles.map(x => `<tr><th>${esc(x.t)}</th><td><em>${esc(x.s)}</em></td><td>${esc(x.f || '')}</td></tr>`).join('')}</tbody>
+          </table></div>
+          <p class="meta">Les définitions complètes sont dans le <a href="${base}/glossaire">glossaire</a>.</p>`);
+        prose.append(bloc);
+      }
+
       // Plan interne : les titres de section du chapitre, sous le chapitre courant.
       const titres = [...racine.querySelectorAll('.prose h2')];
       if (titres.length) {
@@ -353,6 +399,7 @@ async function vueChapitre(t, id) {
 async function vueReglages(t, chapitreInitial) {
   const banque = await chargerBanque(t);
   const s = suivi(t.id);
+  const glossaire = await chargerGlossaire(t);
   const pre = t.chapitres.some(c => c.id === chapitreInitial) ? chapitreInitial : null;
   const erreurs = banque.filter(q => s.q[q.id] && !s.q[q.id].ok);
   const base = `#/t/${t.id}`;
@@ -431,7 +478,7 @@ async function vueReglages(t, chapitreInitial) {
         const d = new FormData(form);
         const v = vivier();
         if (!v.length) return;
-        lancer(t, tirer(t, v, +d.get('nombre') || v.length), d.get('correction'));
+        lancer(t, tirer(t, v, +d.get('nombre') || v.length), d.get('correction'), glossaire);
       });
       peindre();
     },
@@ -460,10 +507,11 @@ function tirer(t, vivier, n) {
 const LETTRES = 'ABCDEF';
 const juste = it => it.choisi.size === it.q.bonnes.length && it.q.bonnes.every(k => it.choisi.has(k));
 
-function lancer(t, questions, correction) {
+function lancer(t, questions, correction, glossaire = []) {
   session = {
     t,
     correction,
+    glossaire,
     i: 0,
     items: questions.map(q => {
       const choix = q.type === 'vf' ? ['Vrai', 'Faux'] : q.choix;
@@ -530,7 +578,7 @@ function afficherQuestion() {
           b.classList.add(bonnes.has(k) ? 'bonne' : it.choisi.has(k) ? 'fausse' : 'neutre');
         });
         const ok = juste(it);
-        retour.innerHTML = `<div class="verdict ${ok ? 'ok' : 'ko'}"><strong>${ok ? 'Exact.' : 'Pas tout à fait.'}</strong> ${fmt(it.q.explication)}</div>`;
+        retour.innerHTML = typo(`<div class="verdict ${ok ? 'ok' : 'ko'}"><strong>${ok ? 'Exact.' : 'Pas tout à fait.'}</strong> ${fmt(it.q.explication)}${ligneSigles(siglesDeQuestion(it, session.glossaire))}</div>`);
         suite.textContent = dernier ? 'Voir le résultat' : 'Question suivante';
         suite.focus();
       };
@@ -575,7 +623,7 @@ const PALIERS = [
 ];
 
 function terminer() {
-  const { t, items } = session;
+  const { t, items, glossaire } = session;
   session = null;
   const faits = items.filter(it => it.valide).map(it => ({ ...it, ok: juste(it) }));
   const nbOk = faits.filter(r => r.ok).length;
@@ -606,6 +654,7 @@ function terminer() {
           return `<li class="${bonne ? 'bonne' : choisie ? 'fausse' : ''}">${fmt(r.choix[k])}${marque ? `<em>${marque}</em>` : ''}</li>`;
         }).join('')}</ul>
         <p>${fmt(r.q.explication)}</p>
+        ${ligneSigles(siglesDeQuestion(r, glossaire))}
         <a href="${base}/cours/${chap.id}">Relire : ${esc(chap.titre)}</a>
       </div>
     </details>`;
@@ -633,7 +682,7 @@ function terminer() {
       <div class="revue">${[...ratees, ...faits.filter(r => r.ok)].map(revue).join('')}</div>
     </section>`,
     apres: racine => {
-      racine.querySelector('#refaire')?.addEventListener('click', () => lancer(t, melanger(ratees.map(r => r.q)), 'immediate'));
+      racine.querySelector('#refaire')?.addEventListener('click', () => lancer(t, melanger(ratees.map(r => r.q)), 'immediate', glossaire));
       racine.querySelector('#nouveau').addEventListener('click', () => aller(`${base}/test`));
     },
   });
@@ -642,36 +691,44 @@ function terminer() {
 /* ---------- Glossaire ---------- */
 
 async function vueGlossaire(t) {
-  const termes = [...await charger(`themes/${t.id}/glossaire.json`)].sort((a, b) => a.t.localeCompare(b.t, 'fr'));
+  const termes = [...await chargerGlossaire(t)].sort((a, b) => a.t.localeCompare(b.t, 'fr'));
+  const nbSigles = termes.filter(x => x.s).length;
   const base = `#/t/${t.id}`;
   return {
     titre: `Glossaire · ${t.titreCourt}`,
     miettes: [[t.titreCourt, base], ['Glossaire', null]],
     html: `<section class="glossaire">
       <p class="surtitre">Glossaire</p>
-      <h1>${pluriel(termes.length, 'terme')} à connaître</h1>
-      <p class="chapo">Une définition courte par terme, et le chapitre où il est expliqué.</p>
+      <h1>${pluriel(termes.length, 'terme')}, dont ${pluriel(nbSigles, 'sigle')}</h1>
+      <p class="chapo">Chaque sigle est donné en toutes lettres, puis en clair. Chaque terme a une définition courte et renvoie au chapitre où il est expliqué.</p>
       <input class="recherche" type="search" placeholder="Chercher un terme ou un mot de la définition" aria-label="Chercher dans le glossaire">
+      <div class="puces filtre">
+        <label class="puce"><input type="radio" name="genre" value="tout" checked><span>Tout</span></label>
+        <label class="puce"><input type="radio" name="genre" value="sigles"><span>Sigles seulement</span></label>
+      </div>
       <p class="meta" id="compte" aria-live="polite"></p>
       <dl>${termes.map(x => {
         const chap = t.chapitres.find(c => c.id === x.c);
-        return `<div class="terme" data-cle="${esc(sansAccent(`${x.t} ${x.d}`))}"><dt>${fmt(x.t)}</dt><dd>${fmt(x.d)}${chap ? ` <a href="${base}/cours/${chap.id}">${esc(chap.titre)} →</a>` : ''}</dd></div>`;
+        return `<div class="terme" data-sigle="${x.s ? 1 : 0}" data-cle="${esc(sansAccent(`${x.t} ${x.s || ''} ${x.f || ''} ${x.d}`))}"><dt>${fmt(x.t)}${x.s ? ` <span class="developpe">${developpe(x)}</span>` : ''}</dt><dd>${fmt(x.d)}${chap ? ` <a href="${base}/cours/${chap.id}">${esc(chap.titre)} →</a>` : ''}</dd></div>`;
       }).join('')}</dl>
     </section>`,
     apres: racine => {
       const champ = racine.querySelector('.recherche');
       const compte = racine.querySelector('#compte');
       const lignes = [...racine.querySelectorAll('.terme')];
-      champ.addEventListener('input', () => {
+      const filtrer = () => {
         const mots = sansAccent(champ.value).split(/\s+/).filter(Boolean);
+        const sigles = racine.querySelector('[name=genre]:checked').value === 'sigles';
         let n = 0;
         lignes.forEach(l => {
-          const garde = mots.every(m => l.dataset.cle.includes(m));
+          const garde = (!sigles || l.dataset.sigle === '1') && mots.every(m => l.dataset.cle.includes(m));
           l.hidden = !garde;
           if (garde) n++;
         });
-        compte.textContent = mots.length ? (n ? pluriel(n, 'terme') : 'Aucun terme ne correspond.') : '';
-      });
+        compte.textContent = mots.length || sigles ? (n ? pluriel(n, sigles ? 'sigle' : 'terme') : 'Aucun terme ne correspond.') : '';
+      };
+      champ.addEventListener('input', filtrer);
+      racine.querySelectorAll('[name=genre]').forEach(r => r.addEventListener('change', filtrer));
     },
   };
 }

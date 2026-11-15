@@ -1,5 +1,7 @@
 <p>Avant d'entrer dans les technologies, il faut une carte. Presque toutes les architectures de données, de la plus modeste à la plus ambitieuse, s'expliquent par le même trajet : une donnée naît quelque part, elle est transportée, stockée, transformée, puis servie à quelqu'un qui en fait quelque chose. Les sigles changent tous les cinq ans. Ce trajet ne change pas.</p>
 
+<p>Une convention vaut pour tout le cours. À sa première apparition dans un chapitre, chaque sigle est écrit en toutes lettres, en anglais puisque c'est sous cette forme qu'il circule, puis traduit. Un tableau les récapitule à la fin de chaque chapitre.</p>
+
 <h2>Le trajet d'une donnée</h2>
 
 <figure class="schema">
@@ -37,10 +39,10 @@
 
 <ul>
   <li><strong>Sources.</strong> Les systèmes où la donnée est produite : outils de saisie et de gestion des opérations, plateformes d'exécution, fournisseurs externes, fichiers d'utilisateurs.</li>
-  <li><strong>Ingestion.</strong> Le transport vers la plateforme. Par fichiers déposés, par appels d'API, par flux d'événements continus, ou en lisant le journal des modifications d'une base (le <abbr title="Change Data Capture">CDC</abbr>).</li>
+  <li><strong>Ingestion.</strong> Le transport vers la plateforme. Par fichiers déposés, par appels d'<strong>API</strong> (<em>Application Programming Interface</em>, l'interface par laquelle un programme en interroge un autre), par flux d'événements continus, ou en lisant le journal des modifications d'une base : c'est le <strong>CDC</strong> (<em>Change Data Capture</em>, capture des changements).</li>
   <li><strong>Stockage.</strong> L'endroit où la donnée repose, organisée pour un type d'usage : base de données, entrepôt, lake.</li>
   <li><strong>Traitement.</strong> Tout ce qui transforme : nettoyer, rapprocher, enrichir, agréger, calculer.</li>
-  <li><strong>Service.</strong> La mise à disposition : requêtes SQL, API, tableaux de bord, extractions, flux vers d'autres systèmes.</li>
+  <li><strong>Service.</strong> La mise à disposition : requêtes <strong>SQL</strong> (<em>Structured Query Language</em>, le langage d'interrogation des bases de données), API, tableaux de bord, extractions, flux vers d'autres systèmes.</li>
 </ul>
 
 <p>Cinq fonctions traversent toute la chaîne. La <strong>gouvernance</strong> dit qui possède une donnée et qui répond de sa qualité. Le <strong>catalogue</strong> dit où la trouver et ce qu'elle signifie. La <strong>sécurité</strong> dit qui a le droit de la voir. L'<strong>orchestration</strong> dit dans quel ordre et à quelle heure les traitements tournent. L'<strong>observabilité</strong> dit si tout cela fonctionne, et à l'heure.</p>
@@ -52,7 +54,7 @@
 
 <h2>Deux mondes : opérationnel et analytique</h2>
 
-<p>La distinction la plus structurante du domaine oppose deux façons d'utiliser une donnée. Les systèmes <dfn>opérationnels</dfn>, dits <abbr title="Online Transaction Processing">OLTP</abbr>, font tourner l'activité : ils enregistrent une opération, modifient un ordre, mettent à jour une position. Les systèmes <dfn>analytiques</dfn>, dits <abbr title="Online Analytical Processing">OLAP</abbr>, servent à comprendre et à mesurer : ils parcourent de grands volumes pour en tirer des agrégats.</p>
+<p>La distinction la plus structurante du domaine oppose deux façons d'utiliser une donnée. Les systèmes <dfn>opérationnels</dfn>, dits <strong>OLTP</strong> (<em>Online Transaction Processing</em>, traitement transactionnel en ligne), font tourner l'activité : ils enregistrent une opération, modifient un ordre, mettent à jour une position. Les systèmes <dfn>analytiques</dfn>, dits <strong>OLAP</strong> (<em>Online Analytical Processing</em>, traitement analytique en ligne), servent à comprendre et à mesurer : ils parcourent de grands volumes pour en tirer des agrégats.</p>
 
 <table>
   <thead><tr><th></th><th>Opérationnel (OLTP)</th><th>Analytique (OLAP)</th></tr></thead>
@@ -73,7 +75,7 @@
   <li><strong>Données de référence.</strong> Instruments, tiers, portefeuilles, calendriers, conventions. Peu volumineuses, elles changent lentement, mais tout le monde s'en sert. Une erreur s'y propage partout.</li>
   <li><strong>Données de marché.</strong> Prix, cotations, courbes, volatilités. Volumineuses, horodatées, parfois très rapides.</li>
   <li><strong>Données de transaction et de position.</strong> Ordres, exécutions, opérations, positions, flux de règlement. Elles engagent la banque : leur intégrité prime sur tout.</li>
-  <li><strong>Données dérivées.</strong> Risques, résultat, indicateurs, signaux. Elles sont calculées à partir des trois premières et valent ce que valent leurs entrées.</li>
+  <li><strong>Données dérivées.</strong> Risques, résultat (le <strong>P&amp;L</strong>, <em>Profit and Loss</em>), indicateurs, signaux. Elles sont calculées à partir des trois premières et valent ce que valent leurs entrées.</li>
 </ul>
 
 <p>Chaque famille a son rythme, ses volumes et ses exigences. Vouloir les loger toutes dans le même outil est l'erreur de conception la plus courante.</p>
@@ -88,7 +90,7 @@
     <tr><th>Très faible latence</th><td>Microsecondes</td><td>Un algorithme de cotation qui réagit à un prix</td></tr>
     <tr><th>Interactif</th><td>Millisecondes à quelques secondes</td><td>Un prix à la demande, un écran de positions</td></tr>
     <tr><th>Intrajournalier</th><td>Minutes</td><td>Un recalcul de risques en cours de journée</td></tr>
-    <tr><th>Batch</th><td>Heures</td><td>La chaîne de fin de journée, un rapport réglementaire</td></tr>
+    <tr><th>Batch</th><td>Heures</td><td>La chaîne de fin de journée (<strong>EOD</strong>, <em>End of Day</em>), un rapport réglementaire</td></tr>
   </tbody>
 </table>
 

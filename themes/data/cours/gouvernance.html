@@ -12,7 +12,7 @@
   </tbody>
 </table>
 
-<p>Les termes anglais sont courants : <em>data owner</em>, <em>data steward</em>, <em>data custodian</em>. Le cadre d'ensemble est souvent porté par un directeur des données, le <abbr title="Chief Data Officer">CDO</abbr>.</p>
+<p>Les termes anglais sont courants : <em>data owner</em>, <em>data steward</em>, <em>data custodian</em>. Le cadre d'ensemble est souvent porté par un directeur des données, le <strong>CDO</strong> (<em>Chief Data Officer</em>).</p>
 
 <aside class="note piege">
   <p class="etiquette">Idée reçue</p>
@@ -31,6 +31,8 @@
 
 <h2>Mesurer la qualité</h2>
 
+<p>La qualité des données, souvent abrégée <strong>DQ</strong> (<em>Data Quality</em>), se décrit selon six dimensions.</p>
+
 <table>
   <thead><tr><th>Dimension</th><th>La question posée</th></tr></thead>
   <tbody>
@@ -48,12 +50,12 @@
 <ul>
   <li><strong>Mesurer automatiquement.</strong> Des règles exécutées à chaque traitement, des scores suivis dans le temps. Ce qui n'est pas mesuré ne s'améliore pas.</li>
   <li><strong>Corriger à la source.</strong> Une correction faite en aval est un pansement : la source continue de produire l'erreur, et le chiffre corrigé diverge de tous les autres.</li>
-  <li><strong>Choisir ses batailles.</strong> On ne gouverne pas tout. On identifie les <dfn>données critiques</dfn>, les quelques centaines qui alimentent les risques et les rapports réglementaires, et l'on commence par elles.</li>
+  <li><strong>Choisir ses batailles.</strong> On ne gouverne pas tout. On identifie les <dfn>données critiques</dfn> (<strong>CDE</strong>, <em>Critical Data Elements</em>), les quelques centaines qui alimentent les risques et les rapports réglementaires, et l'on commence par elles.</li>
 </ul>
 
 <h2>BCBS 239</h2>
 
-<p>En 2008, plusieurs grandes banques ont été incapables de dire rapidement à combien s'élevait leur exposition totale sur une contrepartie en difficulté. Le Comité de Bâle en a tiré, en 2013, un texte connu sous son numéro : <strong>BCBS 239</strong>. Il énonce quatorze principes sur l'agrégation des données de risque et sur les rapports de risque.</p>
+<p>En 2008, plusieurs grandes banques ont été incapables de dire rapidement à combien s'élevait leur exposition totale sur une contrepartie en difficulté. Le Comité de Bâle en a tiré, en 2013, un texte connu sous son numéro : <strong>BCBS 239</strong>, BCBS étant le nom anglais du Comité (<em>Basel Committee on Banking Supervision</em>). Il énonce quatorze principes sur l'agrégation des données de risque et sur les rapports de risque, un domaine que l'on abrège en <strong>RDARR</strong> (<em>Risk Data Aggregation and Risk Reporting</em>).</p>
 
 <table>
   <thead><tr><th>Groupe</th><th>Ce qui est demandé</th></tr></thead>
@@ -71,17 +73,17 @@
 
 <h2>Le RGPD</h2>
 
-<p>Une salle de marché manipule plus de données personnelles qu'on ne croit : clients particuliers, interlocuteurs chez les contreparties, et les collaborateurs eux-mêmes, dont les identifiants figurent sur les ordres et dont les communications sont enregistrées. Le règlement impose une finalité déclarée, la minimisation, une durée de conservation limitée, et des droits pour les personnes, dont l'effacement.</p>
+<p>Le règlement général sur la protection des données, <strong>RGPD</strong>, est le <strong>GDPR</strong> des anglophones (<em>General Data Protection Regulation</em>). Une salle de marché manipule plus de données personnelles (<strong>PII</strong>, <em>Personally Identifiable Information</em>) qu'on ne croit : clients particuliers, interlocuteurs chez les contreparties, et les collaborateurs eux-mêmes, dont les identifiants figurent sur les ordres et dont les communications sont enregistrées. Le règlement impose une finalité déclarée, la minimisation, une durée de conservation limitée, et des droits pour les personnes, dont l'effacement.</p>
 
 <p>La difficulté est technique. Un lake conserve tout et multiplie les copies. Il faut donc savoir <em>localiser</em> les données personnelles, ce que permet le catalogue, et pouvoir les supprimer ou les masquer, ce que permettent les formats de table. Quand une obligation légale de conservation existe, elle l'emporte sur la demande d'effacement pendant sa durée.</p>
 
 <h2>MiFID II : conserver et horodater</h2>
 
-<p>La directive impose de conserver les enregistrements des ordres, des transactions et des communications qui y mènent pendant <strong>cinq ans</strong>, durée que l'autorité peut porter à sept. Elle exige de pouvoir reconstituer la vie complète d'un ordre, et de synchroniser les horloges sur le temps universel avec une précision qui dépend de l'activité. Pour une plateforme de données, cela signifie de l'archivage fiable, interrogeable, et protégé contre toute modification.</p>
+<p>La directive <strong>MiFID II</strong> (<em>Markets in Financial Instruments Directive</em>, la directive sur les marchés d'instruments financiers) impose de conserver les enregistrements des ordres, des transactions et des communications qui y mènent pendant <strong>cinq ans</strong>, durée que l'autorité peut porter à sept. Elle exige de pouvoir reconstituer la vie complète d'un ordre, et de synchroniser les horloges sur le temps universel (<strong>UTC</strong>, <em>Coordinated Universal Time</em>) avec une précision qui dépend de l'activité. Pour une plateforme de données, cela signifie de l'archivage fiable, interrogeable, et protégé contre toute modification.</p>
 
 <h2>DORA</h2>
 
-<p>Le règlement européen sur la résilience opérationnelle numérique s'applique depuis le <strong>17 janvier 2025</strong>. Il couvre cinq domaines : la gestion du risque informatique, la gestion et la déclaration des incidents, les tests de résilience, le risque lié aux prestataires, et le partage d'information.</p>
+<p>Le règlement européen sur la résilience opérationnelle numérique, <strong>DORA</strong> (<em>Digital Operational Resilience Act</em>), s'applique depuis le <strong>17 janvier 2025</strong>. Il couvre cinq domaines : la gestion du risque informatique (dit risque <strong>TIC</strong>, pour technologies de l'information et de la communication ; <em>ICT</em> en anglais), la gestion et la déclaration des incidents, les tests de résilience, le risque lié aux prestataires, et le partage d'information.</p>
 
 <p>Son volet sur les prestataires touche directement les plateformes de données. Il faut tenir un registre de tous les contrats, analyser la concentration sur quelques fournisseurs de cloud, et disposer pour les fonctions critiques d'une <dfn>stratégie de sortie</dfn> : savoir comment on quitterait le prestataire, et l'avoir vérifié.</p>
 
@@ -89,8 +91,8 @@
 
 <ul>
   <li><strong>Classer.</strong> Publique, interne, confidentielle, secrète : la classification d'une donnée commande toutes les autres mesures.</li>
-  <li><strong>Le moindre privilège.</strong> Chacun n'a que les accès strictement nécessaires à sa fonction.</li>
-  <li><strong>Deux modèles d'habilitation.</strong> Par rôle (<abbr title="Role-Based Access Control">RBAC</abbr>) : on a les droits de sa fonction. Par attributs (<abbr title="Attribute-Based Access Control">ABAC</abbr>) : les droits dépendent de caractéristiques de l'utilisateur, de la donnée et du contexte. Le second est plus fin, et plus délicat à administrer.</li>
+  <li><strong>Le moindre privilège</strong> (<em>least privilege</em>). Chacun n'a que les accès strictement nécessaires à sa fonction.</li>
+  <li><strong>Deux modèles d'habilitation.</strong> Par rôle (<strong>RBAC</strong>, <em>Role-Based Access Control</em>) : on a les droits de sa fonction. Par attributs (<strong>ABAC</strong>, <em>Attribute-Based Access Control</em>) : les droits dépendent de caractéristiques de l'utilisateur, de la donnée et du contexte. Le second est plus fin, et plus délicat à administrer.</li>
   <li><strong>Filtrer et masquer.</strong> Un même tableau peut montrer à chacun ses seules lignes, et masquer certaines colonnes.</li>
   <li><strong>Chiffrer</strong> les données au repos et en transit, et gérer les clés avec soin.</li>
   <li><strong>Tracer</strong> les accès : qui a lu quoi, et quand.</li>
@@ -98,7 +100,7 @@
 
 <aside class="note terrain">
   <p class="etiquette">Sur le terrain</p>
-  <p>Une banque sépare les équipes qui détiennent des informations privilégiées sur des émetteurs de celles qui traitent sur les marchés : ce sont les murailles de Chine. Un lake commun à toute la banque rend ce cloisonnement plus délicat. Il ne tient que par des droits fins, à la ligne et à la colonne, et par une trace complète des accès. C'est un argument fort pour que les habilitations soient portées par le catalogue, et non réglées outil par outil.</p>
+  <p>Une banque sépare les équipes qui détiennent des informations privilégiées sur des émetteurs (<strong>MNPI</strong>, <em>Material Non-Public Information</em>) de celles qui traitent sur les marchés : ce sont les murailles de Chine (<em>Chinese walls</em>, ou <em>information barriers</em>). Un lake commun à toute la banque rend ce cloisonnement plus délicat. Il ne tient que par des droits fins, à la ligne et à la colonne, et par une trace complète des accès. C'est un argument fort pour que les habilitations soient portées par le catalogue, et non réglées outil par outil.</p>
 </aside>
 
 <h2>Le data mesh</h2>
@@ -114,7 +116,7 @@
 
 <p>C'est un modèle d'organisation, pas une technologie : il n'existe pas de logiciel « data mesh » à acheter. Ses risques sont le miroir de ses promesses. Sans gouvernance fédérée solide, chaque domaine fait à sa façon. Sans compétences dans les domaines, les produits ne voient pas le jour. La plupart des banques retiennent une forme hybride : une plateforme centrale, et des produits portés par les domaines.</p>
 
-<p>Un <dfn>produit de données</dfn>, dans ce vocabulaire, est un jeu de données servi avec tout ce qu'il faut pour s'en servir en confiance : un propriétaire, une documentation, un schéma stable, un niveau de service, des mesures de qualité et un moyen simple d'y accéder.</p>
+<p>Un <dfn>produit de données</dfn> (<em>data product</em>), dans ce vocabulaire, est un jeu de données servi avec tout ce qu'il faut pour s'en servir en confiance : un propriétaire, une documentation, un schéma stable, un niveau de service, des mesures de qualité et un moyen simple d'y accéder.</p>
 
 <aside class="note retenir">
   <p class="etiquette">À retenir</p>

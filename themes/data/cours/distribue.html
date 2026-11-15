@@ -53,13 +53,15 @@
   <li><strong>Asynchrone.</strong> L'écriture est confirmée tout de suite, les copies suivent avec un léger retard. C'est rapide, mais si la machine principale tombe avant d'avoir propagé, les dernières écritures sont perdues.</li>
 </ul>
 
-<p>Deux sigles mesurent ce que l'on accepte. Le <dfn>RPO</dfn> est la quantité de données que l'on tolère de perdre, exprimée en durée : un RPO nul impose une réplication synchrone. Le <dfn>RTO</dfn> est le délai dans lequel le service doit avoir redémarré.</p>
+<p>Deux sigles mesurent ce que l'on accepte. Le <dfn>RPO</dfn> (<em>Recovery Point Objective</em>, objectif de point de reprise) est la quantité de données que l'on tolère de perdre, exprimée en durée : un RPO nul impose une réplication synchrone. Le <dfn>RTO</dfn> (<em>Recovery Time Objective</em>, objectif de délai de reprise) est le délai dans lequel le service doit avoir redémarré.</p>
+
+<p>Tous deux figurent dans le plan de reprise d'activité, le <strong>PRA</strong>, que les anglophones appellent <strong>DR</strong> (<em>Disaster Recovery</em>). La capacité à encaisser une panne sans interrompre le service s'appelle la haute disponibilité, <strong>HA</strong> (<em>High Availability</em>).</p>
 
 <h2>Le théorème CAP</h2>
 
 <p>Trois propriétés sont en jeu. La <strong>cohérence</strong> : toutes les machines donnent la même réponse au même instant. La <strong>disponibilité</strong> : toute demande reçoit une réponse. La <strong>tolérance au partitionnement</strong> : le système continue de fonctionner quand le réseau coupe le groupe de machines en deux.</p>
 
-<p>Le théorème dit qu'on ne peut pas avoir les trois. Comme les coupures réseau arrivent, le vrai choix se pose pendant une coupure : soit le système refuse de répondre pour ne pas risquer de se contredire, soit il répond, au risque de servir une valeur dépassée.</p>
+<p>Le sigle <strong>CAP</strong> reprend leurs noms anglais : <em>Consistency</em>, <em>Availability</em>, <em>Partition tolerance</em>. Le théorème dit qu'on ne peut pas avoir les trois. Comme les coupures réseau arrivent, le vrai choix se pose pendant une coupure : soit le système refuse de répondre pour ne pas risquer de se contredire, soit il répond, au risque de servir une valeur dépassée.</p>
 
 <table>
   <thead><tr><th></th><th>Priorité à la cohérence</th><th>Priorité à la disponibilité</th></tr></thead>
@@ -70,7 +72,7 @@
   </tbody>
 </table>
 
-<p>La <dfn>cohérence à terme</dfn> (<em>eventual consistency</em>) signifie que les copies finissent par s'aligner, mais qu'une lecture peut entre-temps renvoyer une valeur ancienne. Même hors de toute panne, le compromis subsiste sous une autre forme : attendre que toutes les copies soient d'accord rend chaque opération plus lente.</p>
+<p>La <dfn>cohérence à terme</dfn> (<em>eventual consistency</em>) signifie que les copies finissent par s'aligner, mais qu'une lecture peut entre-temps renvoyer une valeur ancienne. Même hors de toute panne, le compromis subsiste sous une autre forme : attendre que toutes les copies soient d'accord rend chaque opération plus lente. Une extension du théorème, <strong>PACELC</strong>, le dit en toutes lettres : en cas de partition (P), il faut choisir entre disponibilité (A) et cohérence (C) ; sinon (E, pour <em>else</em>), entre latence (L) et cohérence (C).</p>
 
 <aside class="note terrain">
   <p class="etiquette">Sur le terrain</p>
@@ -85,7 +87,7 @@
 
 <h2>Calculer à plusieurs</h2>
 
-<p>Le calcul distribué découpe un traitement en tâches, les exécute en parallèle sur les machines, puis rassemble les résultats. Spark en est l'outil le plus répandu. Les bases <abbr title="Massively Parallel Processing">MPP</abbr> appliquent le même principe à SQL : une requête est répartie sur tous les nœuds.</p>
+<p>Le calcul distribué découpe un traitement en tâches, les exécute en parallèle sur les machines, puis rassemble les résultats. Spark en est l'outil le plus répandu. Les bases <strong>MPP</strong> (<em>Massively Parallel Processing</em>, traitement massivement parallèle) appliquent le même principe à <strong>SQL</strong> (<em>Structured Query Language</em>, le langage d'interrogation des bases) : une requête est répartie sur tous les nœuds.</p>
 
 <p>L'étape qui coûte est le <dfn>shuffle</dfn> : quand une jointure ou un regroupement exige de redistribuer les données entre machines, tout passe par le réseau. La plupart des traitements distribués lents le sont à cause de lui.</p>
 

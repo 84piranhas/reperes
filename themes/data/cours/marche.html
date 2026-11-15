@@ -15,14 +15,14 @@
 
 <p>La réponse d'organisation s'appelle la <dfn>source de référence</dfn>, ou <em>golden source</em> : pour chaque donnée, un seul système fait autorité, et tous les autres s'alimentent auprès de lui. Sans elle, chaque activité tient sa propre copie, les copies divergent, et l'on passe son temps à les rapprocher.</p>
 
-<p>La fabrication de cette version de référence porte un nom, la <dfn>gestion des données de référence</dfn> (<abbr title="Master Data Management">MDM</abbr>), et suit toujours les mêmes étapes.</p>
+<p>La fabrication de cette version de référence porte un nom, la <dfn>gestion des données de référence</dfn> (<strong>MDM</strong>, <em>Master Data Management</em>), et suit toujours les mêmes étapes.</p>
 
 <ol>
   <li><strong>Collecter</strong> auprès de plusieurs fournisseurs et sources internes.</li>
   <li><strong>Rapprocher</strong> : ces deux lignes décrivent-elles le même instrument ?</li>
   <li><strong>Arbitrer</strong> les désaccords par des règles de priorité, attribut par attribut : pour le coupon, croire d'abord tel fournisseur, puis tel autre.</li>
   <li><strong>Traiter les exceptions</strong> à la main, quand les règles ne tranchent pas. C'est le travail quotidien des gestionnaires de données.</li>
-  <li><strong>Distribuer</strong> le résultat aux consommateurs, par API, par événements ou par fichiers.</li>
+  <li><strong>Distribuer</strong> le résultat aux consommateurs, par <strong>API</strong> (<em>Application Programming Interface</em>, l'interface par laquelle un programme en interroge un autre), par événements ou par fichiers.</li>
 </ol>
 
 <h2>Les identifiants</h2>
@@ -30,14 +30,14 @@
 <table>
   <thead><tr><th>Identifiant</th><th>Ce qu'il désigne</th><th>À savoir</th></tr></thead>
   <tbody>
-    <tr><th>ISIN</th><td>Un titre</td><td>Norme internationale, 12 caractères. Ne dit pas où le titre cote.</td></tr>
-    <tr><th>CUSIP, SEDOL</th><td>Un titre</td><td>Identifiants d'origine nationale, américain et britannique.</td></tr>
-    <tr><th>RIC</th><td>Une cotation chez LSEG</td><td>Propriétaire, hérité de Reuters.</td></tr>
-    <tr><th>Ticker Bloomberg, FIGI</th><td>Une cotation</td><td>Le FIGI est une norme ouverte.</td></tr>
-    <tr><th>LEI</th><td>Une entité juridique</td><td>Norme internationale, 20 caractères.</td></tr>
-    <tr><th>MIC</th><td>Une place de marché</td><td>Norme internationale, 4 caractères.</td></tr>
-    <tr><th>CFI</th><td>La nature d'un instrument</td><td>Six lettres qui classent le produit.</td></tr>
-    <tr><th>UPI, UTI</th><td>Un produit dérivé, une transaction</td><td>Utilisés pour les déclarations réglementaires.</td></tr>
+    <tr><th>ISIN</th><td>Un titre</td><td><em>International Securities Identification Number</em>. Norme internationale, 12 caractères. Ne dit pas où le titre cote.</td></tr>
+    <tr><th>CUSIP, SEDOL</th><td>Un titre</td><td><em>Committee on Uniform Securities Identification Procedures</em>, d'origine américaine, et <em>Stock Exchange Daily Official List</em>, d'origine britannique.</td></tr>
+    <tr><th>RIC</th><td>Une cotation chez LSEG (<em>London Stock Exchange Group</em>)</td><td><em>Reuters Instrument Code</em>. Propriétaire, hérité de Reuters.</td></tr>
+    <tr><th>Ticker Bloomberg, FIGI</th><td>Une cotation</td><td><em>Financial Instrument Global Identifier</em> : une norme ouverte.</td></tr>
+    <tr><th>LEI</th><td>Une entité juridique</td><td><em>Legal Entity Identifier</em>. Norme internationale, 20 caractères.</td></tr>
+    <tr><th>MIC</th><td>Une place de marché</td><td><em>Market Identifier Code</em>. Norme internationale, 4 caractères.</td></tr>
+    <tr><th>CFI</th><td>La nature d'un instrument</td><td><em>Classification of Financial Instruments</em> : six lettres qui classent le produit.</td></tr>
+    <tr><th>UPI, UTI</th><td>Un produit dérivé, une transaction</td><td><em>Unique Product Identifier</em> et <em>Unique Transaction Identifier</em>, utilisés pour les déclarations réglementaires.</td></tr>
   </tbody>
 </table>
 
@@ -47,14 +47,14 @@
 
 <h2>Les opérations sur titres</h2>
 
-<p>Dividendes, divisions du nominal, fusions, scissions, changements de nom : les <dfn>opérations sur titres</dfn> modifient la vie d'un instrument. Elles ont deux effets. Sur les positions, d'abord, qu'il faut ajuster. Sur les historiques, ensuite : après une division par deux, le cours est divisé par deux. Si l'historique n'est pas <dfn>ajusté</dfn>, il affiche une chute de 50 % qui n'a jamais eu lieu, et fausse tout calcul de rendement, de volatilité ou de risque historique.</p>
+<p>Dividendes, divisions du nominal, fusions, scissions, changements de nom : les <dfn>opérations sur titres</dfn> (<strong>OST</strong> ; en anglais <em>corporate actions</em>) modifient la vie d'un instrument. Elles ont deux effets. Sur les positions, d'abord, qu'il faut ajuster. Sur les historiques, ensuite : après une division par deux, le cours est divisé par deux. Si l'historique n'est pas <dfn>ajusté</dfn>, il affiche une chute de 50 % qui n'a jamais eu lieu, et fausse tout calcul de rendement, de volatilité ou de risque historique.</p>
 
 <h2>Les données de marché</h2>
 
 <ul>
-  <li><strong>Le temps réel.</strong> Cotations et transactions au fil de l'eau. Le <dfn>niveau 1</dfn> donne le meilleur prix acheteur, le meilleur prix vendeur et le dernier échange. Le <dfn>niveau 2</dfn> ajoute la profondeur du carnet d'ordres, prix par prix. Le <dfn>niveau 3</dfn> descend à l'ordre individuel.</li>
+  <li><strong>Le temps réel.</strong> Cotations et transactions au fil de l'eau. Le <dfn>niveau 1</dfn> (<em>Level 1</em>, ou L1) donne le meilleur prix acheteur, le meilleur prix vendeur et le dernier échange. Le <dfn>niveau 2</dfn> (L2) ajoute la profondeur du carnet d'ordres, prix par prix. Le <dfn>niveau 3</dfn> (L3) descend à l'ordre individuel.</li>
   <li><strong>Les ticks.</strong> Chaque cotation et chaque transaction, horodatée. C'est la matière première des historiques fins.</li>
-  <li><strong>Les agrégats.</strong> Ouverture, plus haut, plus bas, clôture, par minute ou par jour.</li>
+  <li><strong>Les agrégats.</strong> Ouverture, plus haut, plus bas, clôture (<strong>OHLC</strong>, <em>Open, High, Low, Close</em>), par minute ou par jour.</li>
   <li><strong>Les données construites.</strong> Courbes de taux, surfaces de volatilité, fixings. Elles ne sont pas observées mais calculées à partir de cotations, avec un modèle et des choix. Ce sont déjà des produits.</li>
 </ul>
 
@@ -89,7 +89,7 @@
   <figcaption>Du marché à l'application. La normalisation ramène chaque source à un format commun.</figcaption>
 </figure>
 
-<p>Les données arrivent par des fournisseurs généralistes, comme Bloomberg ou LSEG, ou par des <dfn>flux directs</dfn> pris à la source quand la vitesse compte. Chaque source parle son propre protocole. Des composants appelés <em>feed handlers</em> les décodent, puis tout est ramené à un format interne unique avant d'être distribué. Une branche part vers les applications, une autre vers la <dfn>capture</dfn>, qui enregistre tout pour constituer l'historique.</p>
+<p>Les données arrivent par des fournisseurs généralistes, comme Bloomberg ou LSEG, ou par des <dfn>flux directs</dfn> (<em>direct feeds</em>) pris à la source quand la vitesse compte. Chaque source parle son propre protocole. Des composants appelés <em>feed handlers</em> les décodent, puis tout est ramené à un format interne unique avant d'être distribué. Une branche part vers les applications, une autre vers la <dfn>capture</dfn>, qui enregistre tout pour constituer l'historique.</p>
 
 <h2>Les licences : un sujet à part entière</h2>
 
@@ -98,14 +98,14 @@
 <table>
   <thead><tr><th>Usage</th><th>Ce qu'il recouvre</th></tr></thead>
   <tbody>
-    <tr><th>Affichage</th><td>Une personne regarde la donnée sur un écran. Facturé par utilisateur.</td></tr>
-    <tr><th>Hors affichage</th><td>Une machine consomme la donnée : algorithme, moteur de prix, calcul de risque. Souvent bien plus cher.</td></tr>
+    <tr><th>Affichage<br><em>display</em></th><td>Une personne regarde la donnée sur un écran. Facturé par utilisateur.</td></tr>
+    <tr><th>Hors affichage<br><em>non-display</em></th><td>Une machine consomme la donnée : algorithme, moteur de prix, calcul de risque. Souvent bien plus cher.</td></tr>
     <tr><th>Redistribution</th><td>La donnée est transmise à une autre entité ou à des clients.</td></tr>
-    <tr><th>Données dérivées</th><td>La donnée sert à fabriquer un indice ou un produit.</td></tr>
+    <tr><th>Données dérivées<br><em>derived data</em></th><td>La donnée sert à fabriquer un indice ou un produit.</td></tr>
   </tbody>
 </table>
 
-<p>Les places et les fournisseurs auditent leurs clients. D'où un système d'<dfn>habilitations</dfn> qui contrôle qui reçoit quoi, et un suivi précis des usages. L'enjeu est à la fois réglementaire et financier : les données de marché figurent parmi les plus gros postes de dépense d'une salle.</p>
+<p>Les places et les fournisseurs auditent leurs clients. D'où un système d'<dfn>habilitations</dfn> (<em>entitlements</em>) qui contrôle qui reçoit quoi, et un suivi précis des usages. L'enjeu est à la fois réglementaire et financier : les données de marché figurent parmi les plus gros postes de dépense d'une salle.</p>
 
 <aside class="note piege">
   <p class="etiquette">Le piège</p>
@@ -116,19 +116,19 @@
 
 <p>Un grand marché produit des milliards de messages par jour. Les options américaines en produisent à elles seules des dizaines de milliards. Les bases classiques ne suivent pas, et une famille spécialisée s'est imposée.</p>
 
-<p>Le nom à connaître est <strong>kdb+</strong>, avec son langage <strong>q</strong>. C'est une base en colonnes, pensée pour le temps, extrêmement rapide et compacte, installée dans la plupart des banques d'investissement depuis vingt ans. Ses contreparties sont connues : des licences chères et des compétences rares. Son organisation type sépare la journée en cours, gardée en mémoire, de l'historique, écrit sur disque et rangé par date.</p>
+<p>Le nom à connaître est <strong>kdb+</strong>, avec son langage <strong>q</strong>. C'est une base en colonnes, pensée pour le temps, extrêmement rapide et compacte, installée dans la plupart des banques d'investissement depuis vingt ans. Ses contreparties sont connues : des licences chères et des compétences rares. Son organisation type sépare la journée en cours, gardée en mémoire (la <strong>RDB</strong>, <em>Real-time Database</em>), de l'historique, écrit sur disque et rangé par date (la <strong>HDB</strong>, <em>Historical Database</em>).</p>
 
 <p>D'autres options existent : ClickHouse, QuestDB, TimescaleDB, ou simplement des fichiers Parquet dans le lake pour la recherche, à moindre coût et à moindre vitesse.</p>
 
-<p>L'opération emblématique de ces bases est la <dfn>jointure à date</dfn> (<em>as-of join</em>) : associer à chaque transaction la dernière cotation connue à cet instant précis. Le SQL classique la fait mal. Une base de séries temporelles la fait nativement, sur des milliards de lignes.</p>
+<p>L'opération emblématique de ces bases est la <dfn>jointure à date</dfn> (<em>as-of join</em>) : associer à chaque transaction la dernière cotation connue à cet instant précis. Le <strong>SQL</strong> (<em>Structured Query Language</em>) classique la fait mal. Une base de séries temporelles la fait nativement, sur des milliards de lignes.</p>
 
 <h2>Les jeux de clôture officiels</h2>
 
-<p>Chaque soir, à une heure convenue pour chaque région, la banque fige un jeu de données de marché dit <strong>officiel</strong>. C'est lui qui valorise les positions et alimente les calculs de risque. On attend de ce jeu quatre choses.</p>
+<p>Chaque soir, à une heure convenue pour chaque région, la banque fige un jeu de données de marché dit <strong>officiel</strong>, ou <em>EOD snapshot</em> (<strong>EOD</strong> pour <em>End of Day</em>, fin de journée). C'est lui qui valorise les positions et alimente les calculs de risque. On attend de ce jeu quatre choses.</p>
 
 <ul>
   <li><strong>Complet</strong> : aucun instrument en position ne doit manquer de prix.</li>
-  <li><strong>Contrôlé</strong> : les prix sont vérifiés par une fonction indépendante des opérateurs.</li>
+  <li><strong>Contrôlé</strong> : les prix sont vérifiés par une fonction indépendante des opérateurs. C'est l'<strong>IPV</strong> (<em>Independent Price Verification</em>).</li>
   <li><strong>Versionné</strong> : une correction tardive crée une nouvelle version, elle n'écrase pas l'ancienne.</li>
   <li><strong>Traçable</strong> : pour tout résultat publié, on sait dire quel jeu, dans quelle version, l'a produit.</li>
 </ul>
@@ -136,14 +136,14 @@
 <h2>La qualité des données de marché</h2>
 
 <ul>
-  <li><strong>Le prix figé.</strong> Il n'a pas été rafraîchi alors que le marché a bougé. Rien ne le signale : il a l'air normal.</li>
-  <li><strong>Le pic aberrant.</strong> Une valeur isolée, sans rapport avec ses voisines.</li>
-  <li><strong>Le trou.</strong> Des jours ou des heures manquent dans la série.</li>
+  <li><strong>Le prix figé</strong> (<em>stale price</em>). Il n'a pas été rafraîchi alors que le marché a bougé. Rien ne le signale : il a l'air normal.</li>
+  <li><strong>Le pic aberrant</strong> (<em>spike</em>). Une valeur isolée, sans rapport avec ses voisines.</li>
+  <li><strong>Le trou</strong> (<em>gap</em>). Des jours ou des heures manquent dans la série.</li>
   <li><strong>L'unité.</strong> Un cours en pence lu comme un cours en livres est faux d'un facteur cent.</li>
   <li><strong>Le temps.</strong> Fuseaux horaires, heures d'été, calendriers de place.</li>
 </ul>
 
-<p>Les parades sont connues : détection automatique, comparaison entre sources, règles de remplacement documentées. La réglementation pousse dans le même sens. Sous les règles de fonds propres pour risques de marché, un facteur de risque n'est reconnu que s'il existe assez d'observations de prix réels : la collecte et la preuve de ces observations sont devenues un travail de données.</p>
+<p>Les parades sont connues : détection automatique, comparaison entre sources, règles de remplacement documentées. La réglementation pousse dans le même sens. Sous les règles de fonds propres pour risques de marché, la <strong>FRTB</strong> (<em>Fundamental Review of the Trading Book</em>), un facteur de risque n'est reconnu comme modélisable que s'il existe assez d'observations de prix réels. C'est le test <strong>RFET</strong> (<em>Risk Factor Eligibility Test</em>). Ceux qui échouent, les <strong>NMRF</strong> (<em>Non-Modellable Risk Factors</em>), coûtent cher en fonds propres : la collecte et la preuve de ces observations sont devenues un travail de données.</p>
 
 <aside class="note retenir">
   <p class="etiquette">À retenir</p>

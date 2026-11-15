@@ -2,7 +2,7 @@
 
 <h2>L'entrepôt de données</h2>
 
-<p>L'<dfn>entrepôt</dfn>, ou <em>data warehouse</em>, date des années 1990. Les données y entrent structurées, nettoyées et modélisées, puis sont interrogées en SQL. C'est le schéma à l'écriture dans toute sa rigueur.</p>
+<p>L'<dfn>entrepôt</dfn>, ou <em>data warehouse</em>, souvent abrégé <strong>DWH</strong>, date des années 1990. Les données y entrent structurées, nettoyées et modélisées, puis sont interrogées en <strong>SQL</strong> (<em>Structured Query Language</em>). C'est le schéma à l'écriture dans toute sa rigueur.</p>
 
 <p>Ses forces : fiabilité, performance, gouvernance. Ses limites : la rigidité, puisqu'accueillir une nouvelle source prend des semaines de modélisation ; le coût, avec des machines propriétaires où stockage et calcul s'achètent ensemble ; et l'impossibilité d'y loger autre chose que des tables.</p>
 
@@ -17,16 +17,16 @@
   <li><strong>L'absence de transactions.</strong> Un lake n'est qu'un ensemble de fichiers. Une écriture qui échoue à mi-chemin laisse une table à moitié écrite. Un lecteur peut voir un état incohérent. Corriger ou supprimer une ligne oblige à réécrire des fichiers entiers.</li>
 </ul>
 
-<p>Entre-temps, le <dfn>stockage objet</dfn> a remplacé le système de fichiers d'Hadoop. Né dans le cloud, disponible aussi sur site, il est très bon marché, presque sans limite de taille et très durable. Surtout, il a permis de séparer le stockage du calcul.</p>
+<p>Entre-temps, le <dfn>stockage objet</dfn> (<em>object storage</em>) a remplacé le système de fichiers d'Hadoop, <strong>HDFS</strong> (<em>Hadoop Distributed File System</em>). Son représentant le plus connu est <strong>S3</strong> (<em>Simple Storage Service</em>) d'Amazon, dont l'interface est devenue un standard de fait. Né dans le cloud, disponible aussi sur site, il est très bon marché, presque sans limite de taille et très durable. Surtout, il a permis de séparer le stockage du calcul.</p>
 
 <h2>Le lakehouse</h2>
 
-<p>L'idée, apparue autour de 2020, est d'apporter les garanties de l'entrepôt aux fichiers du lake. La pièce qui le permet s'appelle un <dfn>format de table ouvert</dfn>. Trois se partagent le terrain : Apache Iceberg, Delta Lake et Apache Hudi.</p>
+<p>L'idée, apparue autour de 2020, est d'apporter les garanties de l'entrepôt aux fichiers du lake. La pièce qui le permet s'appelle un <dfn>format de table ouvert</dfn> (<em>open table format</em>). Trois se partagent le terrain : Apache Iceberg, Delta Lake et Apache Hudi.</p>
 
 <p>Le principe est le même pour les trois. Une table n'est plus un simple dossier de fichiers, mais des fichiers Parquet <em>plus</em> un journal qui dit, pour chaque version de la table, quels fichiers la composent. Ce journal change tout.</p>
 
 <ul>
-  <li><strong>Des transactions.</strong> Une écriture devient visible d'un coup, entièrement, ou pas du tout.</li>
+  <li><strong>Des transactions.</strong> Les garanties <strong>ACID</strong> (<em>Atomicity, Consistency, Isolation, Durability</em>) des bases relationnelles arrivent sur les fichiers : une écriture devient visible d'un coup, entièrement, ou pas du tout.</li>
   <li><strong>Des mises à jour ligne à ligne.</strong> Corriger, fusionner, supprimer redevient possible.</li>
   <li><strong>Le retour dans le temps</strong> (<em>time travel</em>). On peut interroger la table telle qu'elle était hier ou à une version donnée.</li>
   <li><strong>Un schéma qui évolue.</strong> Ajouter ou renommer une colonne ne demande pas de tout réécrire.</li>
@@ -58,7 +58,7 @@
 
 <h2>Bronze, argent, or</h2>
 
-<p>La plupart des lakes organisent leurs données en trois couches de raffinement successif. On parle d'architecture en <dfn>médaillon</dfn>.</p>
+<p>La plupart des lakes organisent leurs données en trois couches de raffinement successif. On parle d'architecture en <dfn>médaillon</dfn> (<em>medallion architecture</em>), et les trois couches gardent souvent leurs noms anglais : <em>bronze</em>, <em>silver</em>, <em>gold</em>.</p>
 
 <figure class="schema">
   <div class="cadre">
@@ -106,7 +106,7 @@
 <h2>Trois mots de mécanique</h2>
 
 <ul>
-  <li><strong>Partitionner une table.</strong> Les fichiers sont rangés selon une colonne, le plus souvent la date. Une requête qui filtre sur une journée n'ouvre que les fichiers de cette journée : c'est l'<dfn>élagage</dfn>.</li>
+  <li><strong>Partitionner une table.</strong> Les fichiers sont rangés selon une colonne, le plus souvent la date. Une requête qui filtre sur une journée n'ouvre que les fichiers de cette journée : c'est l'<dfn>élagage</dfn> (<em>partition pruning</em>).</li>
   <li><strong>Les petits fichiers.</strong> Une alimentation en continu produit des milliers de fichiers minuscules, et les lectures s'effondrent. Le remède est la <dfn>compaction</dfn>, qui les fusionne régulièrement.</li>
   <li><strong>L'entretien.</strong> Le retour dans le temps garde les anciennes versions, donc du stockage. Il faut décider combien de temps on les conserve, et purger.</li>
 </ul>
@@ -135,7 +135,7 @@
 
 <h2>Les services d'une plateforme lake</h2>
 
-<p>Vu par ses utilisateurs, un lake n'est pas une technologie mais une série de services : brancher une nouvelle source, trouver un jeu de données et comprendre ce qu'il contient, obtenir un accès, interroger en SQL ou par API, disposer d'un espace d'exploration, suivre la fraîcheur et la qualité, connaître ce que l'on consomme. Chacun de ces services a des utilisateurs, donc des attentes, et se pilote comme un produit.</p>
+<p>Vu par ses utilisateurs, un lake n'est pas une technologie mais une série de services : brancher une nouvelle source, trouver un jeu de données et comprendre ce qu'il contient, obtenir un accès, interroger en SQL ou par <strong>API</strong> (<em>Application Programming Interface</em>, l'interface par laquelle un programme en interroge un autre), disposer d'un espace d'exploration, suivre la fraîcheur et la qualité, connaître ce que l'on consomme. Chacun de ces services a des utilisateurs, donc des attentes, et se pilote comme un produit.</p>
 
 <aside class="note retenir">
   <p class="etiquette">À retenir</p>

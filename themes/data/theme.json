@@ -5,6 +5,7 @@
   "titreCourt": "Plateformes de données",
   "accroche": "Bases de données, systèmes distribués, data lake, flux, référentiels, données de marché, systèmes de calcul et d'algorithmes : comprendre comment tout cela s'assemble dans une banque de marché, et savoir en parler avec précision.",
   "couleur": { "clair": "#0f6b62", "sombre": "#5fc4b8" },
+  "capitalesIgnorees": ["EUR", "USD", "CV"],
   "chapitres": [
     {
       "id": "paysage",

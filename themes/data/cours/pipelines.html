@@ -10,7 +10,7 @@
 
 <aside class="note terrain">
   <p class="etiquette">Sur le terrain</p>
-  <p>La chaîne de fin de journée reste la colonne vertébrale d'une banque de marché. Les positions sont arrêtées, le jeu officiel de données de marché est capturé, les risques et le résultat sont calculés pendant la nuit, des contrôles tournent, et les rapports sont prêts au matin. Des centaines de traitements s'enchaînent. Un retard en amont se propage à tout ce qui suit, avec des échéances qui ne bougent pas.</p>
+  <p>La chaîne de fin de journée (<strong>EOD</strong>, <em>End of Day</em>) reste la colonne vertébrale d'une banque de marché. Les positions sont arrêtées, le jeu officiel de données de marché est capturé, les risques et le résultat sont calculés pendant la nuit, des contrôles tournent, et les rapports sont prêts au matin. Des centaines de traitements s'enchaînent. Un retard en amont se propage à tout ce qui suit, avec des échéances qui ne bougent pas.</p>
 </aside>
 
 <aside class="note piege">
@@ -20,19 +20,19 @@
 
 <h2>ETL et ELT</h2>
 
-<p>Trois lettres, deux ordres. Dans l'<dfn>ETL</dfn>, on extrait, on <em>transforme</em>, puis on charge : la donnée est mise en forme dans un outil dédié avant d'entrer dans l'entrepôt. Dans l'<dfn>ELT</dfn>, on extrait, on <em>charge</em>, puis on transforme : la donnée entre brute, et la plateforme la transforme avec sa propre puissance de calcul, le plus souvent en SQL.</p>
+<p>Trois lettres, deux ordres. Dans l'<dfn>ETL</dfn> (<em>Extract, Transform, Load</em>), on extrait, on <em>transforme</em>, puis on charge : la donnée est mise en forme dans un outil dédié avant d'entrer dans l'entrepôt. Dans l'<dfn>ELT</dfn> (<em>Extract, Load, Transform</em>), on extrait, on <em>charge</em>, puis on transforme : la donnée entre brute, et la plateforme la transforme avec sa propre puissance de calcul, le plus souvent en <strong>SQL</strong> (<em>Structured Query Language</em>, le langage d'interrogation des bases).</p>
 
 <p>L'ELT s'est imposé avec les lakes pour une raison simple : le brut reste disponible. Si la transformation était fausse, on la corrige et on la rejoue.</p>
 
 <h2>L'orchestration</h2>
 
-<p>Un <dfn>orchestrateur</dfn> lance les traitements dans le bon ordre. On lui décrit un graphe de tâches et leurs dépendances : ne calcule les risques que lorsque les positions <em>et</em> les données de marché sont arrivées. Il gère les horaires, les relances après échec et les alertes.</p>
+<p>Un <dfn>orchestrateur</dfn> lance les traitements dans le bon ordre. On lui décrit un graphe de tâches et leurs dépendances, appelé <strong>DAG</strong> (<em>Directed Acyclic Graph</em>, graphe orienté sans cycle) : ne calcule les risques que lorsque les positions <em>et</em> les données de marché sont arrivées. Il gère les horaires, les relances après échec et les alertes.</p>
 
 <p>Les banques utilisent depuis longtemps des ordonnanceurs d'entreprise comme Control-M ou Autosys. Les plateformes data récentes y ajoutent Airflow ou Dagster. Ce qu'on attend d'eux est avant tout de la visibilité : qu'est-ce qui a tourné, qu'est-ce qui a échoué, qu'est-ce qui est en retard, et que faut-il relancer.</p>
 
 <h2>Kafka et le journal d'événements</h2>
 
-<p>Dans une file de messages classique, un message est remis à son destinataire puis effacé. Kafka repose sur une autre idée : un <dfn>journal</dfn> dans lequel on ne fait qu'ajouter. Les messages y restent pendant une durée de rétention choisie, et chaque consommateur retient lui-même sa position de lecture, appelée <dfn>offset</dfn>.</p>
+<p>Dans une file de messages classique (<strong>MQ</strong>, <em>Message Queue</em>), un message est remis à son destinataire puis effacé. Kafka repose sur une autre idée : un <dfn>journal</dfn> dans lequel on ne fait qu'ajouter. Les messages y restent pendant une durée de rétention choisie, et chaque consommateur retient lui-même sa position de lecture, appelée <dfn>offset</dfn>.</p>
 
 <figure class="schema">
   <div class="cadre">
@@ -73,16 +73,16 @@
 
 <h2>Traiter en continu</h2>
 
-<p>Des moteurs comme Flink ou Kafka Streams calculent sur les flux : agréger par fenêtre d'une minute, rapprocher deux flux, détecter une séquence. Une distinction y est centrale. Le <dfn>temps de l'événement</dfn> est le moment où le fait s'est produit. Le <dfn>temps de traitement</dfn> est le moment où le système le reçoit. Entre les deux, il y a des retards, parfois des inversions. Un calcul juste raisonne sur le temps de l'événement et prévoit quoi faire des retardataires.</p>
+<p>Des moteurs comme Flink ou Kafka Streams calculent sur les flux : agréger par fenêtre d'une minute, rapprocher deux flux, détecter une séquence. Une distinction y est centrale. Le <dfn>temps de l'événement</dfn> (<em>event time</em>) est le moment où le fait s'est produit. Le <dfn>temps de traitement</dfn> (<em>processing time</em>) est le moment où le système le reçoit. Entre les deux, il y a des retards, parfois des inversions. Un calcul juste raisonne sur le temps de l'événement et prévoit quoi faire des retardataires.</p>
 
 <h2>Les garanties de livraison</h2>
 
 <table>
   <thead><tr><th>Garantie</th><th>Ce qui peut arriver</th></tr></thead>
   <tbody>
-    <tr><th>Au plus une fois</th><td>Aucun doublon, mais des messages peuvent être perdus.</td></tr>
-    <tr><th>Au moins une fois</th><td>Aucune perte, mais des doublons sont possibles. C'est le cas pratique le plus courant.</td></tr>
-    <tr><th>Exactement une fois</th><td>Chaque message produit son effet une seule fois. Atteignable dans un périmètre maîtrisé, à un certain coût.</td></tr>
+    <tr><th>Au plus une fois<br><em>at-most-once</em></th><td>Aucun doublon, mais des messages peuvent être perdus.</td></tr>
+    <tr><th>Au moins une fois<br><em>at-least-once</em></th><td>Aucune perte, mais des doublons sont possibles. C'est le cas pratique le plus courant.</td></tr>
+    <tr><th>Exactement une fois<br><em>exactly-once</em></th><td>Chaque message produit son effet une seule fois. Atteignable dans un périmètre maîtrisé, à un certain coût.</td></tr>
   </tbody>
 </table>
 
@@ -90,7 +90,7 @@
 
 <h2>Capturer les changements</h2>
 
-<p>Comment sortir en continu les données d'une base opérationnelle sans la charger de requêtes ? Toute base écrit déjà chacune de ses modifications dans un journal interne. Le <dfn>CDC</dfn>, ou capture des changements, lit ce journal et publie chaque modification comme un événement. La source n'est ni ralentie ni modifiée, et le lake reçoit les changements en quelques secondes.</p>
+<p>Comment sortir en continu les données d'une base opérationnelle sans la charger de requêtes ? Toute base écrit déjà chacune de ses modifications dans un journal interne. Le <dfn>CDC</dfn> (<em>Change Data Capture</em>), ou capture des changements, lit ce journal et publie chaque modification comme un événement. La source n'est ni ralentie ni modifiée, et le lake reçoit les changements en quelques secondes.</p>
 
 <h2>Lambda et Kappa</h2>
 
@@ -100,13 +100,15 @@
 
 <ul>
   <li><strong>Le rejeu et le rattrapage.</strong> Pouvoir retraiter une période passée à partir du brut, après la correction d'une anomalie ou d'une règle. On parle de <dfn>backfill</dfn>. Sans idempotence, c'est impossible.</li>
-  <li><strong>Les contrats de données.</strong> Le producteur s'engage par écrit sur le schéma, le sens des champs, la qualité et l'heure de livraison. Un changement qui casse le contrat est détecté avant la production, pas après.</li>
-  <li><strong>L'observabilité.</strong> On surveille la donnée elle-même, pas seulement les machines : est-elle arrivée à l'heure, le nombre de lignes est-il plausible, la structure a-t-elle changé, les valeurs sont-elles vraisemblables ?</li>
+  <li><strong>Les contrats de données</strong> (<em>data contracts</em>). Le producteur s'engage par écrit sur le schéma, le sens des champs, la qualité et l'heure de livraison. Un changement qui casse le contrat est détecté avant la production, pas après.</li>
+  <li><strong>L'observabilité</strong> (<em>data observability</em>). On surveille la donnée elle-même, pas seulement les machines : est-elle arrivée à l'heure, le nombre de lignes est-il plausible, la structure a-t-elle changé, les valeurs sont-elles vraisemblables ?</li>
 </ul>
 
 <p>La plupart des incidents ne viennent pas d'une panne. Ils viennent d'un changement en amont que personne n'a annoncé : une colonne renommée, un fichier en retard, un nouveau code dans une liste de valeurs.</p>
 
 <h2>Fichier, API, événement</h2>
+
+<p>Deux systèmes ont trois façons d'échanger des données. La deuxième, l'<strong>API</strong> (<em>Application Programming Interface</em>), est l'interface par laquelle un programme en interroge un autre.</p>
 
 <table>
   <thead><tr><th>Style</th><th>Principe</th><th>Force</th><th>Limite</th></tr></thead>
@@ -117,7 +119,7 @@
   </tbody>
 </table>
 
-<p>Les trois coexistent. Malgré vingt ans d'annonces contraires, les échanges de fichiers restent très nombreux en banque, et ils fonctionnent.</p>
+<p>Les trois coexistent. Malgré vingt ans d'annonces contraires, les échanges de fichiers, le plus souvent par <strong>SFTP</strong> (<em>SSH File Transfer Protocol</em>), restent très nombreux en banque, et ils fonctionnent.</p>
 
 <aside class="note retenir">
   <p class="etiquette">À retenir</p>

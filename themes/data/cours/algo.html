@@ -12,7 +12,9 @@
   </tbody>
 </table>
 
-<p>Les modèles d'apprentissage automatique ne forment pas une cinquième famille : ils s'insèrent dans les quatre.</p>
+<p>Quelques noms reviennent sans cesse. Côté exécution : <strong>VWAP</strong> (<em>Volume-Weighted Average Price</em>, viser le prix moyen pondéré par les volumes), <strong>TWAP</strong> (<em>Time-Weighted Average Price</em>, étaler l'ordre régulièrement dans le temps) et <strong>SOR</strong> (<em>Smart Order Router</em>, qui choisit la place où envoyer chaque morceau). La cotation automatique se dit <em>market making</em>. Et quand la vitesse devient l'arme principale, on parle de trading haute fréquence, <strong>HFT</strong> (<em>High-Frequency Trading</em>).</p>
+
+<p>Les modèles d'apprentissage automatique (<strong>ML</strong>, <em>Machine Learning</em>) ne forment pas une cinquième famille : ils s'insèrent dans les quatre.</p>
 
 <h2>Pourquoi propriétaire</h2>
 
@@ -53,7 +55,7 @@
   <figcaption>De l'idée à la production, puis retour.</figcaption>
 </figure>
 
-<p>La <strong>recherche</strong> se fait le plus souvent en Python, dans des carnets interactifs, sur des données historiques. Le <dfn>backtest</dfn> rejoue l'histoire : qu'aurait fait la stratégie, et qu'aurait-elle gagné ? La <strong>simulation</strong> la fait tourner sur le marché réel sans envoyer d'ordres. La <strong>production</strong> exige un code durci, souvent en C++ ou en Java, entouré de limites. La <strong>surveillance</strong> suit la performance et repère la dérive.</p>
+<p>La <strong>recherche</strong> se fait le plus souvent en Python, dans des carnets interactifs, sur des données historiques. Le <dfn>backtest</dfn> rejoue l'histoire : qu'aurait fait la stratégie, et qu'aurait-elle gagné ? La <strong>simulation</strong> (<em>paper trading</em>) la fait tourner sur le marché réel sans envoyer d'ordres. La <strong>production</strong> exige un code durci, souvent en C++ ou en Java, entouré de limites. La <strong>surveillance</strong> suit la performance et repère la dérive.</p>
 
 <aside class="note piege">
   <p class="etiquette">Le piège</p>
@@ -62,14 +64,14 @@
 
 <h2>Les données qu'exige un algorithme</h2>
 
-<p>Trois qualités sont attendues d'un historique : la <strong>profondeur</strong>, plusieurs années, parfois au tick ; la <strong>propreté</strong>, avec des séries ajustées des opérations sur titres ; et le caractère <dfn>point-in-time</dfn>, c'est-à-dire la donnée telle qu'elle était connue à chaque date passée, sans les corrections venues après.</p>
+<p>Trois qualités sont attendues d'un historique : la <strong>profondeur</strong>, plusieurs années, parfois au tick ; la <strong>propreté</strong>, avec des séries ajustées des opérations sur titres ; et le caractère <dfn>point-in-time</dfn>, abrégé <strong>PIT</strong>, c'est-à-dire la donnée telle qu'elle était connue à chaque date passée, sans les corrections venues après.</p>
 
 <p>Trois biais guettent tout backtest.</p>
 
 <ul>
   <li><strong>Le biais d'anticipation</strong> (<em>look-ahead</em>). La stratégie utilise une information qui n'était pas encore disponible à la date simulée. Exemple type : des résultats d'entreprise datés de la fin du trimestre plutôt que du jour de leur publication.</li>
-  <li><strong>Le biais du survivant.</strong> On teste sur les sociétés qui existent encore aujourd'hui. Celles qui ont fait faillite ou ont été retirées de la cote ont disparu de l'échantillon, et la performance est surestimée.</li>
-  <li><strong>Le surapprentissage.</strong> À force d'essayer des variantes, on en trouve une qui épouse parfaitement le passé, c'est-à-dire son bruit. Elle déçoit dès le premier jour réel. La parade : garder des données que la recherche n'a jamais vues, et se méfier des résultats trop beaux.</li>
+  <li><strong>Le biais du survivant</strong> (<em>survivorship bias</em>). On teste sur les sociétés qui existent encore aujourd'hui. Celles qui ont fait faillite ou ont été retirées de la cote ont disparu de l'échantillon, et la performance est surestimée.</li>
+  <li><strong>Le surapprentissage</strong> (<em>overfitting</em>). À force d'essayer des variantes, on en trouve une qui épouse parfaitement le passé, c'est-à-dire son bruit. Elle déçoit dès le premier jour réel. La parade : garder des données que la recherche n'a jamais vues, et se méfier des résultats trop beaux.</li>
 </ul>
 
 <p>Les deux premiers biais sont des problèmes de données avant d'être des problèmes de méthode. Un référentiel bitemporel et un historique complet, disparus compris, ne sont pas un luxe : ce sont les conditions d'un backtest honnête.</p>
@@ -80,29 +82,29 @@
 
 <h2>L'infrastructure de calcul</h2>
 
-<p>Les calculs de prix et de risque se prêtent bien au parallélisme : des milliers de scénarios indépendants, chacun confié à un processeur. On les répartit sur une <dfn>grille de calcul</dfn> de plusieurs milliers de cœurs. Les processeurs graphiques accélèrent certains calculs numériques et l'entraînement des modèles.</p>
+<p>Les calculs de prix et de risque se prêtent bien au parallélisme : des milliers de scénarios indépendants, chacun confié à un processeur. On les répartit sur une <dfn>grille de calcul</dfn> (<em>compute grid</em>) de plusieurs milliers de cœurs : c'est du calcul haute performance, ou <strong>HPC</strong> (<em>High-Performance Computing</em>). Les processeurs graphiques (<strong>GPU</strong>, <em>Graphics Processing Unit</em>) accélèrent certains calculs numériques et l'entraînement des modèles.</p>
 
 <p>La question est surtout économique. Une grille dimensionnée pour le pic de la nuit est sous-employée le jour. D'où l'intérêt de l'élasticité : louer la capacité de pointe dans le cloud plutôt que la posséder toute l'année.</p>
 
 <h2>La très faible latence</h2>
 
-<p>Pour la cotation automatique, la mesure reine est le délai entre la réception d'une donnée de marché et l'envoi de l'ordre qui y répond, appelé <dfn>tick-to-trade</dfn>. Il se compte en microsecondes. Les moyens pour y parvenir forment un monde à part : serveurs installés dans le centre de données de la place (la <dfn>colocation</dfn>), flux directs, cartes réseau qui contournent le système d'exploitation, circuits programmables, horloges synchronisées avec une grande précision.</p>
+<p>Pour la cotation automatique, la mesure reine est le délai entre la réception d'une donnée de marché et l'envoi de l'ordre qui y répond, appelé <dfn>tick-to-trade</dfn>. Il se compte en microsecondes. Les moyens pour y parvenir forment un monde à part : serveurs installés dans le centre de données de la place (la <dfn>colocation</dfn>), flux directs, cartes réseau qui contournent le système d'exploitation (<em>kernel bypass</em>), circuits programmables (<strong>FPGA</strong>, <em>Field-Programmable Gate Array</em>), horloges synchronisées avec une grande précision par le protocole <strong>PTP</strong> (<em>Precision Time Protocol</em>).</p>
 
 <p>Ce monde a ses propres technologies, ses propres profils et ses propres coûts. Il n'a presque rien en commun avec une plateforme analytique, et le cloud généraliste n'y répond pas. Tous les algorithmes n'en ont pas besoin : un algorithme d'exécution qui étale un ordre sur la journée se moque de la microseconde. La latence coûte cher, et l'on n'achète que celle que la stratégie sait rentabiliser.</p>
 
 <h2>Les contrôles</h2>
 
-<p>En Europe, MiFID II et sa norme technique sur le trading algorithmique imposent un socle précis.</p>
+<p>En Europe, <strong>MiFID II</strong> (<em>Markets in Financial Instruments Directive</em>, la directive sur les marchés d'instruments financiers) et sa norme technique sur le trading algorithmique, <strong>RTS 6</strong> (<em>Regulatory Technical Standard</em>), imposent un socle précis.</p>
 
 <ul>
   <li><strong>Des tests</strong> avant tout déploiement, dans un environnement séparé de la production.</li>
-  <li><strong>Des contrôles avant l'envoi de chaque ordre</strong> : fourchettes de prix, taille et valeur maximales, nombre maximal de messages.</li>
+  <li><strong>Des contrôles avant l'envoi de chaque ordre</strong> (<em>pre-trade controls</em>) : fourchettes de prix, taille et valeur maximales, nombre maximal de messages.</li>
   <li><strong>Une surveillance en temps réel</strong> de l'activité des algorithmes.</li>
   <li><strong>Un arrêt d'urgence</strong> (<dfn>kill switch</dfn>), capable d'annuler immédiatement tous les ordres en attente.</li>
   <li><strong>Une auto-évaluation annuelle</strong> du dispositif.</li>
 </ul>
 
-<p>S'y ajoute la <dfn>gestion du risque de modèle</dfn>, attendue par tous les superviseurs : un inventaire des modèles, une validation par une équipe indépendante de celle qui les a conçus, un suivi de leur performance dans le temps, et une documentation suffisante pour qu'un tiers puisse les comprendre.</p>
+<p>S'y ajoute la <dfn>gestion du risque de modèle</dfn> (<strong>MRM</strong>, <em>Model Risk Management</em>), attendue par tous les superviseurs : un inventaire des modèles, une validation par une équipe indépendante de celle qui les a conçus, un suivi de leur performance dans le temps, et une documentation suffisante pour qu'un tiers puisse les comprendre.</p>
 
 <aside class="note terrain">
   <p class="etiquette">Un cas d'école</p>
